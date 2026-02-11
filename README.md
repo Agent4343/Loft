@@ -21,6 +21,7 @@ cd Loft
 Loft/
 ├── README.md
 ├── CONTRIBUTING.md
+├── LICENSE
 └── .gitignore
 ```
 
