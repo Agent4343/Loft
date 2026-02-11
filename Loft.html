@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LOFT Assessor Guide &ndash; Study &amp; Assessment</title>
+<title>LOFT Assessor Guide &ndash; Training &amp; Assessment</title>
 <style>
 :root {
   --brand: #1a56db;
@@ -13,6 +13,7 @@
   --accent-light: #d1fae5;
   --warning: #d97706;
   --warning-light: #fef3c7;
+  --danger: #dc2626;
   --ink: #111827;
   --ink2: #4b5563;
   --muted: #9ca3af;
@@ -32,20 +33,47 @@
 html{ scroll-behavior:smooth }
 body{ margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:15px;line-height:1.6 }
 
-/* HEADER */
+/* ── HEADER ── */
 .site-header{ background:linear-gradient(135deg,var(--brand-dark) 0%,var(--brand) 50%,#2563eb 100%);color:#fff;padding:28px 24px 20px }
 .site-header h1{ margin:0 0 4px;font-size:24px;font-weight:700;letter-spacing:-0.3px }
 .site-header p{ margin:0;opacity:.9;font-size:14px }
+.header-nav{ display:flex;gap:8px;margin-top:12px }
+.header-nav-btn{ background:rgba(255,255,255,0.15);color:#fff;border:1.5px solid rgba(255,255,255,0.3);border-radius:var(--rs);padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;transition:all var(--ease) }
+.header-nav-btn:hover{ background:rgba(255,255,255,0.25) }
+.header-nav-btn.active{ background:#fff;color:var(--brand);border-color:#fff }
 
-/* STICKY TOOLBAR */
-.toolbar-wrap{ position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--shadow) }
+/* ── LANDING SCREEN ── */
+.landing{ max-width:800px;margin:0 auto;padding:40px 20px }
+.landing-title{ text-align:center;margin-bottom:32px }
+.landing-title h2{ font-size:22px;margin:0 0 8px;color:var(--ink) }
+.landing-title p{ color:var(--ink2);margin:0;font-size:14px }
+.landing-cards{ display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px }
+.landing-card{ background:var(--card);border:2px solid var(--border);border-radius:16px;padding:28px;cursor:pointer;transition:all 0.25s ease;text-align:center }
+.landing-card:hover{ border-color:var(--brand);box-shadow:var(--shadow-lg);transform:translateY(-4px) }
+.landing-card.card-training:hover{ border-color:var(--brand) }
+.landing-card.card-assessment:hover{ border-color:var(--accent) }
+.landing-icon{ width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px }
+.landing-icon.icon-train{ background:var(--brand-light);color:var(--brand) }
+.landing-icon.icon-assess{ background:var(--accent-light);color:var(--accent) }
+.landing-card h3{ margin:0 0 8px;font-size:18px }
+.landing-card p{ margin:0 0 16px;font-size:13px;color:var(--ink2);line-height:1.5 }
+.landing-card .card-features{ text-align:left;margin:0;padding:0 0 0 20px;font-size:13px;color:var(--ink2);line-height:1.8 }
+.landing-card .start-label{ display:inline-flex;align-items:center;gap:4px;font-weight:700;font-size:14px;margin-top:12px }
+.card-training .start-label{ color:var(--brand) }
+.card-assessment .start-label{ color:var(--accent) }
+.landing-resume{ text-align:center;margin-top:24px;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow) }
+.landing-resume p{ margin:0 0 8px;font-size:13px;color:var(--ink2) }
+
+/* ── STICKY TOOLBAR ── */
+.toolbar-wrap{ position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--shadow);display:none }
+.toolbar-wrap.visible{ display:block }
 .toolbar{ max-width:960px;margin:0 auto;padding:10px 20px;display:flex;flex-wrap:wrap;gap:10px;align-items:center }
 .progress-wrap{ max-width:960px;margin:0 auto;padding:0 20px 8px }
 .progress-track{ height:4px;background:var(--shade);border-radius:4px;overflow:hidden }
 .progress-fill{ height:100%;background:var(--accent);border-radius:4px;width:0%;transition:width 0.4s ease }
 .progress-label{ font-size:12px;color:var(--muted);margin-top:2px;text-align:right }
 
-/* BUTTONS */
+/* ── BUTTONS ── */
 .btn{ display:inline-flex;align-items:center;gap:6px;border:none;border-radius:var(--rs);padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;transition:all var(--ease);white-space:nowrap }
 .btn:hover{ transform:translateY(-1px);box-shadow:var(--shadow-md) }
 .btn:active{ transform:translateY(0) }
@@ -53,32 +81,38 @@ body{ margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:-appl
 .btn-primary:hover{ background:var(--brand-dark) }
 .btn-success{ background:var(--accent);color:#fff }
 .btn-success:hover{ background:#047857 }
+.btn-warning{ background:var(--warning);color:#fff }
+.btn-warning:hover{ background:#b45309 }
+.btn-danger{ background:var(--danger);color:#fff }
+.btn-danger:hover{ background:#b91c1c }
 .btn-ghost{ background:var(--shade);color:var(--ink2);border:1px solid var(--border) }
 .btn-ghost:hover{ background:var(--border) }
 .btn-sm{ padding:5px 10px;font-size:12px }
+.btn-lg{ padding:12px 24px;font-size:15px;border-radius:var(--r) }
 
-/* SELF-ASSESSMENT BUTTONS */
+/* ── MODE BADGE ── */
+.mode-badge{ display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px }
+.mode-badge.study{ background:var(--brand-light);color:var(--brand) }
+.mode-badge.test{ background:var(--warning-light);color:#92400e }
+
+/* ── SELF-ASSESSMENT BUTTONS ── */
 .mark-btns{ display:flex;gap:6px;margin-top:10px }
 .btn-confident{ background:var(--accent-light);color:#065f46;border:1.5px solid #6ee7b7;font-size:12px;padding:5px 12px;border-radius:20px;cursor:pointer;font-weight:600;transition:all var(--ease) }
 .btn-confident:hover,.btn-confident.active{ background:#059669;color:#fff;border-color:#059669 }
 .btn-review{ background:var(--warning-light);color:#92400e;border:1.5px solid #fcd34d;font-size:12px;padding:5px 12px;border-radius:20px;cursor:pointer;font-weight:600;transition:all var(--ease) }
 .btn-review:hover,.btn-review.active{ background:#d97706;color:#fff;border-color:#d97706 }
 
-/* SEARCH */
+/* ── SEARCH ── */
 .search-wrap{ flex:1;min-width:200px;position:relative }
 .search-wrap svg{ position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);width:16px;height:16px }
 .search-input{ width:100%;padding:8px 12px 8px 32px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:14px;outline:none;transition:border-color var(--ease);background:var(--bg) }
 .search-input:focus{ border-color:var(--brand);background:#fff }
 
-/* MODE BADGE */
-.mode-badge{ display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px }
-.mode-badge.study{ background:var(--brand-light);color:var(--brand) }
-.mode-badge.test{ background:var(--warning-light);color:#92400e }
+/* ── LAYOUT ── */
+.layout{ max-width:960px;margin:0 auto;padding:20px;display:none }
+.layout.visible{ display:block }
 
-/* LAYOUT */
-.layout{ max-width:960px;margin:0 auto;padding:20px }
-
-/* TOC */
+/* ── TOC / SECTION NAV ── */
 .toc-card{ background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px 24px;margin-bottom:24px;box-shadow:var(--shadow) }
 .toc-card h2{ font-size:16px;margin:0 0 12px;color:var(--ink) }
 .toc-grid{ display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px 24px }
@@ -87,7 +121,7 @@ body{ margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:-appl
 .toc-item a:hover{ text-decoration:underline }
 .toc-count{ font-size:11px;color:var(--muted);background:var(--shade);padding:1px 7px;border-radius:10px }
 
-/* SECTION CARD */
+/* ── SECTION CARD ── */
 .section-card{ background:var(--card);border:1px solid var(--border);border-radius:var(--r);margin-bottom:20px;box-shadow:var(--shadow);overflow:hidden }
 .section-header{ padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;background:var(--shade) }
 .section-header h2,.section-header h3{ margin:0;font-size:18px;color:var(--ink) }
@@ -95,7 +129,7 @@ body{ margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:-appl
 .section-progress{ font-size:12px;color:var(--muted) }
 .section-body{ padding:8px 12px }
 
-/* QA ITEM */
+/* ── QA ITEM ── */
 .qa-item{ border:1px solid var(--border-lt);border-radius:var(--rs);margin:8px 0;transition:border-color var(--ease),box-shadow var(--ease);overflow:hidden }
 .qa-item:hover{ border-color:var(--border);box-shadow:var(--shadow) }
 .qa-item.marked-confident{ border-left:3px solid var(--accent) }
@@ -117,10 +151,10 @@ body{ margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:-appl
 .reveal-btn{ display:inline-flex;align-items:center;gap:5px;background:var(--brand);color:#fff;border:none;border-radius:var(--rs);padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;margin-top:10px;transition:all var(--ease) }
 .reveal-btn:hover{ background:var(--brand-dark);transform:translateY(-1px) }
 
-/* INTRO */
+/* ── INTRO ── */
 .intro-text{ font-size:14px;line-height:1.8;color:var(--ink);white-space:pre-line;word-wrap:break-word;padding:16px 20px }
 
-/* SUMMARY PANEL */
+/* ── SUMMARY PANEL ── */
 .summary-panel{ background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px 24px;margin-bottom:24px;box-shadow:var(--shadow);display:none }
 .summary-panel.visible{ display:block }
 .summary-stats{ display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px }
@@ -129,19 +163,20 @@ body{ margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:-appl
 .stat-num.green{ color:var(--accent) }
 .stat-num.amber{ color:var(--warning) }
 .stat-num.grey{ color:var(--muted) }
+.stat-num.blue{ color:var(--brand) }
 .stat-label{ font-size:12px;color:var(--ink2);margin-top:2px }
 
-/* RESOURCE LINKS */
+/* ── RESOURCE LINKS ── */
 .section-links{ display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:0 20px 10px;background:var(--shade);border-bottom:1px solid var(--border) }
 .res-link{ display:inline-flex;align-items:center;gap:5px;background:#fff;border:1px solid var(--border);border-radius:20px;padding:4px 12px 4px 10px;font-size:12px;text-decoration:none;color:var(--brand);font-weight:500;transition:all var(--ease);max-width:300px;overflow:hidden }
 .res-link:hover{ background:var(--brand-light);border-color:var(--brand);box-shadow:var(--shadow) }
 .res-link svg{ flex-shrink:0;width:14px;height:14px }
 .res-link-text{ overflow:hidden;text-overflow:ellipsis;white-space:nowrap }
 .res-link-remove{ background:none;border:none;color:var(--muted);cursor:pointer;padding:0 0 0 4px;font-size:14px;line-height:1;transition:color var(--ease) }
-.res-link-remove:hover{ color:var(--danger, #dc2626) }
+.res-link-remove:hover{ color:var(--danger) }
 .add-link-btn{ display:inline-flex;align-items:center;gap:4px;background:transparent;border:1.5px dashed var(--border);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--muted);cursor:pointer;transition:all var(--ease) }
 .add-link-btn:hover{ border-color:var(--brand);color:var(--brand);background:var(--brand-light) }
-.link-input-wrap{ display:flex;align-items:center;gap:6px }
+.link-input-wrap{ display:flex;align-items:center;gap:6px;flex-wrap:wrap }
 .link-input{ padding:5px 10px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:12px;width:280px;outline:none;transition:border-color var(--ease) }
 .link-input:focus{ border-color:var(--brand) }
 .link-label-input{ padding:5px 10px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:12px;width:120px;outline:none;transition:border-color var(--ease) }
@@ -151,14 +186,35 @@ body{ margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:-appl
 .link-cancel-btn{ background:var(--shade);color:var(--ink2);border:1px solid var(--border);border-radius:var(--rs);padding:5px 10px;font-size:12px;cursor:pointer;transition:all var(--ease) }
 .link-cancel-btn:hover{ background:var(--border) }
 
-/* BACK TO TOP */
+/* ── RESULTS SCREEN ── */
+.results-screen{ display:none;max-width:700px;margin:40px auto;padding:0 20px }
+.results-screen.visible{ display:block }
+.results-card{ background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px;box-shadow:var(--shadow-lg);text-align:center }
+.results-card h2{ margin:0 0 4px;font-size:22px }
+.results-card .subtitle{ color:var(--ink2);font-size:14px;margin:0 0 24px }
+.results-ring{ width:120px;height:120px;margin:0 auto 20px;position:relative }
+.results-ring svg{ transform:rotate(-90deg) }
+.results-ring-text{ position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:28px;font-weight:800;color:var(--ink) }
+.results-breakdown{ display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0 24px }
+.results-breakdown .stat-card{ border:1px solid var(--border) }
+.results-sections{ text-align:left;margin:20px 0 }
+.results-sections h3{ font-size:14px;margin:0 0 10px;color:var(--ink2) }
+.results-section-row{ display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:var(--rs);margin:4px 0;background:var(--shade);font-size:13px }
+.results-section-row .section-name{ font-weight:600 }
+.results-section-row .section-score{ font-weight:700 }
+.results-section-row .section-score.good{ color:var(--accent) }
+.results-section-row .section-score.needs-work{ color:var(--warning) }
+.results-actions{ display:flex;gap:10px;justify-content:center;flex-wrap:wrap }
+
+/* ── BACK TO TOP ── */
 .back-to-top{ position:fixed;bottom:24px;right:24px;width:44px;height:44px;background:var(--brand);color:#fff;border:none;border-radius:50%;cursor:pointer;box-shadow:var(--shadow-lg);display:none;align-items:center;justify-content:center;transition:all var(--ease);z-index:50 }
 .back-to-top:hover{ background:var(--brand-dark);transform:translateY(-2px) }
 .back-to-top.visible{ display:flex }
 
-/* PRINT */
+/* ── PRINT ── */
 @media print{
-  .toolbar-wrap,.back-to-top,.mark-btns,.reveal-btn,.btn,.add-link-btn,.res-link-remove,.link-input-wrap{ display:none!important }
+  .toolbar-wrap,.back-to-top,.mark-btns,.reveal-btn,.btn,.add-link-btn,.res-link-remove,.link-input-wrap,.landing,.header-nav,.results-screen{ display:none!important }
+  .layout{ display:block!important }
   .qa-answer{ max-height:none!important;overflow:visible!important }
   .answer-box.hidden-answer{ display:none!important }
   .section-card{ break-inside:avoid;box-shadow:none;border:1px solid #ccc }
@@ -173,21 +229,79 @@ body{ margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:-appl
   .qa-answer-inner{ padding-left:16px }
   .toc-grid{ grid-template-columns:1fr }
   .summary-stats{ grid-template-columns:repeat(2,1fr) }
+  .landing-cards{ grid-template-columns:1fr }
+  .landing{ padding:24px 16px }
+  .results-breakdown{ grid-template-columns:1fr }
 }
 .sr-only{ position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0 }
 </style>
 </head>
 <body>
 
+<!-- ── HEADER ── -->
 <header class="site-header">
-  <h1>LOFT Assessor Guide &ndash; Study &amp; Assessment</h1>
-  <p>Study the material and test yourself. Mark each question as <strong>Confident</strong> or <strong>Review Again</strong> to track your readiness.</p>
+  <h1>LOFT Assessor Guide &ndash; Training &amp; Assessment</h1>
+  <p>Process Safety Competency &ndash; Study the material, then demonstrate your knowledge.</p>
+  <div class="header-nav">
+    <button class="header-nav-btn active" id="navHome" onclick="showScreen('landing')">Home</button>
+    <button class="header-nav-btn" id="navTrain" onclick="startTraining()">Training</button>
+    <button class="header-nav-btn" id="navAssess" onclick="startAssessment()">Assessment</button>
+  </div>
 </header>
 
-<div class="toolbar-wrap">
+<!-- ── LANDING SCREEN ── -->
+<div class="landing" id="landingScreen">
+  <div class="landing-title">
+    <h2>Welcome to the LOFT Process Safety Guide</h2>
+    <p>Choose how you want to use this guide. You can switch between modes at any time.</p>
+  </div>
+
+  <div class="landing-cards">
+    <div class="landing-card card-training" onclick="startTraining()">
+      <div class="landing-icon icon-train">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      </div>
+      <h3>Study the Material</h3>
+      <p>Learn and review all Process Safety content at your own pace.</p>
+      <ul class="card-features">
+        <li>All questions and answers visible</li>
+        <li>Expand sections to read through</li>
+        <li>Search across all content</li>
+        <li>Access resource links for each section</li>
+        <li>No time pressure &ndash; learn thoroughly</li>
+      </ul>
+      <div class="start-label">Open Training Mode &rarr;</div>
+    </div>
+
+    <div class="landing-card card-assessment" onclick="startAssessment()">
+      <div class="landing-icon icon-assess">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      </div>
+      <h3>Take the Assessment</h3>
+      <p>Test your knowledge with answers hidden. Reveal and self-mark as you go.</p>
+      <ul class="card-features">
+        <li>Answers hidden until you reveal them</li>
+        <li>Mark each as Confident or Review Again</li>
+        <li>Track progress through every section</li>
+        <li>See your final score and gap areas</li>
+        <li>Prepares you for the face-to-face interview</li>
+      </ul>
+      <div class="start-label">Start Assessment &rarr;</div>
+    </div>
+  </div>
+
+  <div class="landing-resume" id="resumePanel" style="display:none">
+    <p>You have a previous assessment in progress.</p>
+    <button class="btn btn-success" onclick="resumeAssessment()">Resume Assessment</button>
+    <button class="btn btn-ghost btn-sm" onclick="clearProgress()" style="margin-left:8px">Start Fresh</button>
+  </div>
+</div>
+
+<!-- ── STICKY TOOLBAR ── -->
+<div class="toolbar-wrap" id="toolbarWrap">
   <div class="toolbar">
-    <button id="modeBtn" class="btn btn-primary" onclick="toggleMode()">Switch to Test Mode</button>
-    <span id="modeBadge" class="mode-badge study">STUDY MODE</span>
+    <button class="btn btn-ghost btn-sm" onclick="showScreen('landing')">Home</button>
+    <span id="modeBadge" class="mode-badge study">TRAINING</span>
     <button class="btn btn-ghost btn-sm" onclick="expandAll()">Expand All</button>
     <button class="btn btn-ghost btn-sm" onclick="collapseAll()">Collapse All</button>
     <div class="search-wrap">
@@ -196,24 +310,40 @@ body{ margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:-appl
       <input id="searchBox" class="search-input" type="search" placeholder="Search questions &amp; answers (e.g., ALARP, SIMOPS, TD)" oninput="filterQA()">
     </div>
   </div>
-  <div class="progress-wrap">
+  <div class="progress-wrap" id="progressWrap" style="display:none">
     <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
     <div class="progress-label" id="progressLabel">0 / 68 reviewed (0%)</div>
   </div>
 </div>
 
-<div class="layout">
+<!-- ── MAIN CONTENT ── -->
+<div class="layout" id="mainLayout">
 
+  <!-- Assessment summary (shown in assessment mode) -->
   <div class="summary-panel" id="summaryPanel">
-    <h3 style="margin:0 0 12px;font-size:15px;">Assessment Progress</h3>
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px">
+      <h3 style="margin:0;font-size:15px;">Assessment Progress</h3>
+      <button class="btn btn-success btn-sm" id="finishBtn" onclick="showResults()" style="display:none">View Results</button>
+    </div>
     <div class="summary-stats">
+      <div class="stat-card"><div class="stat-num blue" id="statTotal">68</div><div class="stat-label">Total Questions</div></div>
       <div class="stat-card"><div class="stat-num green" id="statConfident">0</div><div class="stat-label">Confident</div></div>
       <div class="stat-card"><div class="stat-num amber" id="statReview">0</div><div class="stat-label">Review Again</div></div>
       <div class="stat-card"><div class="stat-num grey" id="statRemaining">68</div><div class="stat-label">Remaining</div></div>
     </div>
   </div>
 
-  <div class="toc-card">
+  <!-- Training helper (shown in training mode) -->
+  <div id="trainingHelper" class="toc-card" style="display:none;border-left:4px solid var(--brand)">
+    <h2 style="display:flex;align-items:center;gap:8px">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      Training Mode
+    </h2>
+    <p style="color:var(--ink2);font-size:13px;margin:4px 0 0">All answers are visible. Read through each section, expand questions, and use the resource links to access reference materials. When you feel ready, switch to the Assessment to test yourself.</p>
+  </div>
+
+  <!-- Table of Contents -->
+  <div class="toc-card" id="tocCard">
     <h2>Sections</h2>
     <div class="toc-grid">
       <div class="toc-item"><a href="#intro">1.0 Introduction and Preparation</a></div>
@@ -231,6 +361,7 @@ body{ margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:-appl
     <p style="color:var(--muted);font-size:13px;margin:10px 0 0;">All content below preserves your exact wording.</p>
   </div>
 
+  <!-- === ALL SECTION CONTENT (preserved exactly) === -->
   <div class="section-card" id="intro">
   <div class="section-header"><h2>1.0 Introduction and Preparation</h2></div>
   <div class="section-links" id="intro_links"></div>
@@ -1667,50 +1798,214 @@ body{ margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:-appl
 </div>
 
   <div style="text-align:center;padding:20px;color:var(--muted);font-size:13px;">
-    All content preserves the exact LOFT Assessor Guide wording.<br>Use Study Mode to learn the material, Test Mode to self-assess.
+    All content preserves the exact LOFT Assessor Guide wording.
   </div>
 </div>
 
+<!-- ── RESULTS SCREEN ── -->
+<div class="results-screen" id="resultsScreen">
+  <div class="results-card">
+    <h2>Assessment Complete</h2>
+    <p class="subtitle">Here is your Process Safety competency self-assessment summary.</p>
+
+    <div class="results-ring">
+      <svg width="120" height="120" viewBox="0 0 120 120">
+        <circle cx="60" cy="60" r="52" fill="none" stroke="var(--shade)" stroke-width="10"/>
+        <circle id="resultsRing" cx="60" cy="60" r="52" fill="none" stroke="var(--accent)" stroke-width="10" stroke-linecap="round" stroke-dasharray="327" stroke-dashoffset="327"/>
+      </svg>
+      <div class="results-ring-text" id="resultsPercent">0%</div>
+    </div>
+
+    <div class="results-breakdown">
+      <div class="stat-card"><div class="stat-num green" id="rConfident">0</div><div class="stat-label">Confident</div></div>
+      <div class="stat-card"><div class="stat-num amber" id="rReview">0</div><div class="stat-label">Review Again</div></div>
+      <div class="stat-card"><div class="stat-num grey" id="rSkipped">0</div><div class="stat-label">Not Answered</div></div>
+    </div>
+
+    <div class="results-sections" id="resultsSections">
+      <h3>Breakdown by Section</h3>
+    </div>
+
+    <div class="results-actions">
+      <button class="btn btn-primary btn-lg" onclick="startTraining()">Study Weak Areas</button>
+      <button class="btn btn-warning btn-lg" onclick="retakeAssessment()">Retake Assessment</button>
+      <button class="btn btn-ghost" onclick="showScreen('landing')">Back to Home</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── BACK TO TOP ── -->
 <button class="back-to-top" id="backToTop" onclick="scrollToTop()" title="Back to top">
   <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M14.77 12.79a.75.75 0 01-1.06-.02L10 8.832 6.29 12.77a.75.75 0 11-1.08-1.04l4.25-4.5a.75.75 0 011.08 0l4.25 4.5a.75.75 0 01-.02 1.06z" clip-rule="evenodd"/></svg>
 </button>
 
 <script>
-let testMode = false;
+// ── State ──
+let currentMode = 'landing'; // 'landing' | 'training' | 'assessment'
 const marks = {};
 
-function toggleMode() {
-  testMode = !testMode;
-  const badge = document.getElementById('modeBadge');
-  const btn = document.getElementById('modeBtn');
-  if (testMode) {
-    badge.textContent = 'TEST MODE';
-    badge.className = 'mode-badge test';
-    btn.textContent = 'Switch to Study Mode';
-    btn.className = 'btn btn-success';
-    document.querySelectorAll('.qa-item').forEach(item => {
-      item.classList.remove('open');
-      const ab = item.querySelector('.answer-box');
-      if (ab) {
-        ab.dataset.realContent = ab.innerHTML;
+// Section metadata for results
+const sectionMeta = [
+  { id:'risk', name:'2.1 Risk Management' },
+  { id:'training', name:'2.2 Training' },
+  { id:'procedures', name:'2.3 Operating Procedures' },
+  { id:'critical', name:'2.4 Critical Equipment' },
+  { id:'alarms', name:'2.5 Alarm Management' },
+  { id:'work', name:'2.6 Work Management' },
+  { id:'moc', name:'2.7 Management of Change' },
+  { id:'incidents', name:'2.8 Incident Investigations' },
+  { id:'env', name:'2.9 Environmental' },
+  { id:'er', name:'3.0 Emergency Response' },
+];
+
+// ── Screen Navigation ──
+
+function showScreen(screen) {
+  currentMode = screen === 'landing' ? 'landing' : currentMode;
+  document.getElementById('landingScreen').style.display = screen === 'landing' ? '' : 'none';
+  document.getElementById('mainLayout').classList.toggle('visible', screen === 'content');
+  document.getElementById('toolbarWrap').classList.toggle('visible', screen === 'content');
+  document.getElementById('resultsScreen').classList.toggle('visible', screen === 'results');
+
+  // Update nav buttons
+  document.getElementById('navHome').classList.toggle('active', screen === 'landing');
+  document.getElementById('navTrain').classList.toggle('active', currentMode === 'training');
+  document.getElementById('navAssess').classList.toggle('active', currentMode === 'assessment');
+
+  if (screen === 'landing') checkForResume();
+  window.scrollTo({ top: 0 });
+}
+
+function startTraining() {
+  currentMode = 'training';
+  // Show all answers, study mode
+  document.getElementById('modeBadge').textContent = 'TRAINING';
+  document.getElementById('modeBadge').className = 'mode-badge study';
+  document.getElementById('summaryPanel').classList.remove('visible');
+  document.getElementById('trainingHelper').style.display = '';
+  document.getElementById('progressWrap').style.display = 'none';
+
+  // Show all answers
+  document.querySelectorAll('.answer-box').forEach(ab => {
+    if (ab.dataset.realContent) ab.innerHTML = ab.dataset.realContent;
+    ab.classList.remove('hidden-answer');
+  });
+  // Remove any reveal buttons
+  document.querySelectorAll('.reveal-btn').forEach(b => b.remove());
+
+  showScreen('content');
+  document.getElementById('navTrain').classList.add('active');
+  document.getElementById('navAssess').classList.remove('active');
+}
+
+function startAssessment() {
+  currentMode = 'assessment';
+
+  document.getElementById('modeBadge').textContent = 'ASSESSMENT';
+  document.getElementById('modeBadge').className = 'mode-badge test';
+  document.getElementById('summaryPanel').classList.add('visible');
+  document.getElementById('trainingHelper').style.display = 'none';
+  document.getElementById('progressWrap').style.display = '';
+
+  // Hide all answers, collapse all
+  document.querySelectorAll('.qa-item').forEach(item => {
+    item.classList.remove('open');
+    const ab = item.querySelector('.answer-box');
+    if (ab) {
+      if (!ab.dataset.realContent) ab.dataset.realContent = ab.innerHTML;
+      ab.innerHTML = 'Click "Reveal Answer" to see the answer';
+      ab.classList.add('hidden-answer');
+    }
+    // Remove existing reveal buttons
+    const rb = item.querySelector('.reveal-btn');
+    if (rb) rb.remove();
+  });
+
+  // Clear marks for fresh assessment
+  Object.keys(marks).forEach(k => delete marks[k]);
+  document.querySelectorAll('.qa-item').forEach(item => {
+    item.classList.remove('marked-confident', 'marked-review');
+    const num = item.querySelector('.qa-num');
+    if (num) num.classList.remove('done', 'needs-review');
+    const btns = item.querySelector('.mark-btns');
+    if (btns) {
+      btns.querySelectorAll('.btn-confident,.btn-review').forEach(b => b.classList.remove('active'));
+    }
+  });
+
+  updateProgress();
+  showScreen('content');
+  document.getElementById('navAssess').classList.add('active');
+  document.getElementById('navTrain').classList.remove('active');
+}
+
+function resumeAssessment() {
+  // Restore marks from localStorage
+  const saved = getSavedMarks();
+  Object.keys(saved).forEach(k => { marks[k] = saved[k]; });
+
+  currentMode = 'assessment';
+  document.getElementById('modeBadge').textContent = 'ASSESSMENT';
+  document.getElementById('modeBadge').className = 'mode-badge test';
+  document.getElementById('summaryPanel').classList.add('visible');
+  document.getElementById('trainingHelper').style.display = 'none';
+  document.getElementById('progressWrap').style.display = '';
+
+  // Hide answers
+  document.querySelectorAll('.qa-item').forEach(item => {
+    item.classList.remove('open');
+    const ab = item.querySelector('.answer-box');
+    if (ab) {
+      if (!ab.dataset.realContent) ab.dataset.realContent = ab.innerHTML;
+      // If already marked, show the answer
+      if (marks[item.id]) {
+        // leave answer visible when opened
+      } else {
         ab.innerHTML = 'Click "Reveal Answer" to see the answer';
         ab.classList.add('hidden-answer');
       }
-    });
-    document.getElementById('summaryPanel').classList.add('visible');
-  } else {
-    badge.textContent = 'STUDY MODE';
-    badge.className = 'mode-badge study';
-    btn.textContent = 'Switch to Test Mode';
-    btn.className = 'btn btn-primary';
-    document.querySelectorAll('.answer-box').forEach(ab => {
-      if (ab.dataset.realContent) ab.innerHTML = ab.dataset.realContent;
-      ab.classList.remove('hidden-answer');
-    });
-    document.getElementById('summaryPanel').classList.remove('visible');
-  }
+    }
+  });
+
+  // Restore visual marks
+  Object.keys(marks).forEach(qid => {
+    const mark = marks[qid];
+    const item = document.getElementById(qid);
+    if (!item) return;
+    item.classList.add(mark === 'confident' ? 'marked-confident' : 'marked-review');
+    const num = item.querySelector('.qa-num');
+    if (num) num.classList.add(mark === 'confident' ? 'done' : 'needs-review');
+    const btns = item.querySelector('.mark-btns');
+    if (btns) {
+      btns.querySelectorAll('.btn-confident').forEach(b => b.classList.toggle('active', mark === 'confident'));
+      btns.querySelectorAll('.btn-review').forEach(b => b.classList.toggle('active', mark === 'review'));
+    }
+  });
+
   updateProgress();
+  showScreen('content');
+  document.getElementById('navAssess').classList.add('active');
+  document.getElementById('navTrain').classList.remove('active');
 }
+
+function retakeAssessment() {
+  localStorage.removeItem('loft_assessment_marks');
+  startAssessment();
+}
+
+function clearProgress() {
+  localStorage.removeItem('loft_assessment_marks');
+  Object.keys(marks).forEach(k => delete marks[k]);
+  document.getElementById('resumePanel').style.display = 'none';
+}
+
+function checkForResume() {
+  const saved = getSavedMarks();
+  const hasProgress = Object.keys(saved).length > 0;
+  document.getElementById('resumePanel').style.display = hasProgress ? '' : 'none';
+}
+
+// ── Q&A Interactions ──
 
 function toggleQA(qid) {
   const item = document.getElementById(qid);
@@ -1719,7 +2014,7 @@ function toggleQA(qid) {
     item.classList.remove('open');
   } else {
     item.classList.add('open');
-    if (testMode) {
+    if (currentMode === 'assessment') {
       const ab = item.querySelector('.answer-box');
       if (ab && ab.classList.contains('hidden-answer') && !item.querySelector('.reveal-btn')) {
         const btn = document.createElement('button');
@@ -1761,7 +2056,14 @@ function markQuestion(qid, mark) {
     btns.querySelectorAll('.btn-review').forEach(b => b.classList.toggle('active', mark === 'review'));
   }
   updateProgress();
+
+  // Save to localStorage in assessment mode
+  if (currentMode === 'assessment') {
+    saveMarks();
+  }
 }
+
+// ── Progress ──
 
 function updateProgress() {
   let totalConfident = 0, totalReview = 0, totalQuestions = 0;
@@ -1787,7 +2089,64 @@ function updateProgress() {
   document.getElementById('statConfident').textContent = totalConfident;
   document.getElementById('statReview').textContent = totalReview;
   document.getElementById('statRemaining').textContent = totalQuestions - reviewed;
+
+  // Show finish button when all reviewed
+  const finishBtn = document.getElementById('finishBtn');
+  if (finishBtn) finishBtn.style.display = reviewed > 0 ? '' : 'none';
 }
+
+// ── Results ──
+
+function showResults() {
+  let totalConfident = 0, totalReview = 0, totalQuestions = 0;
+  const sectionResults = [];
+
+  sectionMeta.forEach(sm => {
+    const sec = document.getElementById(sm.id);
+    if (!sec) return;
+    const items = sec.querySelectorAll('.qa-item');
+    let sc = 0, sr = 0;
+    items.forEach(item => {
+      totalQuestions++;
+      const m = marks[item.id];
+      if (m === 'confident') { sc++; totalConfident++; }
+      else if (m === 'review') { sr++; totalReview++; }
+    });
+    sectionResults.push({ name: sm.name, total: items.length, confident: sc, review: sr });
+  });
+
+  const skipped = totalQuestions - totalConfident - totalReview;
+  const pct = totalQuestions > 0 ? Math.round((totalConfident / totalQuestions) * 100) : 0;
+
+  // Update ring
+  const circumference = 327;
+  const offset = circumference - (circumference * pct / 100);
+  document.getElementById('resultsRing').style.strokeDashoffset = offset;
+  document.getElementById('resultsPercent').textContent = pct + '%';
+
+  // Update stats
+  document.getElementById('rConfident').textContent = totalConfident;
+  document.getElementById('rReview').textContent = totalReview;
+  document.getElementById('rSkipped').textContent = skipped;
+
+  // Build section breakdown
+  const container = document.getElementById('resultsSections');
+  let rowsHtml = '<h3>Breakdown by Section</h3>';
+  sectionResults.forEach(s => {
+    const score = s.total > 0 ? Math.round((s.confident / s.total) * 100) : 0;
+    const cls = score >= 80 ? 'good' : 'needs-work';
+    const label = s.confident + '/' + s.total + ' confident';
+    rowsHtml += '<div class="results-section-row">' +
+      '<span class="section-name">' + s.name + '</span>' +
+      '<span class="section-score ' + cls + '">' + score + '% &mdash; ' + label + '</span>' +
+      '</div>';
+  });
+  container.innerHTML = rowsHtml;
+
+  showScreen('results');
+}
+
+// ── Expand / Collapse / Search ──
 
 function toggleSection(sid) {
   const body = document.getElementById(sid + '_body');
@@ -1817,24 +2176,20 @@ function filterQA() {
   });
 }
 
-window.addEventListener('scroll', () => {
-  const btn = document.getElementById('backToTop');
-  if (btn) btn.classList.toggle('visible', window.scrollY > 400);
-});
+// ── LocalStorage ──
 
-function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+function getSavedMarks() {
+  try { return JSON.parse(localStorage.getItem('loft_assessment_marks') || '{}'); }
+  catch(e) { return {}; }
+}
 
-document.addEventListener('keydown', (e) => {
-  if (e.target.tagName === 'INPUT') return;
-  if (e.key === 'Escape') collapseAll();
-});
-
-// ── Resource Links (saved to localStorage) ──
+function saveMarks() {
+  localStorage.setItem('loft_assessment_marks', JSON.stringify(marks));
+}
 
 function getSavedLinks() {
-  try {
-    return JSON.parse(localStorage.getItem('loft_section_links') || '{}');
-  } catch(e) { return {}; }
+  try { return JSON.parse(localStorage.getItem('loft_section_links') || '{}'); }
+  catch(e) { return {}; }
 }
 
 function saveSectionLinks(allLinks) {
@@ -1846,8 +2201,6 @@ function renderSectionLinks(sectionId) {
   if (!container) return;
   const allLinks = getSavedLinks();
   const links = allLinks[sectionId] || [];
-
-  // Build HTML
   let html = '';
   links.forEach((link, idx) => {
     const safeUrl = link.url.replace(/"/g, '&quot;').replace(/</g, '&lt;');
@@ -1858,22 +2211,17 @@ function renderSectionLinks(sectionId) {
       '<button class="res-link-remove" onclick="event.preventDefault();event.stopPropagation();removeLink(\'' + sectionId + '\',' + idx + ')" title="Remove link">&times;</button>' +
       '</a>';
   });
-
   html += '<button class="add-link-btn" onclick="showAddLink(\'' + sectionId + '\')">' +
     '<svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z"/></svg>' +
     'Add Resource Link</button>';
-
   container.innerHTML = html;
 }
 
 function showAddLink(sectionId) {
   const container = document.getElementById(sectionId + '_links');
   if (!container) return;
-
-  // Remove existing input if any
   const existing = container.querySelector('.link-input-wrap');
   if (existing) { existing.remove(); return; }
-
   const wrap = document.createElement('div');
   wrap.className = 'link-input-wrap';
   wrap.innerHTML =
@@ -1882,11 +2230,7 @@ function showAddLink(sectionId) {
     '<button class="link-save-btn" onclick="saveLink(\'' + sectionId + '\')">Save</button>' +
     '<button class="link-cancel-btn" onclick="this.parentElement.remove()">Cancel</button>';
   container.appendChild(wrap);
-
-  // Focus the URL input
   document.getElementById(sectionId + '_link_url').focus();
-
-  // Allow Enter to save
   wrap.addEventListener('keydown', function(e) {
     if (e.key === 'Enter') { e.preventDefault(); saveLink(sectionId); }
     if (e.key === 'Escape') { wrap.remove(); }
@@ -1897,17 +2241,10 @@ function saveLink(sectionId) {
   const urlInput = document.getElementById(sectionId + '_link_url');
   const labelInput = document.getElementById(sectionId + '_link_label');
   if (!urlInput) return;
-
   let url = urlInput.value.trim();
   let label = labelInput ? labelInput.value.trim() : '';
-
   if (!url) return;
-
-  // Add https:// if no protocol
-  if (!/^https?:\/\//i.test(url)) {
-    url = 'https://' + url;
-  }
-
+  if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
   const allLinks = getSavedLinks();
   if (!allLinks[sectionId]) allLinks[sectionId] = [];
   allLinks[sectionId].push({ url: url, label: label || '' });
@@ -1932,9 +2269,24 @@ function initAllLinks() {
   });
 }
 
+// ── Utilities ──
+
+window.addEventListener('scroll', () => {
+  const btn = document.getElementById('backToTop');
+  if (btn) btn.classList.toggle('visible', window.scrollY > 400);
+});
+
+function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+document.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.key === 'Escape') collapseAll();
+});
+
+// ── Init ──
 window.addEventListener('DOMContentLoaded', () => {
-  updateProgress();
   initAllLinks();
+  checkForResume();
 });
 </script>
 </body>
