@@ -19,6 +19,7 @@ cd Loft
 
 ```
 Loft/
+├── Loft.html
 ├── README.md
 ├── CONTRIBUTING.md
 ├── LICENSE
