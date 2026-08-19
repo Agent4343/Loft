@@ -1,0 +1,1990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LOFT Assessment Study Guide</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f6f8;
+      color: #333;
+    }
+    a, a:visited {
+      color: #DAA520;
+      text-decoration: underline;
+    }
+    a[href="https://www.cnloer.ca/"] {
+      color: #DAA520 !important;
+      font-weight: 600 !important;
+    }
+    a:hover, a:focus {
+      color: #b8860b;
+      text-decoration: underline;
+    }
+
+    header {
+      background: #003366;
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    #glossaryToggle {
+      position: fixed;
+      top: 15px;
+      left: 335px;
+      background-color: #0056b3;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      cursor: pointer;
+      z-index: 1100;
+      border-radius: 0 6px 6px 0;
+      font-weight: 600;
+      font-size: 1rem;
+      box-shadow: 0 2px 6px rgba(0,86,179,0.4);
+      transition: left 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    #glossaryToggle:hover {
+      background-color: #003d80;
+      box-shadow: 0 4px 12px rgba(0, 61, 128, 0.6);
+    }
+
+    #glossaryToggle.collapsed {
+      left: 10px;
+      border-radius: 0 6px 6px 0;
+      box-shadow: 0 2px 6px rgba(0,86,179,0.4);
+    }
+
+    #glossaryToggle.collapsed:hover {
+      background-color: #003d80;
+      box-shadow: 0 4px 12px rgba(0, 61, 128, 0.6);
+    }
+
+    #glossarySidebar {
+      height: 95vh;
+      width: 300px;
+      position: fixed;
+      z-index: 1000;
+      top: 0;
+      left: 180px;
+      background-color: #ffffff;
+      border-right: 1px solid #ccc;
+      overflow-y: auto;
+      padding: 25px 20px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      box-shadow: 3px 0 12px rgba(0,0,0,0.15);
+      transition: width 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+    }
+
+    #glossarySidebar.collapsed {
+      width: 0;
+      padding: 0;
+      overflow: hidden;
+      box-shadow: none;
+    }
+
+    #glossarySidebar h2 {
+      font-size: 20px;
+      margin-bottom: 15px;
+      color: #002244;
+      font-weight: 700;
+      border-bottom: 2px solid #0056b3;
+      padding-bottom: 8px;
+    }
+
+    .glossary-term {
+      cursor: pointer;
+      padding: 10px 8px;
+      border-bottom: 1px solid #ddd;
+      font-weight: 700;
+      color: #004080;
+      transition: background-color 0.3s ease;
+      border-radius: 4px;
+    }
+
+    .glossary-term:hover {
+      background-color: #e6f0ff;
+    }
+
+    .glossary-definition {
+      display: none;
+      padding: 8px 12px 12px 20px;
+      font-weight: 400;
+      color: #444;
+      background-color: #f0f4f8;
+      border-left: 3px solid #0056b3;
+      border-radius: 0 6px 6px 0;
+      transition: max-height 0.3s ease;
+      overflow: hidden;
+    }
+
+    .active + .glossary-definition {
+      display: block;
+      max-height: 1000px;
+    }
+
+    #toc {
+      background: #e0e0e0;
+      padding: 1rem;
+      max-width: 180px;
+      height: 100vh;
+      overflow-y: auto;
+      position: fixed;
+      top: 0;
+      left: 0;
+      border-left: 1px solid #ddd;
+      transition: width 0.3s ease;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    }
+
+    #toc.collapsed {
+      width: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    #toc h2 {
+      margin-top: 0;
+    }
+
+    #toc ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    #toc li {
+      margin: 0.5rem 0;
+      cursor: pointer;
+      color: #004080;
+    }
+
+    #toc li:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      margin-left: 480px;
+      margin-right: auto;
+      max-width: 1500px;
+      padding: 1rem 2rem;
+      transition: margin-left 0.3s ease;
+      position: relative;
+      z-index: 1;
+      box-sizing: border-box;
+    }
+
+      main.collapsed {
+        margin-left: 200px;
+        margin-right: auto;
+      }
+
+    section {
+      background: white;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 5px;
+      box-shadow: 0 0 5px #ccc;
+    }
+
+    h2 {
+      border-bottom: 2px solid #004080;
+      padding-bottom: 0.3rem;
+    }
+
+    .question {
+      font-weight: bolder;
+      margin-top: 1.5rem;
+      margin-bottom: 0.3rem;
+      padding-bottom: 0.2rem;
+      border-bottom: 1px solid #000000;
+      color: #003366;
+    }
+
+    .answer {
+      color: #1a1a1a;
+      font-weight: normal;
+      margin-bottom: 1.5rem;
+      padding-left: 1rem;
+      line-height: 1.5;
+      background-color: #e8f0fe;
+      border-left: 4px solid #3366cc;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>LOFT Assessment Study Guide</h1>
+  </header>
+
+  <button id="glossaryToggle">Hide Glossary</button>
+
+  <div id="glossarySidebar">
+    <h2>Glossary</h2>
+    <div class="glossary-term">ALARP</div>
+    <div class="glossary-definition">As Low As is Reasonably Practicable - A risk management principle to reduce risk to a level that is as low as reasonably achievable.</div>
+    <div class="glossary-term">HC1, HC2</div>
+    <div class="glossary-definition">High Consequence categories 1 and 2 - classifications of risk scenarios with significant potential impact.</div>
+    <div class="glossary-term">Cat 1, Cat 2, Cat 3, Cat 4</div>
+    <div class="glossary-definition">Category levels used to classify risks or incidents based on severity or priority.</div>
+    <div class="glossary-term">SLS</div>
+    <div class="glossary-definition">Second Line Supervisor - a supervisory role responsible for overseeing frontline supervisors and operational activities.</div>
+    <div class="glossary-term">TLS</div>
+    <div class="glossary-definition">Third Line Supervisor (Asset Manager) - senior supervisory role responsible for asset management and risk approval.</div>
+    <div class="glossary-term">PIC</div>
+    <div class="glossary-definition">Person In Charge - individual responsible for endorsing permits and coordinating work activities at the facility.</div>
+    <div class="glossary-term">AA</div>
+    <div class="glossary-definition">Area Authority - person designated by the PIC to coordinate work at the facility.</div>
+    <div class="glossary-term">AO</div>
+    <div class="glossary-definition">Area Operator - person responsible for issuing permits, conducting isolations, and verifying worksite controls.</div>
+    <div class="glossary-term">PH</div>
+    <div class="glossary-definition">Permit Holder - individual responsible for executing the work under the permit and ensuring safety compliance.</div>
+    <div class="glossary-term">OIM</div>
+    <div class="glossary-definition">Offshore Installation Manager - person responsible for overall safety and operations on an offshore platform.</div>
+    <div class="glossary-term">IMT</div>
+    <div class="glossary-definition">Incident Management Team - group responsible for managing emergency response and incident control.</div>
+    <div class="glossary-term">PSMS</div>
+    <div class="glossary-definition">Personnel Safety Management System - framework for managing personnel safety and related processes.</div>
+    <div class="glossary-term">LSRA</div>
+    <div class="glossary-definition">Life-Saving Rules & Actions - critical safety rules and actions to prevent serious injuries.</div>
+    <div class="glossary-term">LMRA</div>
+    <div class="glossary-definition">Last Minute Risk Assessment - a final risk assessment conducted immediately before starting a task.</div>
+    <div class="glossary-term">JSA</div>
+    <div class="glossary-definition">Job Safety Analysis - detailed analysis of task-specific hazards and controls.</div>
+    <div class="glossary-term">COP</div>
+    <div class="glossary-definition">Critical Operating Parameter - a process parameter that requires manual intervention to prevent loss of containment.</div>
+    <div class="glossary-term">FLS</div>
+    <div class="glossary-definition">Front Line Supervisor - supervisor responsible for direct oversight of operational personnel.</div>
+    <div class="glossary-term">SCE</div>
+    <div class="glossary-definition">Safety Critical Element - equipment or system critical to safety and environmental protection.</div>
+    <div class="glossary-term">OIMS</div>
+    <div class="glossary-definition">Operations Integrity Management System - ExxonMobil's framework for managing operational risks.</div>
+    <div class="glossary-term">MOC</div>
+    <div class="glossary-definition">Management of Change - process to evaluate and manage changes to operations or equipment.</div>
+    <div class="glossary-term">RBWS</div>
+    <div class="glossary-definition">Risk Based Work Selection - process to prioritize work based on risk assessment.</div>
+    <div class="glossary-term">PSSR</div>
+    <div class="glossary-definition">Pre-Startup Safety Review - safety review conducted before starting up equipment or processes.</div>
+    <div class="glossary-term">SME</div>
+    <div class="glossary-definition">Subject Matter Expert - person with specialized knowledge in a particular area.</div>
+    <div class="glossary-term">CA</div>
+    <div class="glossary-definition">Certifying Authority - person or group responsible for certifying safety compliance.</div>
+    <div class="glossary-term">CCR</div>
+    <div class="glossary-definition">Central Control Room - facility where process operations are monitored and controlled.</div>
+    <div class="glossary-term">POB</div>
+    <div class="glossary-definition">Personnel On Board - number of personnel present on a platform or facility.</div>
+    <div class="glossary-term">DPO</div>
+    <div class="glossary-definition">Designated Person Onshore - person responsible for onshore emergency management support.</div>
+    <div class="glossary-term">DCS</div>
+    <div class="glossary-definition">Distributed Control System - computerized control system for process operations.</div>
+    <div class="glossary-term">PSKV</div>
+    <div class="glossary-definition">Process Safety Knowledge Verification - process to verify operator knowledge of process safety.</div>
+    <div class="glossary-term">UBP</div>
+    <div class="glossary-definition">Upstream Best Practice - ExxonMobil's standards for upstream operations.</div>
+    <div class="glossary-term">FIMS</div>
+    <div class="glossary-definition">Facility Integrity Management System - system to manage integrity of facility equipment.</div>
+    <div class="glossary-term">EMCE</div>
+    <div class="glossary-definition">ExxonMobil Canada East</div>
+    <div class="glossary-term">AGT</div>
+    <div class="glossary-definition">Authorized Gas Tester - certified personnel authorized to perform gas testing.</div>
+    <div class="glossary-term">WMS</div>
+    <div class="glossary-definition">Work Management System - system to manage work activities and permits.</div>
+    <div class="glossary-term">PTWS</div>
+    <div class="glossary-definition">Permit to Work System - system to control and authorize work activities.</div>
+    <div class="glossary-term">DWCM</div>
+    <div class="glossary-definition">Daily Work Coordination Meeting - meeting to coordinate work activities and manage risks.</div>
+    <div class="glossary-term">SIMOPS</div>
+    <div class="glossary-definition">Simultaneous Operations - concurrent work activities that may impact each other.</div>
+    <div class="glossary-term">ICC</div>
+    <div class="glossary-definition">Isolation Control Certificate - document detailing energy isolation points and controls.</div>
+    <div class="glossary-term">ZED</div>
+    <div class="glossary-definition">Zero Energy Demonstration - verification that all energy sources are isolated before work.</div>
+    <div class="glossary-term">LTI</div>
+    <div class="glossary-definition">Long Term Isolated - status of equipment isolated for an extended period.</div>
+    <div class="glossary-term">THA</div>
+    <div class="glossary-definition">Task Hazard Assessment - assessment of hazards associated with a specific task.</div>
+    <div class="glossary-term">EMT</div>
+    <div class="glossary-definition">Emergency Management Team - trained medical responder.</div>
+    <div class="glossary-term">OIC</div>
+    <div class="glossary-definition">Operations Integrity Committee - committee overseeing operational integrity.</div>
+    <div class="glossary-term">KPI</div>
+    <div class="glossary-definition">Key Performance Indicator - metric used to measure performance of safety or operational processes.</div>
+  </div>
+
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+      const terms = document.querySelectorAll('.glossary-term');
+      terms.forEach(term => {
+        term.addEventListener('click', () => {
+          term.classList.toggle('active');
+        });
+      });
+
+      // Add toggle functionality for glossary sidebar
+      const toggleBtn = document.getElementById('glossaryToggle');
+      const glossary = document.getElementById('glossarySidebar');
+      const toc = document.getElementById('toc');
+      const mainContent = document.getElementById('mainContent');
+      const overlay = document.createElement('div');
+      overlay.id = 'overlay';
+      document.body.appendChild(overlay);
+
+      // Ensure glossary is collapsed by default, TOC visible
+      glossary.classList.add('collapsed');
+      toc.classList.remove('collapsed');
+      mainContent.classList.remove('collapsed');
+      toggleBtn.classList.add('collapsed');
+      overlay.classList.remove('active');
+      toggleBtn.textContent = 'Show Glossary';
+
+      // Set initial main content margin based on glossary state
+      if (glossary.classList.contains('collapsed')) {
+        mainContent.style.marginLeft = '300px';
+      } else {
+        mainContent.style.marginLeft = '480px';
+      }
+
+      toggleBtn.addEventListener('click', () => {
+        glossary.classList.toggle('collapsed');
+        // TOC remains visible, do not toggle its collapsed state
+        mainContent.classList.toggle('collapsed');
+        toggleBtn.classList.toggle('collapsed');
+
+        if (glossary.classList.contains('collapsed')) {
+          toggleBtn.textContent = 'Show Glossary';
+          // Adjust main content margin when glossary is hidden (TOC width + padding)
+    mainContent.style.marginLeft = '300px';
+          // Hide overlay when glossary is collapsed
+          overlay.classList.remove('active');
+          // Allow pointer events on TOC
+          toc.style.pointerEvents = 'auto';
+        } else {
+          toggleBtn.textContent = 'Hide Glossary';
+          // Adjust main content margin when glossary is visible (TOC + glossary width)
+          mainContent.style.marginLeft = '480px';
+          // Show overlay when glossary is visible
+          overlay.classList.add('active');
+          // Disable pointer events on TOC to prevent interaction under overlay
+          toc.style.pointerEvents = 'none';
+        }
+      });
+
+      overlay.addEventListener('click', () => {
+        glossary.classList.add('collapsed');
+        // TOC remains visible
+        mainContent.classList.add('collapsed');
+        toggleBtn.classList.add('collapsed');
+        overlay.classList.remove('active');
+        toggleBtn.textContent = 'Show Glossary';
+        mainContent.style.marginLeft = '180px';
+        // Allow pointer events on TOC
+        toc.style.pointerEvents = 'auto';
+      });
+    });
+  </script>
+</body>
+</html>
+
+<nav id="toc">
+  <h2>Table of Contents</h2>
+  <ul>
+    <li data-section="version">Version 1.3: July 2025</li>
+    <li data-section="introduction">1.0 Introduction and Preparation</li>
+    <li data-section="purpose">1.2 Purpose of Leadership Assessor Guide</li>
+    <li data-section="supervisor-role">1.3 Supervisor’s Role</li>
+    <li data-section="candidate-role">1.4 Candidate’s Role</li>
+    <li data-section="verification">1.5 Verification and Assessment Process</li>
+    <li data-section="assessment-team">1.6 Assessment Team</li>
+    <li data-section="process-safety">2.0 Process Safety Knowledge Requirements</li>
+    <li data-section="risk-management">2.1 Risk Management</li>
+    <li data-section="training">2.2 Training</li>
+    <li data-section="operating-procedures">2.3 Operating Procedures</li>
+    <li data-section="critical-equipment">2.4 Critical Equipment</li>
+    <li data-section="alarm-management">2.5 Alarm Management</li>
+    <li data-section="work-management">2.6 Work Management</li>
+    <li data-section="management-of-change">2.7 Management of Change</li>
+    <li data-section="incident-investigation">2.8 Incident Investigations and Analysis</li>
+    <li data-section="environmental">2.9 Environmental</li>
+    <li data-section="emergency-response">3.0 Emergency Response</li>
+    <li data-section="asset-specific-process-flow">Asset Specific: Basic Process Flows of Facilities</li>
+  </ul>
+</nav>
+<main id="mainContent">
+  <section id="version">
+    <h2>Version 1.3: July 2025</h2>
+  </section>
+  <section id="introduction">
+    <h2>1.0 Introduction and Preparation</h2>
+    <div class="qa">
+      <h3>1.1 Introduction</h3>
+      <p>This Assessor Guide provides the questions and model answers across ten Process Safety categories for the Global Process Safety Modules. The answers to these questions should be the same for all Upstream Oil and Gas Business Units globally. It also contains the Asset Specific questions. It is an expectation that each Business Unit develop their own Asset Specific Assessor Guide from this template with the asset/facility specific answers to each of these questions. This guide should be utilized by both the candidate, in preparing for their face to face interview, and by the assessment teams, to ensure a consistency in assessment across all Business Units. This Guide is referred to as Appendix B under the LOFT Framework UBP.</p>
+      <p>This Combined Assessor Guide should be used for a specified position to conduct a complete assessment of Process Safety competency. This guide should be utilized by both the candidate, in preparing for their face to face interview, and by the assessment teams, to ensure a consistency in assessment across all Business Units. This Guide is referred to as Appendix B under the LOFT Framework UBP.</p>
+      <p>The assessment process can be undertaken once the candidate has completed their task book and is ready to demonstrate their competency. It is expected that this is conducted within 60 days of assuming the position. Risk Approval Authority for each position cannot be granted until the competency in the Process Safety Modules is demonstrated.</p>
+    </div>
+  </section>
+  <section id="purpose">
+    <h2>1.2 Purpose of Leadership Assessor Guide</h2>
+    <ul>
+      <li>To provide a Global and Asset Specific assessment tool for new leaders to demonstrate competency in managing process safety and risk.</li>
+      <li>Provide consistency in assessment of personnel in LOFT Process Safety positions across Upstream Oil and Gas.</li>
+      <li>Provide a single point of resource material for Assessment Teams and Candidates.</li>
+    </ul>
+  </section>
+  <section id="supervisor-role">
+    <h2>1.3 Supervisor’s Role</h2>
+    <ol>
+      <li>Review the Leadership Process Safety Competency Demonstration Assessor Guide / expectations with the candidate.</li>
+      <li>Based on the individual’s previous assignments/work experiences assess the current “gap” for each section.</li>
+      <li>Identify any extra developmental activities that would assist the candidate to improve their depth of understanding.</li>
+      <li>Based on current gaps and recommended developmental activities identify a target timing for the verification – target should be within 60 days of assuming position.</li>
+      <li>Ensure Risk Approval Authority is delegated until verification of competency has been completed.</li>
+    </ol>
+  </section>
+  <section id="candidate-role">
+    <h2>1.4 Candidate’s Role</h2>
+    <ol>
+      <li>Complete the Process Safety Modules utilizing the LOFT Task book and this Assessor Guide.</li>
+      <li>Regularly inform supervisor of progress.</li>
+      <li>Mark completion on Career Connect.</li>
+      <li>Liaise with Supervisor and Assessment team when ready for verification interview.</li>
+    </ol>
+  </section>
+  <section id="verification-assessment-process">
+    <h2>1.5 Verification and Assessment Process</h2>
+    <ol>
+      <li>Assessors will ask open-ended questions to verify competency for each of the competencies/modules. Candidates should be prepared to elaborate and provide details and examples to demonstrate competency. Assessments should not be simply question and answer. Assessors should consider the candidates ability to speak fluidly about the concepts and principles that underpin the question when evaluating if competency has been demonstrated.</li>
+      <li>Where a candidate requires further knowledge or skill development to demonstrate competency for a specific module(s) then a gap closure plan must be put in place to enable them to meet the competency requirement. All gaps must be re-assessed in each module before the overall competency is demonstrated. A continued delegation of Risk Approval Authority must be put in place until that competency can be demonstrated. Any areas where revisiting is required will be communicated at the session and follow-up actions identified.</li>
+    </ol>
+  </section>
+  <section id="assessment-team">
+    <h2>1.6 Assessment Team</h2>
+    <ol>
+      <li>In order to ensure consistency, the Business Unit should have a nominated LOFT Assessment team. It is expected that the assessment team should consist of at least three but no more than five people. Personnel involved in the assessment process will vary by site and the position of the candidate being assessed, but team composition should include the following roles.</li>
+      <li><strong>Assessment Lead</strong> – A BU experienced fourth-line Supervisor with Operations experience (Production Manager, or equivalent) should be the Assessment Lead to assess of a third Line Supervisor. A BU-experienced third-line Supervisor (Asset Manager or equivalent) should be the Assessment Lead of a second-line Supervisor. The role of this person is to lead the assessment and make the final decision as to whether the candidate has demonstrated the competency required.</li>
+      <li><strong>Assessment Facilitator</strong> – The role of this person is to coordinate and participate in the assessment, ensure the process is conducted fairly and professionally, and coordinate timing and logistics. Examples of an Assessment Facilitator could be Training and CAS Supervisors, SHE or OIMS Supervisors or other personnel experienced in conducting assessments.</li>
+      <li><strong>Technical Assessors</strong> – For each module it is important at least one person has the required technical competency and knowledge in the respective area to effectively assess the candidate’s competency. A Technical Assessor is someone with particular knowledge or experience in the asset or facility and who has specific technical knowledge of the processes being assessed. Consideration should be given to the knowledge and experience of the Assessment Lead and the Assessment Facilitator when selecting the Technical Assessor(s). Examples of these Technical Assessors could include but are not limited to: Technical Leads/Advisors for Asset/Site Process Safety Hazards/safeguards, Asset/Site Process Safety Technical Lead, Experienced Second and Third Line Supervisors, Operations First-Line Supervisors, Operations Advisors, Engineering Advisors, OIMS Element SME’s.</li>
+      <li><strong>Supervisor/Manager</strong> – It is permissible for the Supervisor or Manager of the candidate to be part of the Assessment process or act as a Technical/Module SME with the approval of the Assessment Lead. There may be situations where the appropriate SME is someone who reports directly to the LOFT candidate. This is also permissible with the approval of the Assessment Lead.</li>
+    </ol>
+    <p>This Leadership Assessor Guide applies to all LOFT Process Safety Positions in Upstream Oil and Gas.</p>
+  </section>
+
+  <section id="process-safety">
+    <h2><strong>2.0 Process Safety Knowledge Requirements</h2>
+
+   <p>The process safety knowledge questions are in the following categories:</p>
+
+<div class="answer">
+  <ul>
+    <li>Risk Management</li> 
+    <li>Training</li>
+    <li>Operating Procedures</li>
+    <li>Critical Equipment</li>
+    <li>Alarm Management</li>
+    <li>Work Management</li>
+    <li>Management of Change</li>
+    <li>Incident Investigation / Analysis</li>
+    <li>Environmental</li>
+    <li>Emergency Response</li>
+  </ul>
+</div>
+
+
+
+
+  <section id="risk-management">
+  <h2>2.1 Risk Management</h2><a href="https://teamwork1.exxonmobil.com/sites/GOSSRPortal01/ESBP/Best%20Practices/ESBP%20Risk%20Assessment%20and%20Management%20for%20Operating%20Business%20Lines.pdf"
+               target="_blank"
+               rel="noopener noreferrer"  style="color: #DAA520; font-weight: bold;"><strong>
+                <strong>RISK ASSESSMENT AND MANAGEMENT STANDARD
+FOR OPERATING BUSINESS LINE</strong>
+            </a>
+        </p>
+
+<a href="https://ishareteam1.na.xom.com/sites/SSHE004/ProcessSafetyRisk/enterpriserisk/SitePages/Home.aspx"
+               target="_blank"
+               rel="noopener noreferrer"  style="color: #DAA520; font-weight: bold;"><strong>
+                <strong>Enterprise Risk</strong>
+            </a>
+        </p>
+</div>
+    </div>
+   <!-- QUESTION 1 -->
+  <div class="qa">
+    <div class="question">Describe the intent of the Risk Assessment and Management (RAM) Process</div>
+    <div class="answer">
+      <ul>
+        <li>Provide a common framework for identifying and managing risks to people, environment, assets, and reputation.</li>
+        <li>Reduce identified risks to an acceptable level.</li>
+        <li>Prevent or mitigate the undesirable effects of potential events throughout the lifecycle of a facility, from early development through the production phase to life end.</li>
+        <li>Enable management engagement and communication to drive the decision-making process towards risk reduction actions.</li>
+        <li>Communicate risks to impacted personnel.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- QUESTION 2 -->
+  <div class="qa">
+    <div class="question">Describe your role in effectively communicating the outcomes of Risk assessments and any process safety implications and possible temporary mitigations to your team</div>
+    <div class="answer">
+      <p>Personnel who could be directly affected by identified risks must understand the nature of the risk and subsequent follow-up activities. This information should be accessible to and communicated to those involved and affected by the hazards, Asset Manager and site management.</p>
+      <p><strong>For additional information see Enterprise Risk Standard section 5.3 Risk Management Communication</strong></p>
+    </div>
+  </div>
+
+  <!-- QUESTION 3 -->
+  <div class="qa">
+    <div class="question">Describe your role in the RAM process in your/an Asset?</div>
+    <div class="answer">
+
+      <ul>
+        <li><strong>Role of the SLS –</strong></li>
+        <li>Promote and encourage risk discovery.</li>
+        <li>Know your approved Risk Screeners and make them aware of the risks discovered.</li>
+        <li>Ensure that risk screening and risk assessment processes are followed.</li>
+        <li>Mobilize appropriate resources to ensure participation in risk screening and risk assessment activities.</li>
+        <li>Play an important role in resource allocation and prioritization for the closure of risk assessment action items.</li>
+        <li>Ensure effectiveness of risk communication to impacted personnel.</li>
+        <li>Drive closure of risk assessment action items.</li>
+        <li>Understand and ensure adequate management of applicable Scenario Management bowties, critical safeguards, and performance criteria.</li>
+        <li>Immediately inform Asset Manager of any critical safeguards no longer meeting performance criteria.</li>
+      </ul>
+
+      <ul>
+        <li><strong>Role of the TLS (Asset Manager)</strong></li>
+        <li>Approve risk screenings</li>
+        <li>Charter risk assessments</li>
+        <li>Know your approved Risk Assessment Team Leaders (per BU addendum).</li>
+        <li>Provide initial endorsement of HC1, HC2, and Cat 1, risks for higher level approval</li>
+        <li>Provide initial approval for continued operations for Cat 2 and 3 risks</li>
+        <li>Provide approval for closure of Cat. 3 risks</li>
+        <li>Drive progress on open risk assessment action items</li>
+        <li>Understand and ensure adequate management of applicable Scenario Management bowties, critical safeguards, and performance criteria.</li>
+        <li>Immediately inform Production Manager of any critical safeguards no longer meeting performance criteria and facilitate leadership team discussion on continued safe operations</li>
+      </ul>
+
+      <p>For further information consider the completion of Technical Level Risk Assessment CBT in Career Connect.</p>
+    </div>
+  </div>
+
+  <!-- QUESTION 4 -->
+  <div class="qa">
+    <div class="question">What does ALARP stand for, and what is it meant to accomplish?</div>
+    <div class="answer">
+      <ul>
+        <li>As Low As is Reasonably Practicable</li>
+        <li>ALARP - A risk acceptance review process that considers the best use of resources compared to the degree of risk reduction by asking the question "What else can be done to further reduce the risk?" ALARP is the point at which the resources expended to further reduce the risk are significantly disproportionate to the reduction in risk.</li>
+        <li>Risk can never be eliminated entirely, though it can be reduced through the application of hierarchy of safeguards. These safeguards prevent the undesired consequences. The ALARP principle arises from the fact that time, effort, and money cannot be spent on the attempt to reduce a risk to zero.</li>
+        <li>Risks should be managed to an acceptable level, subject to appropriate management review and approval. The determination of an acceptable level of risk is made by reviewing the safeguards against recognized and generally accepted standards and practices. Risk acceptance is a judgment call by the Risk Manager.</li>
+        <li>For HC1 and HC2 risks, the requirements established in the ExxonMobil ALARP Process for HC Risks shall be followed.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- QUESTION 5 -->
+  <div class="qa">
+    <div class="question">What is residual risk? Why review residual risks? How often should Residual Risk be reviewed?</div>
+    <div class="answer">
+      <ul>
+        <li>Residual risk - the level of risk that remains after a risk scenario has been closed and accepted.</li>
+        <li>Residual risk is important since, even though reduced to an acceptable level, it has not been eliminated and remains a part of our operations.</li>
+        <li>With no active risk reduction measures being worked, there is potential to lose sight of these risks if not managed appropriately. Also, additional risk reduction options might be available or desirable that were not available at the time of closure.</li>
+        <li>Risks initially identified as Cat 1 and 2 are subject to the residual risk review process</li>
+        <li>Risks accepted and closed as Cat 1 are reviewed and approved annually.</li>
+        <li>Risks accepted and closed as Cat 2 or lower should be reviewed at least every 5 years, typically as part of the HAZOP/PHA revalidation process.</li>
+      </ul>
+      <p>For additional information see Enterprise Risk Standard section 2.2.4 Residual Risk Review</p>
+    </div>
+  </div>
+
+  <!-- QUESTION 6 -->
+  <div class="qa">
+    <div class="question">Describe the process for approving a Risk Assessment - understanding the accepted risk and ensuring effective mitigation/appropriate timing</div>
+    <div class="answer">
+      <ul>
+        <li>After completing the risk assessment, the risk assessment team reviews the results with the Risk Manager. In decision analysis, the Risk Manager does the following:</li>
+        <li>Consider the significance of the risk under study, including its effect to the aggregate risk of the asset</li>
+        <li>Evaluate the effectiveness and feasibility of the potential risk reduction measures.</li>
+        <li>Decide the course of further action to reduce the risk to an acceptable level (ALARP).</li>
+        <li>This activity requires considerable judgment, since the risk reduction benefits, and cost effectiveness of some potential risk reduction measures may be difficult to quantify.</li>
+        <li>The Risk Manager must also evaluate potential benefits of risk reduction measures against potential implementation risks.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- QUESTION 7 -->
+  <div class="qa">
+    <div class="question">When a critical safeguard associated with HC scenario is discovered to not meet performance criteria what action must be taken?</div>
+    <div class="answer">
+      <ul>
+        <li>Safeguard owner informs all affected, including the scenario owner as well as operations, maintenance, and technical teams.</li>
+        <li>Scenario owner and site leadership take immediate action to determine if operations are safe to continue, identify any interconnected safeguards to be managed, and secure approval from the BU leadership team for continued operation.</li>
+        <li>Site teams restore the safeguard as a high priority through the “Break-in Work” process.</li>
+      </ul>
+      <p>For additional information see Enterprise Risk Standard section 2.5.1 Critical Safeguards Management</p>
+    </div>
+  </div>
+
+  <!-- QUESTION 8 -->
+  <div class="qa">
+    <div class="question">Scenario based question: A piping inspection report is issued that indicates you have a piece of piping below retirement thickness due to CUI. What are your options in managing this risk?</div>
+    <div class="answer">
+      <ul>
+        <li><strong>Ensure the following aspects are considered:</strong></li>
+        <li>Interim Mitigations – what mitigations can be put in immediately? Can the line be isolated or run at a lower pressure?</li>
+        <li>Can a temporary repair be installed such as wrap or clamp? Does the area or piping need to be barricaded off? How are these mitigations communicated to all applicable personnel?</li>
+        <li>Risk Screening – Initiate a risk screening to ensure the risk of keeping the like in service is being managed until repair. Ensure appropriate people are included in the risk screening and approve a triggered risk assessment if appropriate.</li>
+        <li>Expedite Repair – evaluate options with Maintenance to expedite repair. Consider what other work can be re-prioritized to allow this to happen</li>
+      </ul>
+    </div>
+  </div>
+
+</section>
+    <div class="qa">
+      <div class="question">Describe an understanding of all Higher Consequence Potential Scenarios in your asset. Describe the critical safeguards in place to prevent/mitigate the risks associated with each of those scenarios</p>
+      <div class="answer">
+        <p>Current high consequence process safety scenarios are listed below. Contact the Process Safety Team to obtain Bowties for each of these scenarios to understand relationship between hazards, safeguards and consequences.</p>
+
+</a>
+    </p>
+    <p>
+        <a href="https://ishareteam1.na.xom.com/sites/EMPC0883/process_safety/HEB/_layouts/15/start.aspx#/"
+           target="_blank" rel="noopener noreferrer"  style="color: #DAA520; font-weight: bold;"><strong>Hebron Process Safety Bowties Link
+        </a>
+    </p>
+
+</a>
+    </p>
+    <p>
+        <a href="https://ishareteam1.na.xom.com/sites/EMPC0883/process_safety/HIB/_layouts/15/start.aspx#/"
+           target="_blank" rel="noopener noreferrer"  style="color: #DAA520; font-weight: bold;"><strong>Hibernia Process Safety Bowties Link
+        </a>
+    </p>
+
+     
+<ul>
+    <p>(1) Lift - Gas Injection LOPC in Wellbay</li>
+    <p>(2) Production Flowline LOPC in Wellbay</li>
+    <p>(3a) Well Integrity Production LOPC</li>
+    <p>(3b) Well Integrity (Wellwork) LOPC</li>
+    <p>(4)  (Not Used)</li>
+    <p>(5)  Drilling LOPC</li>
+    <p>(6)  Escalation LOPC</li>
+    <p>(7)  AIRCRAFT ACCIDENT</li>
+    </ul>
+</div>
+</div>
+      
+      <div class="question"><p>Examples of preventative critical safeguards:</div>
+        
+          <div class="answer">
+<li>Dropped Object During Drilling or Wellwork - Drilling Fixed Lifting Equipment Integrity, Drilling Loose Lifting Gear Integrity, Wellbay SIMOPS Plan, Wellwork Loose Lifting Gear Integrity</li>
+      <li>Dropped Object During Maintenance &amp; Construction - Critical Lifting Practices (Field Verification)</li>
+      <li>Work (Breaking &amp; Reinstating Containment) - Isolation and Independent Verification, Zero Energy Demonstrated, De-isolation, Leak Test and Reinstatement</li>
+      <li>Corrosion of Pressure Containing Components - Corrosion Inspection &amp; Management</li>
+      <li>Overpressure - Pressure Transmitters - Process Shutdown, Pressure Safety Valves (PSVs) + Heat Tracing</li>
+      <li><strong>*H2S Induced Stress Cracking (*Hibernia Only)</strong> - Reservoir Pressure Management, H2S Sampling Program &amp; Alarm Setpoint, Annulus Pressure Management, Mixed Wellstream H2S Analyzer</li>
+      <li><strong>*Burst Casing on Gas Injector (*Hibernia Only)</strong> - Pressure/Temperature Control Curves in DCS with Automated Shutdown</li>
+      <li>Over Pressure of Annulus - Well Integrity</li>
+      <li>Primary Barrier Failure - Primary Pressure Control Equipment Integrity, Well Control – Response, Secondary Pressure Control Equipment Integrity</li>
+      <li>Perforation Misfire in Wellhead/Tree - Explosives Handling &amp; Detonation Practices</li>
+      <li>Breaking &amp; Reinstating Containment - Well Isolation / Zero Energy Demonstrated Wellwork, De-isolation, Leak Test and Reinstatement</li>
+      <li>Influx (Undesired Formation Fluid in Wellbore) - Influx Prevention, Fluid Barrier, Casing &amp; Formation Testing, Barrier Verification, Identification, Monitor and Response, Well Control Equipment</li>
+      <li>Initial Release, Fire, or Explosion - Large Inventory SDVs, Firewater Supply, Temporary Refuge</li>
+        </ul>
+    </div>
+    </div>
+        <div class="question">Examples of Mitigate critical safeguards:
+          <div class="answer">
+          <ul>
+          <li>Ignition Source Control (HAEQ)</li>
+          <li>Gas Detection System</li>
+          <li>Isolation</li>
+          <li>Emergency Response Extended Release</li>
+          <li>Emergency Well Response</li>
+          <li>Gas detection System Manual Isolation</li>
+          <li>Fire Detection</li>
+          <li>Fire Detection + Automated Shutdown (STD)</li>
+          <li>Escape & Evacuation (Muster)</li>
+          <li>Lifeboats & Launching Systems, SBV (Rescue+ Fire Fighting)</li>
+          <li>Emergency Response / OIM Competency / Drills</li>
+        </ul>
+    </div>
+    </div>
+      <div class="qa">
+        <div class="question"><strong>Risk Management (Asset Specific) Identify any action items that are related to your higher consequence potential scenarios? Who is responsible for those action items and are there any overdue? If they are not overdue are they on track to be completed by the due date?</strong></div>
+        <div class="answer">
+          <p>Contact the Process Safety Team to obtain a copy of the latest KPI Scorecard and identify any actions associated with critical safeguards for each scenario.</p>
+          <p>Below is an overview of the monthly process safety scenario management KPI stewardship process.</p>
+          <ul>
+            <li>Each scenario is assigned an Owner (Asset Manager or Drilling Operations Superintendent). Within each scenario, each critical safeguard has an assigned owner. Each safeguard in turn has key verification measures associated with it that are tracked monthly as KPIs to ensure critical safeguard health. Verification measures for a critical safeguard may be assigned to a role or extracted automatically from a database (e.g. SAP, ICSS, DCDA, WebCAT, etc.). KPIs are reviewed by Facility Integrity Management System (FIMS) / Safety Critical Element (SCE) owners and process safety SMEs before they are published.</li>
+            <li>KPIs not meeting the performance standard are noted on the KPI report and is presented monthly to the Asset Team onshore and offshore, and quarterly to the Operations Integrity Committee (OIC).</li>
+            <li>Findings and corrective actions for a KPI in a given month are noted on the KPI Scorecard, along with a target closure date.</li>
+            <li>Contact the Hibernia / Hebron SSHE Technician and / or Risk & Certification Engineer for a listing of current actions related to HC1 and HC2 risks.</li>
+</div>
+</ul>
+</div>
+</div>
+    <div class="qa">
+      <div class="question">Are there any major wellbore integrity related incident scenarios for your asset? Explain the details of those scenarios and both the preventative and mitigative safeguards in place related to those scenarios</div>
+
+        <Strong><p>3a)Well Integrity Production LOPC</strong></div>
+
+<div class="answer">This scenario is wellbore related event while in a Production operating state resulting in a multiphase hydrocarbon release to the platform, and fire and explosion. The scenario has potential to escalate beyond the immediate area and result in abandonment of the platform</div>
+
+        </p><div class="answer"><strong>Scenario 3a)Preventative Safeguards</strong> - Drilling Fixed Lifting Equipment Integrity, Drilling Loose Lifting Gear Integrity, Wellwork Loose Lifting Gear Integrity, Wellbay SIMOPS (Lifting Plan), Critical Lifting Practices (Field Verification), Fixed/Loose  Lifting Gear Integrity, Annulus Pressure Management, Lift Gas Dewpoint Analyzer, Reservoir Pressure Management, H2S Sampling Program & Alarm Set point, Reservoir Pressure Management (H2S), Mixed Wellstream H2S Analyzer, Press/Temp Control Curves in DCS with Automated S/D</p>
+        <p>Scenario 3a) Mitigate Safeguards -- Gas Detection Automated Shutdown, Ignition Source Control (HAEQ), Emergency Response - Extended Release, Emergency Response - Well Intervention and Kill Commitments</p>
+</div>
+</ul>
+	<p><strong>3b) Well Integrity (Wellwork) LOPC</strong></p>
+<div class="answer">This scenario is wellbore related event while Wellwork activities is  in progress and the well has been handed over from Production to Wells resulting in a multiphase hydrocarbon release to the platform, and fire and explosion. The scenario has potential to escalate beyond the immediate area and result in abandonment of the platform</div>
+
+<div class="answer">
+        <p><strong>Scenario 3b)</strong> Preventative Safeguards – Drilling Fixed Lifting Equipment Integrity, Drilling Loose Lifting Gear Integrity, Wellwork Loose Lifting Gear Integrity, Wellbay SIMOPS (Lifting Plan), Well Integrity, Primary Pressure Control Equipment Integrity, Well Control Response, Secondary Pressure Control Equipment Integrity, Secondary Pressure Control Equipment Integrity, Explosives Handling & Detonation Practices, Well Isolation / Zero Energy Demonstrated, Deisolation, Leak Test and Reinstatement</p>
+        <p>Scenario 3b) Mitigate Safeguards -- Gas detection system; manual Isolation, Ignition Source Control (HAEQ), Emergency Response - Extended Release, Emergency Well Response</p>
+</div>
+      </ul>
+    <div class="qa">
+  <div class="question">Examples of preventative critical safeguards:</div>
+  <div class="answer">
+    <ul>
+      <li>Dropped Object During Drilling or Wellwork - Drilling Fixed Lifting Equipment Integrity, Drilling Loose Lifting Gear Integrity, Wellbay SIMOPS Plan, Wellwork Loose Lifting Gear Integrity</li>
+      <li>Dropped Object During Maintenance &amp; Construction - Critical Lifting Practices (Field Verification)</li>
+      <li>Work (Breaking &amp; Reinstating Containment) - Isolation and Independent Verification, Zero Energy Demonstrated, De-isolation, Leak Test and Reinstatement</li>
+      <li>Corrosion of Pressure Containing Components - Corrosion Inspection &amp; Management</li>
+      <li>Overpressure - Pressure Transmitters - Process Shutdown, Pressure Safety Valves (PSVs) + Heat Tracing</li>
+      <li><strong>*H2S Induced Stress Cracking (*Hibernia Only)</strong> - Reservoir Pressure Management, H2S Sampling Program &amp; Alarm Setpoint, Annulus Pressure Management, Mixed Wellstream H2S Analyzer</li>
+      <li><strong>*Burst Casing on Gas Injector (*Hibernia Only)</strong> - Pressure/Temperature Control Curves in DCS with Automated Shutdown</li>
+      <li>Over Pressure of Annulus - Well Integrity</li>
+      <li>Primary Barrier Failure - Primary Pressure Control Equipment Integrity, Well Control – Response, Secondary Pressure Control Equipment Integrity</li>
+      <li>Perforation Misfire in Wellhead/Tree - Explosives Handling &amp; Detonation Practices</li>
+      <li>Breaking &amp; Reinstating Containment - Well Isolation / Zero Energy Demonstrated Wellwork, De-isolation, Leak Test and Reinstatement</li>
+      <li>Influx (Undesired Formation Fluid in Wellbore) - Influx Prevention, Fluid Barrier, Casing &amp; Formation Testing, Barrier Verification, Identification, Monitor and Response, Well Control Equipment</li>
+      <li>Initial Release, Fire, or Explosion - Large Inventory SDVs, Firewater Supply, Temporary Refuge</li>
+    </ul>
+  </div>
+</div>
+  
+        
+        <p><strong>Examples of Mitigate critical safeguards:</strong></p>
+</div>
+        
+<div class="answer">
+          <li>Ignition Source Control (HAEQ</li>
+          <li>Gas Detection System</li>
+          <li>Isolation</li>
+          <li>Emergency Response Extended Release</li>
+          <li>Emergency Well Response</li>
+          <li>Gas detection System Manual Isolation</li>
+          <li>Fire Detection</li>
+          <li>Fire Detection + Automated Shutdown (STD)</li>
+          <li>Escape & Evacuation (Muster)</li>
+          <li>Lifeboats & Launching Systems, SBV (Rescue+ Fire Fighting)</li>
+          <li>Emergency Response / OIM Competency / Drills</li>
+</div>
+        </ul>
+      </div>
+<div class="qa">
+  <div class="question">
+    Review the most recent Asset Risk Assessment Close-Out reports (at least two for your area of responsibility). Explain the process that confirms all action items have been completed.
+  </div>
+  <div class="answer">
+    <p>• Contact the Hebron / Hibernia Risk and Certifying Authority (CA) Advisor for the most recent Asset Risk Assessment Close-Out Reports.</p>
+    <p>• The following process confirms that all action items have been completed:</p>
+    <ul>
+      <li>Approved Risk Assessments are entered into IMPACT for stewardship and action tracking.</li>
+      <li>Risk Advisor is notified via IMPACT email notification that there is an RA for their review and approval.</li>
+      <li>Actions from the RA are extended or closed out in IMPACT by the person responsible using the appropriate approvals from the EMCE approvals matrix and DocuSign.</li>
+      <li>SHE Analyst runs monthly reports to review actions and sends email reminders as required.</li>
+      <li>Approved Risk Action Resolution Forms are uploaded into the IMPACT actions record.</li>
+      <li>Risk and CA Advisor approves the closure comments and closes the action in IMPACT.</li>
+      <li>Once all actions have been closed for each Risk Scenario, the scenario can then be closed in IMPACT.</li>
+    </ul>
+  </div>
+</div>
+<div class="qa">
+  <div class="question">Provide an overview of the Asset Cat 1 &amp; 2 risk items and key mitigation steps including Risk Assessment report items</div>
+  <div class="answer">
+    <p>Contact the Hibernia or Hebron Risk and CA Advisor for an overview of these risks.</p>
+    <p><strong>Available resources include:</strong></p>
+    <ul>
+      <li>Risk Tracking Report available through IMPACT for Categories 1, 2 and 3</li>
+      <li>Monthly OIMS 2-1 Scorecard</li>
+      <li>Quarterly OIC Package</li>
+ </a>
+    </p>
+    <p>
+        <a href="https://ishareteam1.na.xom.com/sites/EMPC0883/EMCESSHE/OIMS/_layouts/15/start.aspx#/OIMS%20Scorecards/Forms/AllItems.aspx"
+           target="_blank" rel="noopener noreferrer"  style="color: #DAA520; font-weight: bold;"><strong>ScoreCard Link</strong>
+        </a>
+    </p>
+    </ul>
+  </div>
+</div>
+
+</ul>
+      </div>
+      <div class="qa">
+  <div class="question">Review list of wells with well integrity waivers (if any); confirm PWRs (Problem Well Reports) have been submitted and requirements of the waivers are being complied with. Describe your role in approving these waivers.</div>
+  <div class="answer">
+    <p>Problem Well Reports are available through Information Management. Problem Well Approval MOCs are available in the MOC database (P/MeT). Contact the OIMS 6-3 SME/Owner for questions on well integrity waivers and Problem Well Reports.</p>
+    <p>EMCE Well Integrity Manual (WIM) Chapter 2 documents the Problem Well Reporting Process. See summary below:</p>
+    <ul>
+      <li>Problem Well Reports are submitted by the Production Supervisor to the OIMS 6-3 SME (Well Management).</li>
+      <li>The OIMS 6-3 SME stewards resolution, or risk screening/assessment, MOC process, and regulatory approval, as appropriate.</li>
+      <li>Anything outside of the normal well operation is reported and, if determined to be a problem, repair plans are made.</li>
+      <li>Email approval from the Production Manager, Asset Manager, OIMS 6-3 Owner, and Platform OIM is sufficient to reinstate well operation in the interim period while the Problem Well MOC is routing for approval.</li>
+      <li>Well Integrity waivers are an approved deviation from the required well integrity testing/surveillance outlined in the Well Integrity Management System Manual.</li>
+      <li>Upon completion of the MOC or temporary approval, the MOC must be closed with comments describing the issue resolution and date of completion.
+</ul>
+</div>
+    <section id="training">
+        <h2>2.2 Training</h2>
+
+        <p>
+            <a href="https://ishareteam2.na.xom.com/sites/PBP/Proprietary/UBP_Training_and_Competency.pdf"
+               target="_blank"
+               rel="noopener noreferrer"  style="color: #DAA520; font-weight: bold;"><strong>
+                <strong>Visit – UBP Training and Competency</strong>
+            </a>
+        </p>
+       
+            <a href="https://ishareteam8.na.xom.com/sites/UBP/UBP%20Supplemental%20Documents/Training%20and%20Competency%20UBP%20Overview.pdf"
+               target="_blank"
+               rel="noopener noreferrer"  style="color: #DAA520; font-weight: bold;"><strong>
+                <strong>Upstream Best Practice – Update Procedures</strong>
+            </a>
+        </p>
+</section>
+    <div class="qa"> 
+      <div class="question"><strong>CVPE (Competency Verification Procedure Excellence) – Implementation 2025</strong></div>
+      <div class="answer">
+        <p>CVPE project involves the implementation of the Training and Competency Verification Upstream Best Practice (UBP) to ensure compliance with corporate standards and maintain operational integrity. The UBP outlines a structured approach incorporating human performance principles, defining competency expectations, and specific training outcomes for ExxonMobil Upstream operated facilities. It includes training and verifying the competency of Operations and Maintenance (O&amp;M) personnel in key positions, maintaining collective competency, and ensuring operations integrity. Key positions are identified based on their impact on operations integrity, and training plans are developed to meet competency requirements through Foundational Craft Skill Standards (FCSS), Global Competencies, Unit Defined Competencies, and Facility Specific Training (FST). The project emphasizes task analysis to identify training needs, verification programs to ensure competency, and collective competency reviews to ensure adequate staffing. Verifiers play a crucial role in maintaining the quality and integrity of the verification process. The project also includes a mitigation process for managing personnel changes and addressing competency gaps, ensuring that all personnel in key positions are adequately trained and verified to perform their roles safely and effectively.</p>
+      </div>
+    <div class="qa">
+      <div class="question"><strong>Describe the objective of the Competency Assurance Standards? CAS expectations are required to be maintained per key position, how are key positions defined?</strong></div>
+      <div class="answer">
+        <ul>
+          <li>Ensure defined UOG personnel in key positions have the knowledge, and skills to operate and maintain facilities in a safe and effective manner</li>
+          <li>A key position is one that could have a significant impact on operations integrity (OI) through individual decision-making authority, operational control, or individual actions, including emergency response. Section 1.2</li>
+        </ul>
+        <p>For additional information see CAS Manual</p>
+      </div>
+    <div class="qa">
+      <div class="question">Describe the different roles that the below positions take in assuring competency for a given activity.</strong></div>
+      <div class="answer">
+        <ul>
+          <li><strong>O&amp;M Technician</strong>: Complete assigned training. Work with direct supervisor to address training requirements when competency is not demonstrated. Follow written instructions and procedures as documented. Identify and report deficiencies or potential improvements in written instructions and procedures.</li>
+          <li><strong>Front Line Supervisor</strong>: Verifies that employees in their work group demonstrate the competencies required to safely operate and maintain the facility. Implementing job restrictions consistent with approved mitigation.</li>
+          <li><strong>Second Line Supervisor</strong>: Implementing job restrictions on FLSs consistent with approved mitigation.</li>
+          <li><strong>Third Line Supervisor</strong>: Approving job mitigation plans (e.g. collective competency) for individuals who have not met all the required competencies for their role, and endorsing appropriate job restrictions when mitigation for the individual’s training requirements cannot be put in place</li>
+          <li><strong>Production Manager</strong>: Approves temporary exceptions for an individual who does not meet the required competencies to occupy a key position when appropriate job restrictions cannot be put in place</li>
+<div>
+        </ul>
+      </div>
+    </div>
+    <div class="qa">
+      <div class="question"><strong>Identify training competencies for personnel under your control that specifically relate to a critical safeguard</p> Eg H2S response training, Emergency Response training, Specific facility training</strong></div>
+<div class="answer">
+        <ul>
+        
+	
+        <p>Consider training competencies related to critical safeguards in each scenario which you and your team have the ability to influence.</p>
+        <p>General considerations:</p>
+        <ul>
+          <li>"Process Safety and You" training provides awareness of Scenarios, Critical Safeguards, Verification Measures, Human Performance, and how each role interacts with Process Safety.</li>
+          <li>Leadership for Operations Framework for Training (LOFT) plays a key role in verifying process safety competency for leadership positions.</li>
+          <li>Role specific competency roadmaps support Precise Execution of Human Safeguards and are available through the Competency Assurance and Training Department. Examples include Integrity Critical Procedures, PIC Assessment, Well Control Training, Rigging and Lifting Certification, and Well bay SIMOPS Training.</li>
+</div>
+        </ul>
+      </div>
+    </div>
+    <div class="qa">
+      <div class="question"><strong>Describe how the process to validate and track employee competency (by individual) works in your asset</strong></div>
+      <div class="answer">
+<ul>
+	<li>Personal Placement Checklists (PPCs) are completed for Key Positions on an annual basis. The supervisor and employee complete these together and discuss a plan to ensure training is completed. These are also signed off by the Drilling Ops Superintendent or the Asset Manager</p>
+	
+        <li>The Competency Assurance and Training Department send a weekly Collective Competency Report to supervisors for their department that outlines training status, i.e. training completed, expired, expiring in next 30 days or never completed. The list is easy to review by color and if collective competency is not met, a X is in the status column.</p>
+        <li>Supervisors will be able to view collective competency of their employees through WebCAT and should do so on a frequent basis. Supervisors have all the viewer functions, plus training planning and the supervisor work list. They use these views to plan training for their team, and to monitor execution. There is a supervisor home page, with relevant reports to monitor training status for those reporting to them. Multiple supervisors can be assigned so back-2-backs can see the individuals. Training group also provides monthly summaries by sector (and Service Partner) for transparency. Also the regulator expectation is that personnel will sustain 95% training completion.</p>
+</div>
+      </div>
+    </div>
+    <div class="qa">
+      <div class="question"><strong>Demonstrate an understanding of the Operator Knowledge Verification process as it applies to Process Safety and Scenario Management. Discuss the methods of verifying Operator HC Scenario required competencies and the process for ensuring that the HC Scenario required competencies are kept up to date.</strong></div>
+      <div class="answer">
+        <p>Regularly complete the Operator Knowledge Verification (PSKV) process to ensure operators are proficient in Process Safety and Scenario Management. This involves both onshore and offshore management testing. During ATL meetings, safeguard owners demonstrate their safeguards, explain how they monitor them, and describe the methods they use to maintain their health</li>
+  </ul>
+</div>
+
+  <section id="operating-procedures"> 
+    <h2>2.3 Operating Procedures</h2> <a href="https://ishareteam6.na.xom.com/sites/UBPProc/Procedure_UBP_Tools/Procedure%20UBP%20Overview.pdf"
+               target="_blank"
+               rel="noopener noreferrer"  style="color: #DAA520; font-weight: bold;"><strong>
+                <strong>Upstream Best Practice – Update Procedures</strong>
+            </a>
+        </p>
+
+      <div class="question">Define ‘Integrity Critical Procedure’, and what are the expectation of individuals executing the procedure?</div>
+      <div class="answer">
+        <ul>
+          <li>An Integrity Critical Procedure is a procedure vital to the prevention or mitigation of a major event, such as an uncontrolled emission, fire, or explosion that poses a serious danger to people, the environment or property.</li>
+          <li>At a minimum the step-by-step Integrity Critical Procedure is taken to the work site and executed as written, confirming each step before proceeding to the next step.</li>
+</div>
+        </ul>
+      </div>
+    </div>
+    <div class="qa">
+      <div class="question">What is the timeframe for procedure revalidation?</div>
+      <div class="answer">
+        <ul>
+          <li>Integrity Critical – IC procedures are revalidated within a three-year cycle, consistent with CAS UBP requirements. The validation and revalidation dates are to the calendar date of the last validation.</li>
+          <li>Normal – Normal Procedures are revalidated within a five-year cycle, consistent with CAS UBP requirements. The validation and revalidation dates are to the calendar date of the last validation.</li>
+          <li>Work-Aid- The revalidation cycle for Work Aids is defined by the BU.</li>
+
+        </ul>
+      </div>
+    </div>
+    <div class="qa">
+      <div class="question">List examples of globally recommended IC procedures.</div>
+      <div class="answer">
+        <ul>
+          <li>Pigging operations (load and launch, receive and unload)</li>
+          <li>Overall facility startup, where the facility consist of more than one pressure vessel</li>
+          <li>Escape Capsule (deployment and retrieval with people inside)</li>
+          <li>Gas-fired heaters and boilers startup and shut down (excluding automated engineered fail safe logic)</li>
+          <li>Flare lighting (excluding automated engineered fail safe logic)</li>
+          <li>Transfer of hydrocarbons or hazardous to or from marine vessel operations</li>
+          <li>Any procedure that includes the following activities:
+            <ul>
+              <li>Temporary defeat of a safety device that is not managed by the Work Management System</li>
+              <li>Steps to address a COP, CAT 1 HAZOP, or CAT 1 Risk Assessment finding</li>
+            </ul>
+          </li>
+          <li>Applying anything but an IC procedure to these tasks requires an exception approved by the Production Manager.</li>
+</div>
+        </ul>
+      </div>
+    </div>
+    <div class="qa">
+      <div class="question">During normal operations, who can approve a deviation from the different categories of approved procedures?</div>
+      <div class="answer">
+        <ul>
+          <li>IC Procedure – Production Manager except for operator adjustments to address an abnormal situation during facility start-up. This specific instance can be managed with SLS approval.</li>
+          <li>Normal Procedure – Second Line Supervisor or higher.</li>
+          <li>Work Aid – Front Line Supervisor or higher.</li>
+</div>
+        </ul>
+      </div>
+    </div>
+    <div class="qa">
+      <div class="question">What level of review and approval is required for either a new or revalidated ‘Integrity Critical’ Procedure?</div>
+    
+<div class="answer">An IC Procedure should be validated by an SME and a procedure user, endorsed by FLS/SLS/TLS and then finally approved by the Production Manager.</div>
+    </div>
+    <div class="qa">
+      <div class="question">Describe how you know personnel are following Integrity Critical Procedures.</div>
+      <div class="answer">
+        <ul>
+          <li>Identify how often deviation requests are being submitted for IC procedures. Ask during revalidation of procedure how often changes are being made.</li>
+          <li>Ensuring periodic observation of procedure execution in the field are occurring. These observations can also be incorporated into permit assessments where the IC is part of a permit pack.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="qa">
+      <div class="question">What tools are used to determine if a procedure is required? What are some triggers that may dictate the need to develop a new procedure or update an existing procedure?</div>
+      <div class="answer">
+        <ul>
+          <li>Task Analysis (for Operating Procedures) and Equipment Strategies (for Maintenance Procedures) are the tools used to decide if a procedure is required and what the level of procedure might be.</li>
+          <li>RAs (including HAZOPS)</li>
+          <li>Findings from incident investigations</li>
+          <li>Designation of a task as a critical safeguard in a higher consequence potential scenario.</li>
+          <li>Regulations</li>
+          <li>Company policies and requirements (for example, OIMS)</li>
+          <li>Assessments and audit</li>
+          <li>New or modified equipment or processes</li>
+          <li>Change in operating parameters</li>
+          <li>Safety Alerts</li>
+          <li>Designation of a task as a critical safeguard in a higher consequence potential scenario.</li>
+</div>
+        </ul>
+      </div>
+    </div>
+    <div class="qa">
+      <div class="question">Scenario Question: One of your FLS indicates that several of the operating procedures are out of date by six months – what do you do?</div>
+      <div class="answer">
+        <ul>
+          <li>Expedite review/validation of the procedures and ensure approval is in place where required to allow unplanned use of a procedure if necessary.</li>
+          <li>Follow up to understand where the process had fallen down to allow procedures to become out of date.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="qa">
+      <div class="question">Scenario Question: An FLS contacts you in the middle of the night and communicates they are unable to restart a plant/process within your facility because the integrity critical procedure has an error in it. They have used this procedure before, but this time one of the operations technicians noticed the error. How do you resolve this?</div>
+      <div class="answer">
+        <ul>
+          <li>Ask questions about the error and the nature of it. Review plan with field team about requirement to start up that night.</li>
+          <li>If the plan is still to start up, initiate an Interim Directive to adjust the procedure to enable use before it can be formally re-written and validated. As it is an IC procedure, this Interim Directive process will require Production Manager approval.</li>
+</div>
+        </ul>
+      </div>
+    </div>
+    <div class="qa">
+      <div class="question">Operating Procedures (Asset Specific)
+Identify and explain where you have Critical Safeguards that are highly dependent on operator actions/procedures or if you have any Critical Operating Parameter's (COP's) that require a defined manual response.</div>
+          <div class="answer">
+ <ul>
+	Scenario Management Critical Safeguards have been identified as being highly dependent on Precise Execution:<p>
+              <li>Well control (Monitor Mud weight while drilling, Monitoring Trip tank levels when pulling pipe in or out, Pressure testing BOP, Monitoring gas levels when circulating bottoms up).</li>
+              <li>Crude Shipping and Offloading System Integrity Critical Procedure</li>
+              <li>Well bay SIMOPS Plan</li>
+</div>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="qa">
+      <div class="question">Operating Procedures (Asset Specific)
+      Review the list of all procedures in your asset that are associated with your higher consequence potential scenarios. Explain any aspects or steps of those procedures where precise execution is required and understand the verification measures in place for those procedures</div>
+
+          <div class="answer">
+<li>Crude Shipping and Offloading System (CAHE-EC-OOPRO-01-006-1009-000) -- Ensure testing of green line, compare quantity transferred with tanker, and monitor OLS pipeline pressure to ensure no loss of containment.</li>
+          <li>Platform Startup (CAHE-EC-OOPRO-01-006-1123-000) -- Gas Compression System start up and monitoring of system pressure to ensure all equipment is ready for high pressure gas to ensure no loss of containment.</li>
+          <li>Well bay SIMOPS Plan (CAHE-EC-OOREF-01-006-4007-000) -- Develop lift plan to manage lifts over wells and flowlines to ensure correct equipment is shut-in and DE pressured to ensure no loss of containment in the event of a dropped object.</li>
+</ul>
+</div>
+
+  <section id="critical-equipment">
+    <h2>2.4 Critical Equipment</h2>  <a href="https://ishareteam2.na.xom.com/sites/PBP/Proprietary/PBP_FIMS.pdf"
+               target="_blank"
+               rel="noopener noreferrer"  style="color: #DAA520; font-weight: bold;"><strong>
+                <strong>Upstream Best Practice – Critical-Equipment</strong>
+            </a>
+        </p>
+      <div class="question">Describe (with reference to FIMS criticality assessment) how you distinguish between critical equipment?</div>
+      <div class="answer">
+        <ul>
+          <li>Criticality A: Equipment or systems vital to preventing or mitigating an event that could result in a Safety, Health, or Environment (SHE) consequence level I or II impact per the Corporate Risk Matrix (TMEE211).</li>
+          <li>Criticality B: Equipment or systems vital to preventing or mitigating an event that could result in Business consequence level I or II impact.</li>
+          <li>Criticality C: Equipment/systems that are not formally included in the scope of FIMS and should have a fit-for-risk scaled approach to maintenance and optimization that is consistent with reliability basics.</li>
+          <li>Criticality D: Applies to all other equipment/systems not part of A, B, and C. Classified as non-essential with no scheduled maintenance. Equipment/systems with “D” criticality are repaired/restored on a condition basis as a result of surveillance (general visuals, operator care rounds, or other reveal failure or degradations) with corrective maintenance following RBWS per the Maintenance Best Practice.</li>
+	<p>These specifications are stored on Meridium & IPES as the repository for Equipment Strategy</li>
+</div>
+        </ul>
+      </div>
+    </div>
+    <div class="qa">
+      <div class="question">What actions should be considered and questions should you ask when a request comes to you for flowing a well with sustained production casing pressure that exceeds allowable limits?</div>
+      <div class="answer">
+        <ul>
+          <li>Has a risk assessment or risk screening been conducted with a Well SME? Specific questions on the risk assessment may include:</li>
+<ul>
+          <li>What is the health of other safeguards for managing the integrity of this well (e.g. casing integrity, SCSSV)?</li>
+          <li>What are the operating limits for the well and the annulus?</li>
+          <li>Have they considered potential de-rating due to corrosion over time?</li>
+          <li>What is the nature of the fluid (e.g. hydrocarbon, corrosive)?</li>
+          <li>What are the required actions if limits are exceeded (e.g. shut-in, reduce flow, bleed down)?</li>
+          <li>Have we communicated the risk to operations personnel and ensure they know their role in managing the risk?</li>
+          <li>What diagnostics have been done to determine the source of the pressure (e.g. SME engagement on relevant failures on similar wells, pressure analysis)?</li>
+          <li>Is it possible to repair the leak? If so, what is the cost vs. benefit in risk reduction in performing the repair including consideration for time to repair?</li> 
+	        Other Considerations:</li> 
+          <li>Have any required regulatory notification(s) been made?</li>
+</div>
+      </div>
+    </div>
+    <div class="qa">
+      <div class="question">Describe an understanding of approval process for Long Term Temporary Defeat that is in place for more than 60 days</div>
+      <div class="answer">
+        <ul>
+          <li>PIC- approves defeat after 1 shift for up to 7 days</li>
+          <li>AM (asset manager) approval required after 7 day not to exceed 30 days</li>
+          <li>PM (production manager) approval required after 30 days and again every subsequent 30 days.</li>
+          <li>Temporary defeats extending beyond 60 days must be reviewed and risk assessed if necessary and the repair/resolution plan captured.</li>
+</div>
+</ul>
+      </div>
+    </div>
+    <div class="qa">
+      <div class="question">Scenario Question: A temporary defeat has been put in place to bypass a faulty gas detector in your facility. What are some questions you should ask and the mitigations you should expect to see?</div>
+      <div class="answer">
+<ul>
+        Question:
+<ul>
+          <li>Do we know why the gas detector is faulty?</li>
+          <li>Are there any other nearby detectors that are also out of service?</li>
+          <li>What is the outlook for repair?</li>
+          <li>Is it a critical work area (well bay, toxic gas area, single seal pump etc.?)</li>
+</div>
+<div class="answer">
+<ul>
+          Mitigations:
+<ul>
+          <li>Regular monitoring of the area by other means (handheld or a temporary)</li>
+          <li>Adequate coverage by remaining gas detectors</li>
+          <li>Elimination of spark potential or hot work permits in the area until repaired</li>
+</div>
+        </ul>
+      </div>
+    </div>
+    <div class="qa">
+      <div class="question">Scenario Question: A temporary defeat (SCC) comes to you for approval after 6 days. It is for a HLSD device on a vessel. The mitigations are to maintain steady processing state and monitor alarm. Identify the questions you would ask to demonstrate whether these mitigations are adequate.</div>
+      <div class="answer">
+        <ul>
+          <li>Confirm current mitigation steps are happening.</li>
+          <li>How is the level in the vessel being maintained? E.g. Level Control Valve (automatic), manual control valve (manual intervention to reduce level) etc.</li>
+          <li>What damage could be incurred if liquid overflow happens?</li>
+          <li>What specific process parameters are being monitored?</li>
+          <li>What is the response to the alarm? Do we initiate a shutdown if the alarm goes?</li>
+          <li>How is this being communicated across shifts/hitches?</li>
+          <li>What is the repair plan? Has an RBWS been performed for this device?</li>
+          <li>Any engineering support required to assist with fix or further risk screening?</li>
+          <li>Address if additional controls are needed</li>
+</div>
+        </ul>
+      </div>
+    </div>
+<div class="qa">
+  <div class="question">Review the FIMS Exception report for your asset. Are there any items related to Higher Consequence Potential Scenarios or the Critical Safeguards associated with those scenarios? Clarify who in your organization is responsible for close out of those items</div>
+  <div class="answer">
+    <ul>
+      <li>Obtain FIMS Exception Report from Senior Maintenance Supervisor. Contact the Process Safety Team to obtain the Critical Safeguard Performance Standard for each Process Safety Scenario and identify equipment tags associated with Critical Safeguards. Compare these tags against the FIMS exception report to determine if there any items related to the Process Safety Scenarios. Senior Maintenance Supervisor is responsible for close out of all items on the FIMS Exception Report.</li>
+      <li>At the first of every month Platform Leadership along with office-based Asset support staff review the critical backlog and determines whether the risks are acceptable or have the work completed. The main focus is equipment tagged as Safety and Environment or tasks over 90 Days past due.</li>
+    
+	</ul>
+  </div>
+</div>
+<div class="qa">
+  <div class="question">Demonstrate an understanding of the designated Critical devices (e.g. gas detectors, shutdown valves) that are associated with critical safeguards. What extra controls are put in place when these devices are bypassed (if any)?</div>
+  <div class="answer">
+    <ul>
+      <li>Below is a short list of typical critical safeguards. In general, all Safety Critical Devices have assigned Safety Critical Element (SCE) Performance Standard Criteria which dictate performance requirements, and trigger Incident Reporting within the OIMS 9-1 process if degraded or impaired. This may also trigger Certifying Authority and Regulatory Agency notification.</li>
+      <li>PSVs – Where redundant PSVs are installed in parallel, one of the two can be isolated. Cannot operate with both PSVs out of service (isolated or with failed EHT in winter months) without formal Risk Assessment approval.</li>
+      <li>PSTs – Failure will cause a PSD. Cannot operate with these out of service (defeated) without formal Risk Assessment approval.</li>
+      <li>BDVs/SDVs – Cannot operate with these out of service, or out of compliance with API 521 blowdown rates without formal Risk Assessment approval.</li>
+      <li>Fire &amp; Gas Devices – For devices identified in the Critical Safeguard Performance Standards, no 2 devices of the same type (fire or gas) can be out of service in the same Fire Zone for more than 24 hours without a Risk Screening to continue operation.</li>
+      <li>BOP – Requires compliance with established SCE Performance Standard Impairment Criteria. Formal Risk Assessment required if system is partially impaired but can perform the minimum critical function as defined in the standard. Otherwise drilling shutdown is required.</li>
+</ul>
+</div>
+
+  <section id="alarm-management">
+    <h2>2.5 Alarm Management</h2> <a href="https://ishareteam2.na.xom.com/sites/PBP/Proprietary/PBP_Oper_AM_COP.pdf"
+               target="_blank"
+               rel="noopener noreferrer"  style="color: #DAA520; font-weight: bold;"><strong>
+                <strong>Upstream Best Practice – Alarm Management</strong>
+            </a>
+        </p>
+
+
+
+
+
+      <div class="question">Describe the two key elements of an effective alarm system</div>
+      <div class="answer">
+        <ul>
+          <li>An effective alarm system is one where the number of alarms presented to the operator is such that he/she can readily address them without becoming overloaded by work associated with them.</li>
+          <li>Alarms are presented in such a way that the important ones are readily identifiable and easily prioritized.</li>
+</div>
+        </ul>
+      </div>
+    </div>
+    <div class="qa">
+      <div class="question">Scenario Question: Your Alarm Management report indicates one of your console operators has been receiving 30 alarms per hour for the past month compared with a typical level of 10. You inquire and this is still occurring. The increased rate is due to three low consequence/low priority alarms. They are alarming due to a permanent change in the process condition. Risk Based Work Selection has been completed and due to the low priority of the alarms the repair/fix for the issue is planned for completion in 90 days. What are your actions?</div>
+      <div class="answer">
+        <ul>
+          <li>An alarm rate of 30 per hour places the Console Operator in the “Reactive” level of alarm rates. This is below what Best Practice classifies as overloaded (>60), but the alarm rate would become unmanageable during a process upset. Despite the low priority of the alarms individually, the overall impact on the Console Operator performance of this base level of nuisance alarms needs to be considered.</li>
+          <li>Review with FLS and consider increasing priority of repair and what potential there is for an approved Temporary Alarm suppression in the interim period.</li>
+</div>
+        </ul>
+      </div>
+    </div>
+    <div class="qa">
+      <div class="question">What is meant by the term Critical Operating Parameter?</div>
+<div class="answer">
+        <ul>
+          <li>Review the asset COPs if they exist and verify how risk is mitigated for each.</div>
+    </div>
+    <div class="qa">
+      <div class="question">A COP must satisfy all four of the following conditions:</div>
+      <div class="answer">
+        <ul>
+          <li>Process condition or escalation of such that could result in loss of containment that has immediate and significant SHE impact (Consequence I)</li>
+          <li>Plausible and credible risk exposure</li>
+          <li>No preventative automated protective system or not mitigated to ALARP by existing systems</li>
+          <li>Manual intervention is final element of control</li>
+</div>
+        </ul>
+      </div>
+    </div>
+    <div class="qa">
+      <div class="question">Indicate the actions required if you have an excursion outside your operating limits?</div>
+      <div class="answer">
+        <ul>
+          <li>If an Operator identifies an excursion of an operating parameter outside of its normal operating limits (between its high and low set points) through alarm indication or rounds in the Central Control Room (CCR), they should take the following actions:</li>
+          <ul>
+            <li>Investigate the cause of the alarm and assess its criticality</li>
+            <li>Assess the current process value versus the safety shutdown value (HH/LL) and take appropriate action to understand and mitigate the issue</li>
+            <li>Confirm that there are no safety critical devices (i.e. PSTs, TST) that have been defeated. If there is, remove the defeats to allow executive actions to take place as needed</li>
+            <li>In no circumstance should the Operator defeat a safety device to prevent a process shutdown</li>
+            <li>Communicate alarm and request field operator to investigate as needed</li>
+</div>
+          </ul>
+        </ul>
+      </div>
+    </div>
+    <div class="qa">
+      <div class="question">Demonstrate an understanding of the processes related to Alarm Management at your asset? What is your role in these processes? What is your role in approval of the inhibition of an alarm? What is your role in approval of a change in alarm set points?</div>
+      <div class="answer">
+        <p>Alarm Management is a shared responsibility between Asset Technical/Cross Asset Technical Supervisors, Production Supervisor and CCR Operator. Cross Asset engineering provides a weekly report on standing alarm activity and alarms that have high rates. Actions from these reports include:</p>
+        <ul>
+          <li>Production Supervisor/CCR Operator will action any alarms that need review or troubleshooting in the field</li>
+          <li>Cross Asset Engineering will action any alarm that need MOCs to adjust set points, logic, etc. to eliminate nuisance alarms</li>
+        </ul>
+        <p>Key support activities for this process include:</p>
+        <ul>
+          <li>Ensure resources are available to support</li>
+          <li>Review performance regularly via monthly OIMS Scorecard</li>
+          <li>Review and approve of alarm MOCs as required</li>
+</div>
+        </ul>
+      </div>
+    </div>
+    <div class="qa">
+      <div class="question">Review the latest report on Alarm management for your Asset? How is it performing in:</div>
+      <div class="answer">
+        <ul>
+          <li>Alarm rates</li>
+          <li>Number of alarm floods</li>
+          <li>Inhibited/shelved alarms</li>
+          <li>Standing alarms</li>
+<li>All alarm data is updated daily and available to review in EC Report. Contact Onshore Electrical / Instrumentation Engineer for access. Monthly summaries are also provided in the OIMS Scorecard</li>
+</ul>
+</div>
+
+  <section id="work-management">
+    <h2>2.6 Work Management</h2> 
+  <h2>Important Documents</h2>
+    <p>
+        <a href="https://us1.aconex.com/rsrc/20250718.1124/en_US_DOC/document/view/index.html?ControlledDocument_ID=1353331688379336260&ControlledDocument_projectID=1207985859&VIEW_CD_RETURN_URL=%2FSearchControlledDoc%3FSESSION_SAVE_DOCUMENTNO%3D%26SESSION_SAVE_TITLE%3D%2B%26SESSION_SAVE_REVISION%3D%2B%26SESSION_SAVE_STATUS%3D0%26SESSION_SAVE_TYPE%3D0%26SESSION_SAVE_DISCIPLINE%3Dnull%26SESSION_CREATION_DATE%3Dnull%26SESSION_REVISION_DATE%3Dnull%26SESSION_SAVE_REVIEW_DATE%3Dnull%26SESSION_SAVE_REVIEWED_DATE%3Dnull%26SESSION_SAVE_AUTHOR%3Dnull%26SESSION_SAVE_FILETYPE%3Dnull%26SESSION_REFERENCE%3Dnull%26SESSION_SAVE_FOLDER_PATH%3D%26SESSION_SAVE_ALL_REVS%3Dnull%26SESSION_SAVE_SORT_DIR%3DASC%26SESSION_SAVE_SORT_FIELD%3Ddocno%26SESSION_SHARED_TO%3D-1%26SESSION_LINKED_TO_PUBLIC%3D0"
+           target="_blank" rel="noopener noreferrer"  style="color: #DAA520; font-weight: bold;"><strong>
+           WORK MANAGEMENT SYSTEM BEST PRACTICE MANUAL
+        </a>
+    </p>
+    <p>
+        <a href="https://us1.aconex.com/rsrc/20250718.1124/en_US_DOC/document/view/index.html?ControlledDocument_ID=1353331688397485436&ControlledDocument_projectID=1207985859&VIEW_CD_RETURN_URL=%2FSearchControlledDoc%3FSESSION_SAVE_DOCUMENTNO%3D%26SESSION_SAVE_TITLE%3D%2B%26SESSION_SAVE_REVISION%3D%2B%26SESSION_SAVE_STATUS%3D0%26SESSION_SAVE_TYPE%3D0%26SESSION_SAVE_DISCIPLINE%3Dnull%26SESSION_CREATION_DATE%3Dnull%26SESSION_REVISION_DATE%3Dnull%26SESSION_SAVE_REVIEW_DATE%3Dnull%26SESSION_SAVE_REVIEWED_DATE%3Dnull%26SESSION_SAVE_AUTHOR%3Dnull%26SESSION_SAVE_FILETYPE%3Dnull%26SESSION_REFERENCE%3Dnull%26SESSION_SAVE_FOLDER_PATH%3D%26SESSION_SAVE_ALL_REVS%3Dnull%26SESSION_SAVE_SORT_DIR%3DASC%26SESSION_SAVE_SORT_FIELD%3Ddocno%26SESSION_SHARED_TO%3D-1%26SESSION_LINKED_TO_PUBLIC%3D0#/file"
+           target="_blank" rel="noopener noreferrer"  style="color: #DAA520; font-weight: bold;"><strong>
+            SYSTEM 6-4 WORK MANAGEMENT SYSTEM-APPENDIX A
+        </a>
+    </p>
+    <p><strong>WMS 4.0 Updated Dec 9, 2024</strong></p>
+    <p>The Work Management System (WMS) 4.0 update enhances safety, compliance, and operational efficiency by aligning with Upstream Best Practices (UBP) and integrating Personnel Safety Management System (PSMS) components such as Life-Saving Rules & Actions (LSRAs) and pre-task briefings. The update introduces clearer governance principles identifying Expectations and Critical Expectations, and defines key roles including Person in Charge (PIC) and Area Authority (AA). It emphasizes real-time safety management with tools like Last-Minute Risk Assessments (LMRA), simplifies the Work Pack Requirement Matrix, and removes desktop assessments to focus on practical, field-oriented evaluations. The permit system is streamlined by removing the General Permit to concentrate on higher-risk jobs, with updated guidelines for hot work on hydrocarbon systems. Energy isolation terminology and standards are standardized, and training requirements now include OPITO certification for Authorized Gas Testers (AGTs). These comprehensive updates collectively improve the management and execution of work activities across all business units.</p>
+  
+</div>
+    </div>
+    <div class="qa">
+      <div class="question">  
+<p><strong>Describe the objective of the Work Management System. What work activities are addressed by the permit to work system?</strong></p>
+
+<div class="answer">
+    <p>The objectives of the Work Management System (WMS) is to confirm that all activities necessary to produce, process, and export oil and gas are performed in accordance with Company and government regulations and industry systems, and to fulfill the OIMS System 6 4 objectives that:</p>
+    <ul>
+      <li>Controls are in place for temporarily disarming or deactivating integrity-critical equipment (such as a maintenance bypass of a gas detector)</li>
+      <li>Work permits are executed to protect personnel, equipment, and the environment from mechanical and operational hazards</li>
+      <li>Operational interfaces at the work site and the impact of shift handover on work activities are appropriately managed</li>
+</div>
+    </ul>
+</div>
+    <div class="qa">
+  <div class="question">The PTWS addresses the following work activities:</p>
+    
+      <div class="answer">
+      <li>Hot work</li>
+      <li>Confined space entry</li>
+      <li>Critical work</li>
+      <li>Energy isolation</li>
+      <li>Temporary defeats of critical devices</li>
+    </ul>
+</div>
+    <div class="qa">
+  <div class="question">Describe the purpose of Life Saving Actions:</strong></p>
+    <div class="answer">
+    <p>Life Saving Actions are key actions to prevent serious injuries during higher-risk activities. They provide globally-consistent actions to safely manage higher-risk activities. They describe the most important aspects of our Work Management System.</p>
+</div>
+    </div>
+    <div class="qa">
+      <div class="question"> 
+    <p><strong>Define the responsibilities of the positions listed below in the Work Management System.</strong></p>
+   
+<div class="answer">    
+  <li><strong>PIC – Person-In-Charge –</strong> Endorses permits, approves SIMOPS plan, runs DWCM, and provides 24-hour endorsement of Temporary Defeats</li>
+      <li><strong>AA – Area Authority -</strong> Production Supervisor or person designated by the Person in Charge (PIC) responsible for coordinating work at the facility</li>
+      <li><strong>AO – Area Operator:</strong> Performs the review, approval, and issue of the permit to the PH, conducts or assigns isolation and temporary defeat requirements, acts as a second verifier for isolations (if competent), reviews and communicates work site controls and safe work processes to the PH, identifies how Zero Energy will be demonstrated to the PH, demonstrates Zero Energy to the PH, verifies work status and restoration of the equipment or system</li>
+      <li><strong>PH – Permit Holder:</strong> Documents or reviews work scope and hazards, interfaces with AO and AA, compiles or reviews the Permit Pack, acts as Second Verifier for an Isolation (if competent), verifies and secures energy isolation control points (if applicable), witnesses zero energy demonstration by the Isolating Authority before accepting the permit, leads pre-job safety toolbox meeting and reviews the Permit Pack with other work group members (if applicable), confirms identified worksite controls are in place for the safe execution of the work, completes work and restores worksite to a clean and hazard-free condition</li>
+    </ul>
+</div>
+    <div class="qa">
+      <div class="question">Scenario Question: Your team is tasked to perform the listed PM activity. Repair, Inspect and Test Crude Oil Transfer Pump Tag PBE-12345. PM task description is as follows.</strong></p>
+   
+<div class="answer"> 
+      <li>Confirm all energy isolation points are locked and tagged as per WMS guidelines.</li>
+      <li>Remove coupling /gearbox and disassemble pump assembly as per OEM vendor guidance</li>
+      <li>Perform repairs / replace seals & necessary components</li>
+      <li>Reinstall pump in reverse order of removal, reinstall gearbox /coupling</li>
+      <li>Clean worksite</li>
+      <li>Hand back to Operations – Reinstate and Monitor</li>
+      <li>Planned to be completed in one shift</li>
+    </ul>
+</div>
+    <div class="qa">
+      <div class="question">What type of permit would be required for this job?</strong></p>
+<div class="answer">Critical Work Permit – Breaking Containment</p>
+</div>
+    <div class="qa">
+  <div class="question">Does this job involve a Life Saving Action(s)?</p>
+<div class="answer">
+    <p>Yes, Breaking Containment, Energy Isolation and Work Authorization LSRA’s apply.</p>
+    </div>
+    <div class="qa">
+      <div class="question">Describe Permit steps and role responsibilities to perform this work?</p>
+   
+<div class="answer">
+      <li>Mechanic assigned as PH.</li>
+      <li>Raises Critical Work – Breaking Containment Permit</li>
+      <li>Completes or attaches THA and JSA, including PSMS steps such as Life Saving Rules & Actions (LSRAs), Start Work Checks, and Last Minute Risk Assessment (LMRA)</li>
+      <li>If additional hazards are identified that are not covered in the Start Work Checks, these hazards will be added to the JSA to ensure comprehensive risk management</li>
+      <li>PH progresses permit to requested state</li>
+      <li>Approving Authority Functional (AAF) reviews and progresses permit</li>
+      <li>Permit reviewed at Daily Work Coordination Meeting (DWCM)</li>
+      <li>PIC endorses permit</li>
+      <li>Production AA reviews and authorizes permit</li>
+      <li>AO issues permit and verifies controls</li>
+      <li>PH takes permit to Live state</li>
+      <li>AO and PH meet at work site; AO demonstrates zero energy</li>
+      <li>AO and PH apply wet ink signatures</li>
+      <li>Work team participates in Pre-Task Briefing including discussion of Life Saving Rules & Actions (LSRAs), Start Work Checks, and Last Minute Risk Assessment (LMRA)</li>
+      <li>PH indicates job complete or incomplete</li>
+      <li>AO updates permit to Work Complete; document archived in ePTWS</li>
+    </ul>
+    </div>
+    <div class="qa">
+  <div class="question">Besides the Permit, what other WMS documents/certificates would be used in this Work Pack.</strong></p>
+   
+<div class="answer">
+      <li>Isolation Control Certificate (ICC)</li>
+      <li>Task Hazard Assessment (THA)</li>
+      <li>Atmospheric Test Record</li>
+      <li>Pump OEM documentation</li>
+      <li>P&ID diagrams</li>
+      <li>Procedures</li>
+      <li>Job Safety Analysis (JSA)</li>
+      <li>A Job Safety Analysis (JSA) is used when additional hazards or higher potential consequences are identified that are not adequately addressed by the Start Work Checks.</li>
+      <li>The JSA provides a detailed analysis of task-specific hazards and safeguards to ensure safe work execution.</li>
+      <li>It supplements the Start Work Checks by capturing any additional risks and controls necessary for the specific job.</li>
+    </ul>
+    
+</div>
+    <div class="qa">
+  <div class="question">Describe the steps and roles and responsibilities of the Energy Isolation and use of the Isolation Control Certificate (ICC) used for this job?</strong></p>
+   
+<div class="answer">
+      <li>The ICC is generated by the Area Operator (or designated and competent Isolation Authority) identifying all Isolation Points and sequencing of execution. ICC will be in the requested state at the completion of this step.</li>
+      <li>AA review/verifies isolation points and sequencing for accuracy</li>
+      <li>AO then puts ICC to “In Progress” state and starts applying securing devices and tags</li>
+      <li>Once isolation has been applied the AO/IA updates the ePTWS system and puts ICC as “in place”</li>
+      <li>A second verifier is required to verify each point at the work site and sign as second verifier</li>
+      <li>Keys to ICP locks are kept in the Isolation Control Point box/cabinet/bag. An Operations Functional lock is placed on the ICP and key is secured and maintained by Supervisor. Workers can apply their isolation Functional Lock to ICP after zero energy demonstration has been performed work can then proceed and follows the permit cycle.</li>
+      <li>Upon completion of the work, the ICC can progress through de-isolation by AO or IA</li>
+      <li>Upon removing securing devices and moving points back into active position, a second verifier must check each point and sign the ICC</li>
+      <li>Once de-isolated Operations can reinstate after operational checks</li>
+      <li>If the isolation is to remain in place and there is no active work then it has to move Long Term Isolated State (LTI)</li>
+    </ul>
+</div>
+    <div class="qa">
+  <div class="question">Describe the process and expectations of Isolation Verification and Zero Energy Demonstration (ZED) for this work?</strong></p>
+ 
+<div class="answer">
+      <li>The Verification and ZED Process are critical elements of safe isolation and work execution</li>
+      <li>Verification occurs after the AO/IA applies Isolation and must be an independent persons. This same verification process applies to de-isolation.</li>
+      <li>ZED involves the Area Operator physically demonstrating to the Permit Holder the Isolation is effective for safe execution of the planned work</li>
+      <li>For a pump both the electrical energy and stored energy of product within the pump need to be isolated/removed as a minimum. To demonstrate this you would expect to check at least one bleed/vent on the pump to verify these is no stored energy of product. Electrically you should verify the correct breaker supplying power to the pump is in the off/open position and demonstrate that the pump will not start.</li>
+      <li>For reference: Zero Energy state is achieved when sources are isolated, there is no potential for inadvertent or accidental de-isolation while work is being conducted, and there is no energy that would be hazardous to people while breaking containment or working on the equipment.</li>
+    </ul>
+    </div>
+    <div class="qa">
+  <div class="question">Explain the purpose of the Daily Work Coordination Meeting? Who attends?</strong></p>
+<div class="answer">    
+<p>The objective of the meeting is to review and coordinate interfacing activities and manage the risks involved with concurrent activities and simultaneous operations (SIMOPS) by evaluating the proposed jobs prior to endorsement. New and suspended permits are reviewed. Non-permitted work that could conflict with planned activities are also discussed at this meeting.</p>
+    <ul>
+      <li>Identify High Risk Activities and ensure these activities have adequate oversight</li>
+      <li>Review requested and applied Temporary Defeats</li>
+      <li>Review and assign assessments as required</li>
+      <li>On a weekly basis review Long Term Isolations</li>
+      <li>Daily Work Coordination Meetings (DWCMs) should be attended by the key Work Management stakeholders, specifically, the PIC, AA, and functional supervisors (AAF)</li>
+    </ul>
+    </div>
+    <div class="qa">
+  <div class="question">What is the maximum validity period of a work permit?</</p>
+<div class="answer">
+    <p>7 days with no ability to extend past that time</p>
+    </div>
+    <div class="qa">
+  <div class="question">Describe what the term SIMOPS means in the Work Management System? What tool is used to determine SIMOPS restrictions? Where and when are work activities evaluated for SIMOPS at UOG facilities? Who approves SIMOPS Deviations?</p>
+<div class="answer">
+    <p>SIMOPS are activities that take place at the same time and meet the following conditions:</p>
+    <ul>
+      <li>Are in the same area</li>
+      <li>Directly or indirectly could potentially affect the safe performance of the other activity e.g. Breaking Containment and Hot Work</li>
+    </ul>
+    <p>Restrictions are determined by using the SIMOPS Matrix. The Matrix is a quick reference tool used to indicate if activities can be performed simultaneously</p>
+    <p>Work activities are evaluated for SIMOPS at the DWCM. Identified SIMOPS issues are managed using the standardized approval process according to the SIMOPS deviation guidelines. AA’s and AO’s are also required to monitor any break-in activities for SIMOPS implications</p>
+    <p>Depending on the level identified by the matrix the deviations can be approved through the use of the SIMOPS deviation form. Level 1 Deviations can be approved by the Site PIC, Level 2 by the Operations Superintendent and Level 3 by the Production Manager</p>
+    </div>
+    <div class="qa">
+  <div class="question">Scenario Question: Breaking containment work is required to remove a faulty valve in hydrocarbon service. There is only a single valve isolation available to isolate and remove this valve. Describe the process approvals required to allow this work to progress.</strong></p>
+    
+<div class="answer">
+      <li>If the single valve is listed in the Appendix A WMS Addendum approval list, the job can proceed. If the valve is not listed, a risk screening must be conducted. If approved, a third-party engineer's stamp is required, and the valve will be added to Appendix A or uploaded to SharePoint. Guidance from the Addendum approval list must be followed.</li>
+      <li>An isolation valve leak and integrity test must be performed.</li>
+      <li>The isolation plan must be approved by both the Production AA and the Person in Charge (PIC). Permit Vision includes a function that requires the OIM to sign the permit if a single valve is used.</li>
+      <li>The AA must be present during the first break when using a single valve.</li>
+    </ul>
+    </div>
+    <div class="qa">
+  <div class="question">Scenario Question: A control valve needs to be removed for repair. This can be done while the process stays online by operating through the bypass line. The crew have identified that there is no Zero Energy Verification bleeder available within the isolation. What are your actions/questions?</p>
+<div class="answer">
+    <ul>
+      <li>First question is to whether the job needs to be done that way? What is driving this? Is it a production impact etc.?</li>
+      <li>In considering this work look at the flange-breaking procedures that would be used and any extra precaution that would be put in place as a result of being unable to demonstrate zero energy.</li>
+      <li>If it is confirmed that the job should go ahead with this method then a deviation from the manual can be sought. A Risk Assessment must be conducted and the deviation properly documented. As this is a deviation from a “Must” requirement (to demonstrate zero energy) then the Production Manager must approve the deviation</li>
+    </ul>
+    </div>
+    <div class="qa">
+  <div class="question">Work Management (Asset Specific)</p>
+    Conduct a review of the shift handover process to determine if WMS required information is properly discussed and transitioned – detail the elements you were looking to see in that review</li>
+<div class="answer">
+    <ul>
+      <li>The following information must be included as part of the handover process as per Work Management System:</li>
+      <ul>
+        <li>Incidents</li>
+        <li>Live and suspended work permits</li>
+        <li>Closed permits</li>
+        <li>Opened and closed isolations (short and long term isolations)</li>
+        <li>Temporary defeats</li>
+        <li>Equipment status and readiness</li>
+        <li>New Critical Operating Parameters (COPs) introduced</li>
+        <li>Lock-out/tag-out (LOTO) and energy isolations requiring isolation keys be exchanged at crew or shift changes through a custody transfer process</li>
+        <li>Planned work activities</li>
+        <li>Car Seal Register changes</li>
+        <li>Work site controls must be re-verified prior to work commencing each shift or at each AO or PH change out.</li>
+        <li>Review any critical lifts</li>
+        <li>Safety concerns</li>
+        <li>Status of the well and what was done past shift and current plan or critical path.</li>
+        <li>Review the mitigations in place and plan for working on any Safety/Critical device.</li>
+      </ul>
+      </div>
+    <div class="qa">
+  <div class="question">Together with the Person In Charge, attend the Daily Work Coordination Meeting (DWCM). Describe the key elements of the DWCM you were looking to see</p>
+<div class="answer">The objective of the meeting is to review and coordinate interfacing activities and manage the risks involved with concurrent activities and simultaneous operations (SIMOPS) as per work Management System:</li>
+      <ul>
+        <li>Evaluate the proposed jobs prior to endorsement</li>
+        <li>Review new and suspended permits, as well as non-permitted work that could conflict with planned activities</li>
+        <li>Identify high risk activities and ensure these activities have adequate oversight</li>
+        <li>Review requested and applied temporary defeats</li>
+        <li>Review and assign assessments as required</li>
+        <li>Review long term isolations on a weekly basis</li>
+        <li>Key work management stakeholders should be in attendance, specifically the PIC, AA, and functional supervisors (AAF)</li>
+</ul>
+</div>
+
+  <section id="management-of-change">
+    <h2>2.7 Management of Change</h2>  
+ <p>
+        <a href="https://ishareteam2.na.xom.com/sites/PBP/Proprietary/UBP_MOC_Rev1.1.pdf"
+           target="_blank" rel="noopener noreferrer"  style="color: #DAA520; font-weight: bold;"><strong>
+            UBP_MOC Link
+        </a>
+    </p>
+
+</div>
+    <div class="qa">
+  <div class="question">Describe the principles of the MOC process.</p>
+    
+<div class="answer">
+      <li>Changes are evaluated to understand the complete effect to the asset risk profile</li>
+      <li>Multi-functional assessments are used to identify the full scope of a change</li>
+      <li>Actions needed to implement a change are effectively executed and recorded</li>
+      <li>Affected workers are notified when a change is ready to be used, and are appropriately trained ahead of time</li>
+      <li>Management endorsements and approvals are documented to ensure that changes are being executed within full view of line management</li>
+      <li>Comprehensive change records are documented using standardized formats</li>
+      <li>The historical record of changes made at the facility is preserved</li>
+    </ul>
+</div>
+    <div class="qa">
+  <div class="question">Explain when the Management of Change Process should be considered?</strong></p>
+    
+<div class="answer">
+      <li>Changes in operations, procedures, site standards, facilities, or organizations must be evaluated and managed to ensure that Operations Integrity risks arising from proposed changes remain at an acceptable level. Changes may include but are not limited to:</li>
+      <li>Electronically If the template says “yes” in any section an MOC is required</li>
+      <li>Operating Envelope changes, Feedstock changes, metallurgical change (process safety), temporary facilities; temporary repairs, changing equipment that is not “in kind”</li>
+    </ul>
+</div>
+    <div class="qa">
+  <div class="question">Describe what is meant by “In-kind replacement”.</strong></p>
+  <div class="answer">A change that satisfies the original design intent and specification and does not affect any OIMS barrier is considered to be a “Replacement in Kind” (RIK). While RIK’s are not included within the scope of the management of change process, it is imperative that the appropriate personnel evaluate all aspects of a potential RIK to ensure that the replacement of the equipment (or components) does not impact other OIMS barriers such as regulatory issues (E.g. emissions permits), procedures, or drawings. If there is a potential for other OIMS barriers to be impacted, then the change must be managed in accordance with OIMS 7-1 and this PBP.</p>
+    </div>
+    <div class="qa">
+  <div class="question">Examples of Replacement in Kind include:</p>
+    
+<div class="answer">
+      <li>Replacing a 4-in. Brand X ANSI ball valve with a 4-inch Brand Y ANSI ball valve, assuming that Brand Y has identical certifications to Brand X</li>
+      <li>Replacing a leaking pipe spool with an exact duplicate (size and materials)</li>
+   <li>Note: In some cases, using an MOC may be helpful to manage an RIK. For example, using an MOC may be considered helpful when replacing a critical valve (RIK-case) in terms of managing associated activities like managing critical spare parts and associated maintenance procedures.</p>
+    </div>
+    <div class="qa">
+  <div class="question">Define a Temporary Change. List some examples of a temporary change and identify the additional administrative components associated with a temporary MOC.</strong></p>
+<div class="answer">Temporary changes are interim changes needed until the original configuration can be restored, or a permanent change can be implemented.</p>
+    <ul>
+      <li>Examples of temporary changes include:</li>
+      <ul>
+        <li>Installation of temporary pipe repair patches until the pipe can be replaced</li>
+        <li>Installation of temporary equipment (including 3rd party equipment) not specifically identified under an approved Company procedure</li>
+        <li>Temporary process changes which affect alarm limits</li>
+      </ul>
+      <li>Management of temporary changes require three additional administrative components to assure Operational Integrity control:</li>
+      <ul>
+        <li>An authorized duration for which the change can be used</li>
+        <li>A process to ensure that mitigating measures associated with the change remain sustained and effective for the approved duration</li>
+        <li>A process to ensure that approval dates are not exceeded</li>
+      </ul>
+    </ul>
+    </div>
+    <div class="qa">
+  <div class="question">Scenario Question: Front line supervisor indicates the paperwork on an MOC item that has been installed is not in the file or in the system electronically but feels strongly that we need to get the equipment back in service ASAP --- what do you do ?</strong></p>
+   
+<div class="answer">
+      <li>Verify why it is so important to rush the activity, if financial, slow down the FLS</li>
+      <li>What is the missing documentation e.g. P&ID, Electrical One-Line drawing. PSSR etc.</li>
+      <li>Ensure all action items associated with the MOC have been endorsed allowing equipment to be reinstated.</li>
+      <li>Ensure full understanding of risk without equipment, consider increased monitoring of equipment</li>
+    </ul>
+</div>
+    <div class="qa">
+  <div class="question">Scenario question: Emergency MOC: It is a weekend - a critical control valve has broken and Maintenance is requesting to install a carbon steel valve in place of the stainless body control valve to allow unit to restart. It is in a highly corrosive service, but the CS valve should last for minimum of 2 weeks and the SS valve is scheduled to arrive in 1 week. What are your considerations in deciding whether to approve this emergency temporary MOC?</strong></p>
+ 
+<div class="answer">
+      <li>Are there any SHE effects in not implementing requested change to carbon steel valve?</li>
+      <li>If agreeing to proceeding, what mitigations will be put in place to ensure the service does not cause valve to fail earlier than planned?</li>
+      <li>Can we run on bypass?</li>
+      <li>Is there history of this activity? Were there any issues previously? Had Engineering calculations been used to determine corrosion allowances?</li>
+      <li>Should a second valve be ready if corrosion effects are excessive?</li>
+    </ul>
+</div>
+    <div class="qa">
+  <div class="question">Management of Change (Asset Specific)
+    Demonstrate how to review the Asset MOC register/log and identify the status of any open MOCs. Describe the status and steps to close-out one of the open MOC's.
+</li>
+
+<div class="answer">
+      <li>Access to PMET can be granted though the OIMS 7-1 SME. If only status reports are required then individuals can be added to the weekly report by the SME.</li>
+      <li>To review MOCs, first log into the PMET system, and then select the Workflow tab, then Reports, and then Selected Workflow Details. Note for Temporary MOCs, select Temporary Workflow. Adjust filters as required to view MOCs.</li>
+      <li>The close a MOC, continue to progress it through the prescribed phases, i.e. Initiation, Evaluation, Endorsement, Approval to Progress, Implementation, Authorized for Use, Closeout and Approval to Close. The Implementation Manager of each MOC is responsible to close out the MOC and ensure everything is in place and attached to MOC. This is done by working with the Field Coordinator. All actions on the Pending Work page must be completed. For example, this could include updating P&IDs and Cause and Effects. Before any equipment is put into service a PSSR must be signed off and attached to the MOC.</li>
+	</ul>
+</div>
+
+  <section id="incident-investigation">
+    <h2>2.8 Incident Investigations and Analysis</h2>
+   <p>
+        <a href="https://us1.aconex.com/rsrc/20250718.1124/en_US_DOC/document/view/index.html?ControlledDocument_ID=1353331688383009953&ControlledDocument_projectID=1207985859&VIEW_CD_RETURN_URL=%2FSearchControlledDoc%3FSESSION_SAVE_DOCUMENTNO%3D%26SESSION_SAVE_TITLE%3D%2B%26SESSION_SAVE_REVISION%3D%2B%26SESSION_SAVE_STATUS%3D0%26SESSION_SAVE_TYPE%3D0%26SESSION_SAVE_DISCIPLINE%3Dnull%26SESSION_CREATION_DATE%3Dnull%26SESSION_REVISION_DATE%3Dnull%26SESSION_SAVE_REVIEW_DATE%3Dnull%26SESSION_SAVE_REVIEWED_DATE%3Dnull%26SESSION_SAVE_AUTHOR%3Dnull%26SESSION_SAVE_FILETYPE%3Dnull%26SESSION_REFERENCE%3Dnull%26SESSION_SAVE_FOLDER_PATH%3D%26SESSION_SAVE_ALL_REVS%3Dnull%26SESSION_SAVE_SORT_DIR%3DASC%26SESSION_SAVE_SORT_FIELD%3Ddocno%26SESSION_SHARED_TO%3D-1%26SESSION_LINKED_TO_PUBLIC%3D0#/file"
+           target="_blank" rel="noopener noreferrerr"  style="color: #DAA520; font-weight: bold;"><strong>
+            
+INCIDENT NOTIFICATION INVESTIGATION AND REPORTING PROCESS
+
+        </a>
+    </p>
+</div>
+    <div class="qa">
+  <div class="question">Describe the difference between incident notification and incident investigation. What are the different notification processes for different types of incidents (Process Safety vs Personnel Safety)?</p>
+    
+<div class="answer">
+      <li>Notification is letting others know - need to:
+        
+          <li>Determine actual severity of event and notification path</li>
+          <li>Internal - Notify appropriate organization levels</li>
+          <li>External - Comply with government/regulatory requirements</li>
+     
+      </li>
+      <li>Investigation is the what happened and why
+        
+          <li>Determine and appoint appropriate investigation team & scope</li>
+          <li>Conduct the Investigation – determine facts, sequence of events</li>
+          <li>Determine potential consequence and causal factors</li>
+          <li>Develop Corrective Actions (align with potential & causal factors)</li>
+        </ul>
+      </li>
+      <li>Level of reporting for both Personnel and Process Safety events depends on both the Actual and Potential Severity of the incident. For Personnel Safety this is considered through the Hurt Severity Level. For Process Safety this is determined by the IRAT score and what Tier the Process Safety Event is (Tier 1 being the most severe)</li>
+
+   
+    </div>
+    <div class="qa">
+  <div class="question">Explain how you would verify that the incident notification, incident investigation reporting requirements and corrective action follow-up are understood by all FLS and SLS under your direction?</strong></li>
+
+<div class="answer">
+      <li>Three elements to ensure this occurs:</li>
+       
+          <li>Communication – Expectations are communicated to all FLS and SLS through a readily available procedure/guide. Ensure asset’s Internal Notification Matrix is understood by users.</li>
+          <li>Details – Clear details of notification expectations, contact names and numbers etc. are made available to FLS and SLS and regularly updated as personnel move through different positions</li>
+          <li>Verification – Regular efforts to test that the expectations are being followed through during drills, incident reviews and incident investigations are effective and completed in a timely manner</li>
+        
+      
+</div>
+    <div class="qa">
+  <div class="question">Scenario Question - Your facility has experienced a sizeable release of flammable gas? The IRAT score (100) comes to you as Asset Manager for review, which you feel is low given the severity of the release. What are some questions you pose to test the accuracy of the information?</p>
+      <div class="answer">Before you ask anything clarify why you want to know – be conscious of the bias it can introduce in your team if you are anxious about the IRAT outcome. Reinforce the desire to accurately capture high potential incidents/near misses.</p>
+          <li>Talk me through the work sheet
+          <li>How bad was it? (Actual Consequence)</li>
+          <li>How bad could it have been? (Potential Consequence)</li>
+          <li>How well protected were we? (Barriers Remaining)</li>
+          <li>Steward each step according to the IRAT guidance on the work sheet</li>
+        </ul>
+      </li>
+      <li>Ensure the team is mindful that a common error in IRAT is inconsistency between the Potential Consequence and the Barriers. The barriers need to be relevant to the potential consequence, e.g. it may not be appropriate to select your Potential Consequence as a Lost Time Injury and a barrier of Emergency Response – either the Potential Consequence is too low or the Barrier count is too high.</p>
+    </ul>
+      </li>
+    </ul>
+  </div>
+    <div class="qa">
+  <div class="question">Verify the incident notification information in use at the Asset is up to date and understood. Explain where to find it and demonstrate how you access it</p>
+<div class="answer">
+    <p>Preliminary Incident Notification is sent out to the Onshore and Offshore Leadership team with high-level incident details. Notifications are sent to the (C-NLOER) as required. All requirements can be found in OIMS 9-1 Incident Management (Procedure Incident Notification, Investigation and Reporting Process or can also be referenced in the Incident Management Quick Reference Book.</p>
+</div>
+    <div class="qa">
+  <div class="question">Review recent work site incident and near-miss reports and explain how you verify follow-up actions are complete or in progress. (Ensure specific focus is on understanding those follow-ups specific to your area of responsibility)</p>
+    <div class="answer">Incident actions are stewarded through the Incident Investigation SharePoint and status of actions are stewarded weekly through the Asset Morning Call with Leadership.</p>
+      </div>
+    <div class="qa">
+  <div class="question">Provide a summary of any Significant Process Safety events that have occurred in the Asset/BU in the last 12 months (Tier 1, Tier 2, Tier 3 with IRAT 400+)</strong></p>
+    <div class="answer">Contact Risk and CA advisor for summary of any Significant Process Safety events that have occurred in the Asset/BU in the last 12 months (Tier 1, Tier 2, Tier 3 with IRAT 400+).</p>
+</div>
+    <div class="qa">
+  <div class="question">Describe the BU Learning from Incident (LFI) process and explain what is done with UBP HiPo safety bulletins (LFI SharePoint) and High Learning Value Incidents (HLVIs)</p>
+    <div class="answer">Global and local lessons learned are shared in our Monthly Process Safety and Learning from Incidents meeting, and any potential actions applicable to Hibernia / Hebron that come from lessons learned are stewarded through the Incident Investigation SharePoint. This information is also shared through safety meetings and through the platform Daily Communicator. A platform leadership message is also provided to all flights and vessels that arrive with crew. This message contains important reminders and any incidents that happened while on time off. All HLVI or HiPo safety bulletins are reviewed and analyzed for key root causes not just discussed at morning call.</li>
+</div>
+
+ <section id="environmental">
+  <h2>2.9 Environmental</h2>
+ <p>
+        <a href="https://us1.aconex.com/rsrc/20250718.1124/en_US_DOC/document/view/index.html?ControlledDocument_ID=1353331688410081807&ControlledDocument_projectID=1207985859&VIEW_CD_RETURN_URL=%2FSearchControlledDoc%3FSESSION_SAVE_DOCUMENTNO%3D%26SESSION_SAVE_TITLE%3D%2B%26SESSION_SAVE_REVISION%3D%2B%26SESSION_SAVE_STATUS%3D0%26SESSION_SAVE_TYPE%3D0%26SESSION_SAVE_DISCIPLINE%3Dnull%26SESSION_CREATION_DATE%3Dnull%26SESSION_REVISION_DATE%3Dnull%26SESSION_SAVE_REVIEW_DATE%3Dnull%26SESSION_SAVE_REVIEWED_DATE%3Dnull%26SESSION_SAVE_AUTHOR%3Dnull%26SESSION_SAVE_FILETYPE%3Dnull%26SESSION_REFERENCE%3Dnull%26SESSION_SAVE_FOLDER_PATH%3D%26SESSION_SAVE_ALL_REVS%3Dnull%26SESSION_SAVE_SORT_DIR%3DASC%26SESSION_SAVE_SORT_FIELD%3Ddocno%26SESSION_SHARED_TO%3D-1%26SESSION_LINKED_TO_PUBLIC%3D0#/file target="_blank" rel="noopener noreferrerr"  style="color: #DAA520; font-weight: bold;"><strong>
+ENVIRONMENTAL PROTECTION PLAN DRILLING AND PRODUCTION Link</strong>
+
+        </a>
+    </p>
+  <div class="qa">
+    <div class="question">
+      <p><strong>Candidates should be prepared to answer one of the two Scenario Questions below:</strong></p>
+      <p><strong>Scenario question 1:</strong> You are in charge of an offshore platform within 10 miles of the coast. The platform processes a mixture of oil, produced water and gas. Oil is pumped onshore via pipeline, produced water is reinjected and excess gas is flared. A drilling rig is on board for a 12-month workover program. Identify ways the operation of the platform can impact the environment. Describe two questions you could ask to better understand the environmental risks of operating the platform. Or</p>
+    </div>
+
+    <div class="answer">
+      <ul>
+        <li><strong>Possible Impacts to Environment</strong>
+          <ul>
+            <li>Acute accidental spill, leak, or overtopping event (oil, produced water, chemicals, diesel etc.)</li>
+            <li>Well control issue</li>
+            <li>Releases via flare (Burnt or unburnt gas, smoke)</li>
+            <li>Greenhouse gases (Turbine exhausts, engine exhausts, drilling equipment emissions)</li>
+            <li>Drilling/Wellwork fluids, cuttings, and chemicals</li>
+            <li>Production chemicals (corrosion inhibitors, biocides etc.)</li>
+            <li>Human waste, food waste, general waste</li>
+            <li>Light pollution issues (night illumination and flaring)</li>
+          </ul>
+        </li>
+
+        <li><strong>Possible Questions to Ask</strong>
+          <ul>
+            <li>What marine life is frequent to the area?</li>
+            <li>What interaction will there be with mariners and other sea-going vessels?</li>
+            <li>Will an exclusion zone need to be set up and continuously monitored?</li>
+            <li>Are there any specific environmental risks associated with being close to the coast?</li>
+            <li>Will there be increased vessel traffic with the drilling activity, and what effect could this pose to the wildlife?</li>
+            <li>What environmental impact do we see when we have equipment shutdowns?</li>
+            <li>What is the history of environmental near misses/incidents on the platform?</li>
+            <li>Is the drilling rig equipped to ESD operations of the production platform and vice versa, should an environmental incident occur?</li>
+            <li>What environmental response capabilities are available should an incident occur?</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <div class="question">
+      <p><strong>Scenario question 2:</strong> You are in charge of an onshore processing facility. This facility receives un-stabilized crude from offshore. It stabilizes the crude and stores it on site in floating roof storage tanks. It is next to an inland waterway and has a port where the crude oil is offloaded into tankers. Small amounts of gas are processed and transported off-site to a downstream customer via pipeline. The facility is on the edge of a town of about 30,000 people. Identify ways the operation of the facility can impact the environment. Describe two questions you could ask to better understand the environmental risks of operating the facility.</p>
+    </div>
+    <div class="answer">
+      <ul>
+        <li><strong>Possible Impacts to Environment</strong>
+          <ul>
+            <li>Acute accidental spill, leak, or overtopping event (oil, produced water, chemicals, diesel etc.) spill to land or waterway</li>
+            <li>Gas leak to atmosphere – possible impact to nearby town</li>
+            <li>Releases via flare (Burnt or unburnt gas, smoke)</li>
+            <li>Uncontrolled surface water runoff from lots, pads, other operating areas, roadway ditches and water crossings</li>
+            <li>Pipeline leak (Consider integrity programs, RoW inspection program, leak detection systems)</li>
+            <li>Leaks, drips, spills of solid and liquid wastes, materials, and chemicals with the ability to impact inland waterway</li>
+            <li>Greenhouse gases (Turbine exhausts, engine exhausts)</li>
+            <li>Traffic around the site</li>
+            <li>Human waste, food waste, general waste</li>
+            <li>Light pollution issues (night illumination and flaring)</li>
+            <li>Noise pollution related to local community</li>
+            <li>Contamination to soil when underground tanks are present, if applicable</li>
+          </ul>
+        </li>
+
+        <li><strong>Possible Questions to Ask</strong>
+          <ul>
+            <li>Are there any specific environmental risks related to nearby flora and fauna?</li>
+            <li>Are there any specific environmental risks associated with being close to the waterway?</li>
+            <li>What wildlife is frequent to the area?</li>
+            <li>What environmental impact do we see when we have equipment shutdowns?</li>
+            <li>What is the history of environmental near misses/incidents at the facility?</li>
+            <li>What environmental response capabilities are available should an incident occur?</li>
+            <li>Are there any tanks underground?</li>
+            <li>What soil and groundwater testing programs are in place?</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <div class="question">
+      <p><strong>Environmental (Asset Specific)</strong></p>
+      <p>Explain the limits and reporting requirements for gas flaring (if applicable)?</p>
+    </div>
+
+    <div class="answer">
+      <ul>
+        <li>Gas flaring is assigned a regulatory limit each year through an approved annual flaring allowance issued from the Canada-Newfoundland and Labrador Offshore Energy Regulator (C-NLOER). This allowance can change year to year depending on production profile, maintenance requirements, and ramp-up forecasts.</li>
+        <li>Gas flaring information is reported annually internally for Corporate Environmental Performance Indicator reporting requirements as well as externally to the C-NLOER and Environment Canada.</li> 
+        <li>Along with the annual flare limit, there is a daily limit driven by radiant heat limitations.</li>
+        <li>CHECK – 3 monthly right now</li>
+      </ul>
+      </div>
+  <a href="https://www.cnloer.ca/" target="_blank" rel="noopener noreferrer"><strong>Visit the C-NLOER Website
+  </strong></a>
+</p>
+
+      </ul>
+    </div>
+
+    <div class="question">
+      <p><strong>List the principal regulatory authorities, the frequency of their on-site inspections, and the protocols used for such inspections.</strong></p>
+    </div>
+
+    <div class="answer">
+      <ul>
+        <li>The principal regulatory authority for environmental protection is the Canada-Newfoundland and Labrador Offshore Energy Regulator (C-NLOER). Although they have no prescribed directions for the frequency of environment-specific on-site inspections, compliance officers have the ability to test, inspect, examine, audit, sample, and document compliance activities associated with offshore activities.</li>
+        <li>The protocols for these visits could be informal platform visits or more formal documented inspections or audits.</li>
+        <li>There is a Quarterly SSHE inspection that occurs onboard the Platform, and all SSHE-related items (environmental included) can be in scope.</li>
+        <li>Other regulatory bodies with jurisdiction on certain offshore activities include Environment Canada, Department of Fisheries and Oceans, Canadian Environmental Assessment Agency, Transport Canada, and the Canadian Coast Guard.</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+    <div class="qa">
+  <div class="question">Explain the reporting thresholds for oil and produced water spills.</p>
+      <div class="answer">Produced Water discharge overboard is analyzed for oil in water content. The overboard limits are as listed below:</li>
+      <ul>
+        <li>When releases of produced water to sea are intended, the produced water treatment system will treat produced water such that oil-in-water concentrations do not exceed a 30-day volume-weighted rolling average of 30.0 mg/L and do not exceed the 24-hour rolling average of 44.0 mg/L.</li>
+        <li>Open drains have a single sample limit of 15.0 mg/L</li>
+      </ul>
+      <li>These limits are prescribed in detail in both the Environmental Compliance and Monitoring Plan and the (C-NLOER) Offshore Waste Treatment Guidelines.</p>
+</div>
+</ul>
+    <div class="qa">
+<div class="question">Describe your understanding of any particular Environmental risks of the Higher Consequence Potential Scenarios at your asset</p>
+      <div class="answer">
+<li>The escalation branch on platform LOPCs potentially results in a HC2 Environmental release  with the potential release of liquid hydrocarbons to sea in significant volumes.Environmental Releases can occur through Scenario related LOPC events.</li>
+
+<li>An additional consideration with loss of well control is the potential need to drill a relief well to mitigate the consequence. Assessment has determined HC2 Environmental consequence for this escalation event.</li>
+</ul>
+</div>
+    <div class="qa">
+  <div class="question">
+Scenario Question: Consider a release of 10kg gas/ 2 bbl hydrocarbon liquid to land or sea as appropriate to your asset. What are your responsibilities for immediate actions and reporting? What phone numbers do you call? Which other ExxonMobil personnel do you need to notify?</p>
+
+        </ul>
+<div class="answer">
+      <li>If a spill or release is discovered the appropriate immediate action to take is to inform the Central Control Room by calling 46503, the CCR will then inform the OIM. The OIM notifies the SSHE Supervisor, Drilling Ops Superintendent, Asset Manager and may mobilize an independent investigation team. Further internal and external reporting requirements will be completed by onshore SSHE staff in conjunction with the offshore SSHE Lead.</li>
+      <li>In the above scenario, there are multiple external agency notifications to be completed. Notifications are typically completed by the onshore SSHE Supervisor. In all instances the OIMS System 9-1 Incident Notification, Investigation and Reporting Process should be followed.</li>
+    </ul>
+  </div>
+
+  <section id="emergency-response">
+    <h2> 3.0 Emergency Response</h2>
+        <a href="https://us1.aconex.com/rsrc/20250718.1124/en_US_DOC/document/view/index.html?ControlledDocument_ID=1353331688417439519&ControlledDocument_projectID=1207985859&VIEW_CD_RETURN_URL=%2FSearchControlledDoc%3FSESSION_SAVE_DOCUMENTNO%3D%26SESSION_SAVE_TITLE%3D%2B%26SESSION_SAVE_REVISION%3D%2B%26SESSION_SAVE_STATUS%3D0%26SESSION_SAVE_TYPE%3D0%26SESSION_SAVE_DISCIPLINE%3Dnull%26SESSION_CREATION_DATE%3Dnull%26SESSION_REVISION_DATE%3Dnull%26SESSION_SAVE_REVIEW_DATE%3Dnull%26SESSION_SAVE_REVIEWED_DATE%3Dnull%26SESSION_SAVE_AUTHOR%3Dnull%26SESSION_SAVE_FILETYPE%3Dnull%26SESSION_REFERENCE%3Dnull%26SESSION_SAVE_FOLDER_PATH%3D%26SESSION_SAVE_ALL_REVS%3Dnull%26SESSION_SAVE_SORT_DIR%3DASC%26SESSION_SAVE_SORT_FIELD%3Ddocno%26SESSION_SHARED_TO%3D-1%26SESSION_LINKED_TO_PUBLIC%3D0#/file"_blank" rel="noopener noreferrer"  style="color: #DAA520; font-weight: bold;"><strong>PREPARING FOR EMERGENCIES LINK
+	 </a>
+    </p>
+
+    </div>
+    <div class="qa">
+  <div class="question">Scenario question: You are the IMT Leader (Incident Commander – IC) at an onshore site close to a small town. You have just arrived to the Emergency Response Control Center after an incident. An initial briefing identifies that there has been an explosion and fire on a turbine in the facility. Your facility is totally shut down and initial indications are that it will be for some time. Two personnel are on the way to hospital and one person is unaccounted for. The explosion has spread some debris outside the fence line and there is high rate of flare and smoke as you de-pressure the plant.</p>
+      <div class="answer">Background info: The neighbors adjacent to the facility have complained of the noise, occasional flares from the facility in the past and that has garnished local media attention. The industrial plants and the local communities are highly dependent on the natural gas you produce, and being winter, it is in high demand.</p>
+    </div>
+    <div class="qa">
+      <div class="question">Apply PEAR to the information in this briefing. Identify at least 3 issues under People and at least 2 under each of Environment, Asset and Reputation.</div>
+    </div>
+    <div class="qa">
+      <div class="question"></div>
+      <div class="answer">
+        <ul>
+	<p><strong>People</strong></p>
+<ul>
+          <li>Determine if the facility should be evacuated.</li>
+          <li>Isolate and secure the incident area (establish containment, separate responders from non-responders).</li>
+          <li>Coordinate rescue and response action.</li>
+          <li>Communication with family (next of kin) of IP.</li>
+          <li>Ensure necessary health and safety expertise are on site.</li>
+          <li>Ensure emergency medical procedures and response capabilities are in place.</li>
+          <li>Establish a first aid station to support response personnel.</li>
+          <li>Direct Operations to inspect surrounding facilities for damage or unsafe conditions caused by the fire or explosion. Ensure they have the proper safety equipment and clothing before entering potentially dangerous areas.</li>
+        </ul>
+    <p><strong>Environment</strong></p>
+    <ul>
+      <li>Assess the possible hazards to human health and the environment due as a result of the release/fire. This assessment must consider both the direct and indirect effects of the release (i.e., the effects of any hazardous surface waters runoffs from water or chemical agents used to control fire and heat-induced explosion).</li>
+      <li>Develop an air monitoring plan to determine the extent hazard footprint. Obtain approval of monitoring plan and implement the plan.</li>
+      <li>Confirm and complete all government reporting requirements.</li>
+    </ul>
+    <p><strong>Asset</strong></p>
+    <ul>
+      <li>Designate Documentarian/Scribe to remain with Incident Commander for log purposes.</li>
+      <li>Declare a predetermined location as the Staging Area for Emergency Response Equipment and other equipment as needed.</li>
+      <li>Make all necessary internal and external notifications.</li>
+      <li>Determine need to activate other plans.</li>
+      <li>Assure Fire Suppression System activated.</li>
+      <li>Understand facility and business impacts such as supply disruption/interruption.</li>
+    </ul>
+    <p><strong>Reputation</strong></p>
+    <ul>
+      <li>What are expectations of government and regulators?</li>
+      <li>How to ensure proactive communications internally and externally.</li>
+      <li>How to manage media, positioning?</li>
+      <li>Contact P&GA for company response to incident.</li>
+<ul>
+    </div>
+    <div class="qa">
+  <div class="question">
+      <p>Emergency Response (Asset Specific)</p>
+    <p>What is the expectation for memorizing and/or knowledge of Emergency Procedures?</p>
+    
+      <div class="answer">
+<li>Offshore OIM (IC): There is an expectation that the OIM understands their role and where the current ER documents are located and accessible, including the ER Checklists. In addition, the OIM is responsible for ensuring that offshore personnel are familiar with their emergency response duties and effective in use of the emergency response checklists for certain scenarios (e.g. Participation in ER Exercises and ERT Team Training).</li>
+      <li>Onshore Asset Manager (IMT Leader)</strong>: The IMT Leader must be familiar with IMT structure and team members roles and responsibilities. They must be familiar and effective in use and application of the IMT Guides and related checklists.</li>
+
+    </div>
+    <div class="qa">
+  <div class="question">
+      <p>Describe the process to muster and account for personnel in an emergency and the expected time to achieve full headcount for your facility?</div>
+    
+<div class="answer">
+      
+
+  <li>
+    When a General Platform Alarm (GPA) is initiated, it is immediately followed by a public address (PA) announcement from the Central Control Room (CCR). This announcement will inform all Personnel on Board (POB) of the known cause of the alarm and provide instructions on where to muster.
+    <ul>
+      <li><strong>Hebron:</strong> If there are no injured POB, the target time to complete a full muster is 14 minutes or less.</li>
+      <li><strong>Hibernia:</strong> If there are no injured POB, the target time to complete a full muster is 16 minutes or less.</li>
+    </ul>
+  </li>
+</ul>
+
+
+      <li>During the event of a H2S alarm, CCR operator is to make a PA announcement with the location and current wind direction for personnel to exit work areas upwind. The wind direction is provided daily in the communicator.</li>
+</ul>
+     </div>
+    <div class="qa">
+  <div class="question">
+</ul>
+</p>Emergency Response (Asset Specific)</strong></p>
+    Demonstrate an understanding of your particular role in an emergency? Explain how your response may differ depending on whether you are on-site or off-site and whether it is normal business hours</li>
+    </ul>
+    
+<div class="answer">
+      <li><strong>OIM</strong>: The OIM is the on-board Incident Commander. The OIM reports to the ECC and assumes command and control. The OIM is responsible for making tactical decisions related to the emergency. They have knowledge and experience with response Procedures, ER Teams and Equipment in dealing with Emergencies. During a platform alarm the OIM is responsible for the safety of personnel onboard. Any personal movement offshore with fire teams, Medical Response Team or others must all be authorized by the OIM or designate in the ECC.</li>
+      <li><strong>Asset Manager</strong>: Asset Manager would become the onshore Incident Management Team Lead and responsible for the oversight and direction of the Onshore IMT to ensure provision of support to an offshore Emergency. The OIM makes the call to activate IMT through the Designated Person Onshore (DPO). The DPO via MIR3 then contacts all IMT members to respond to the onshore emergency response room to support as required. If the IMT is activated, it is the Asset Manager’s decision / responsibility to activate the ESG for support.</li>
+
+   </div>
+    <div class="qa">
+  <div class="question">
+</ul>Explain your role in maintaining and operating emergency response equipment for your asset. How is emergency response readiness (equipment and capabilities) demonstrated to you?</strong></p>
+    
+      <div class="answer">
+<li><strong>OIM</strong>: The OIM is responsible for health and readiness of all offshore ER equipment through Maintenance and FIMS programs. Every person has a responsibility to ensure the safety equipment in their work area is inspected and available. The OIM is responsible to ensure that impairments to ER Equipment and Systems are immediately addressed.</li>
+      <li>Emergency response equipment and system readiness is demonstrated via Maintenance function testing, drills and exercises. ER equipment is also included in Process Safety Safeguards with weekly health verification reports. The workforce are tested through a number of different emergencies to ensure they are able to respond and learn from exercises if an actual event were to occur. All safety system devices and equipment are checked/tested on a regular basis depending on the criticality. The Certifying Authority completes visits to witness testing on such devices and reports any findings.</li>
+    </ul>
+   </li>
+
+   </div>
+ 
+  <script>
+    const tocItems = document.querySelectorAll('#toc li');
+    const sections = document.querySelectorAll('main section');
+
+    tocItems.forEach(item => {
+      item.addEventListener('click', () => {
+        console.log('TOC item clicked:', item.textContent);
+        const targetId = item.getAttribute('data-section');
+        console.log('Target section ID:', targetId);
+        sections.forEach(section => {
+          if (section.id === targetId) {
+            section.classList.add('active');
+            console.log('Added active class to:', section.id);
+          } else {
+            section.classList.remove('active');
+            console.log('Removed active class from:', section.id);
+          }
+        });
+        // Scroll to top of the section when activated
+        const targetSection = document.getElementById(targetId);
+        if (targetSection) {
+          targetSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Save and load comments from localStorage
+    document.querySelectorAll('textarea').forEach(textarea => {
+      const id = textarea.id;
+      textarea.value = localStorage.getItem(id) || '';
+      textarea.addEventListener('input', () => {
+        localStorage.setItem(id, textarea.value);
+      });
+    });
+  </script>
+  <section id="asset-specific-process-flow">
+    <h2>Asset Specific: Basic Process Flows of Facilities</h2>
+
+    <p>
+        <a href="https://ishareteam1.na.xom.com/sites/EMPC0883/process_safety/LOFT/Hibernia%20Platform%20PFD.PDF" target="_blank" rel="noopener noreferrer" style="color: #DAA520; font-weight: bold;">
+            <strong>Hibernia Platform Process Diagram Link</strong>
+        </a>
+    </p>
+
+    <p>
+        <a href="https://ishareteam1.na.xom.com/sites/EMPC0883/process_safety/LOFT/Hebron%20PFD.pdf"
+           target="_blank" rel="noopener noreferrer"  style="color: #DAA520; font-weight: bold;"><strong>Hebron Platform Process Diagram Link</strong></a>
+    </p>
+
+   
+<div class="qa">
+  <div class="question">Question:</div>
+  <div class="answer">
+    <p>
+      Explain the basic process flows of the facilities within your assigned asset—either Hebron or Hibernia. Work with the Production Advisor to gain an understanding. The explanation should focus on the general flow of materials and key process units, without detailing operating conditions. You only need to understand the basic process flow—pressure, temperature, and flow conditions are not required.</li>
+      
