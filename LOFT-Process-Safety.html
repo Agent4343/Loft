@@ -2098,7 +2098,12 @@ Explain your role in maintaining and operating emergency response equipment for 
         var targetId = item.getAttribute('data-section');
         item.setAttribute('role', 'link');
         item.setAttribute('tabindex', '0');
-        item.addEventListener('click', function () { activate(targetId); });
+        item.addEventListener('click', function () {
+          activate(targetId);
+          document.body.classList.remove('toc-open');
+          var tb = document.getElementById('tocToggle');
+          if (tb) { tb.setAttribute('aria-expanded', 'false'); }
+        });
         item.addEventListener('keydown', function (e) {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
@@ -2472,6 +2477,11 @@ Explain your role in maintaining and operating emergency response equipment for 
     window.addEventListener('beforeunload', persist);
   }
 
+  /* Read by the assessment summary / gap closure plan view. */
+  window.__loftAssessmentData = function () {
+    return { session: state.session, notes: state.notes };
+  };
+
   /* Shared with Cards mode so a note typed in either place is the same note. */
   window.__loftGetNote = function (id) {
     return (state.notes[id] || {}).text || '';
@@ -2535,7 +2545,10 @@ Explain your role in maintaining and operating emergency response equipment for 
   }
   .tool-btn:hover { background: #0056b3; color: #fff; }
   #testTools { display: none; gap: 10px; align-items: center; margin: 0 0 14px; flex-wrap: wrap; }
-  body.mode-test #testTools { display: flex; }
+  body.mode-test #testTools, body.mode-guide #testTools { display: flex; }
+  /* Reveal all / Hide all only mean something when answers are hidden. */
+  body.mode-guide .tool-btn { display: none; }
+  .tool-btn.keep { display: inline-block !important; }
   #testSearch {
     font: inherit; font-size: 14px; padding: 8px 10px; min-width: 260px; flex: 1;
     border: 1px solid #c9d6e5; border-radius: 6px;
@@ -2597,6 +2610,104 @@ Explain your role in maintaining and operating emergency response equipment for 
     resize: vertical; min-height: 44px;
   }
   #cardNote label { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: #7f97b0; }
+  /* Keyboard users need to see where they are - there are 100 note fields to tab through. */
+  a:focus-visible, button:focus-visible, input:focus-visible,
+  textarea:focus-visible, [tabindex]:focus-visible {
+    outline: 3px solid #f59e0b;
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+  #cardLayer button:focus-visible, #modeBar button:focus-visible { outline-color: #fbbf24; }
+
+  /* ---------- narrow screens: phone and tablet ---------- */
+  #tocToggle { display: none; }
+  @media (max-width: 900px) {
+    /* The fixed sidebar took 200px of a 390px screen and squeezed the content
+       column to 150px. Below 900px it becomes a drawer instead. */
+    #tocToggle {
+      display: inline-block; font: inherit; font-size: 13px; padding: 6px 12px;
+      margin-right: 4px; cursor: pointer; background: #14427a; color: #fff;
+      border: 1px solid #6f92c0; border-radius: 5px;
+    }
+    #toc {
+      transform: translateX(-100%);
+      transition: transform .25s ease;
+      width: min(280px, 82vw) !important; max-width: none !important;
+      z-index: 1050; box-shadow: 2px 0 12px rgba(0,0,0,.3);
+    }
+    body.toc-open #toc { transform: translateX(0); }
+    header { margin-left: 0 !important; padding: 18px 16px; }
+    header h1 { font-size: 22px; }
+    main, main.collapsed { margin-left: 0 !important; padding: 12px 14px !important; }
+    /* Scoped to :not(.collapsed) so the closed state still wins - an unscoped
+       !important width kept the glossary open over the content on mobile. */
+    #glossarySidebar { left: 0 !important; z-index: 1060; }
+    #glossarySidebar:not(.collapsed) { width: min(360px, 92vw) !important; }
+    #glossaryToggle { position: static !important; display: block; margin: 10px 0 0; }
+    #mainContent.collapsed #assessSession { padding-left: 12px; }
+    #assessSession { padding: 10px 12px; gap: 8px; border-radius: 0; }
+    #assessSession input { min-width: 0; width: 100%; }
+    #assessSession .fld { flex: 1 1 140px; }
+    #assessSession .spacer { display: none; }
+    #modeBar { overflow-x: auto; }
+    #modeBar .brand { font-size: 12px; }
+    #cardBox { max-height: none; }
+    #cardFoot { flex-wrap: wrap; }
+    .card-ctrl { flex: 1 1 auto; }
+    #cardCats { padding: 8px 12px; }
+  }
+  @media (max-width: 560px) {
+    #modeBar .brand span { display: none; }
+    #cardBody { padding: 16px; font-size: 15px; }
+    #cardBody.q-face { font-size: 17px; }
+  }
+
+
+  /* ---------- assessment summary / gap closure plan ---------- */
+  #summaryLayer {
+    position: fixed; inset: 44px 0 0 0; z-index: 1150; display: none;
+    background: rgba(15,23,32,.55); overflow-y: auto; padding: 24px 16px 60px;
+  }
+  #summaryLayer.open { display: block; }
+  #summarySheet {
+    max-width: 900px; margin: 0 auto; background: #fff; color: #1f2937;
+    border-radius: 8px; padding: 26px 30px; box-shadow: 0 10px 40px rgba(0,0,0,.35);
+  }
+  #summarySheet h2 { margin: 0 0 4px; color: #002244; font-size: 22px; }
+  #summarySheet h3 {
+    margin: 26px 0 8px; font-size: 15px; text-transform: uppercase;
+    letter-spacing: .06em; color: #0056b3; border-bottom: 2px solid #e5e7eb; padding-bottom: 5px;
+  }
+  .sum-meta { display: flex; flex-wrap: wrap; gap: 6px 26px; font-size: 14px; margin: 10px 0 4px; }
+  .sum-meta div { min-width: 150px; }
+  .sum-meta b { color: #55677d; font-weight: 600; display: block; font-size: 11px;
+                text-transform: uppercase; letter-spacing: .05em; }
+  .sum-tally { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0 4px; }
+  .tally {
+    border: 1px solid #e5e7eb; border-radius: 6px; padding: 8px 14px; min-width: 108px;
+  }
+  .tally b { display: block; font-size: 22px; line-height: 1.1; }
+  .tally span { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: #55677d; }
+  .tally.met b { color: #0f8e5a; } .tally.dev b { color: #b45309; } .tally.gap b { color: #b91c1c; }
+  .sum-item { border-left: 4px solid #e5e7eb; padding: 8px 0 8px 12px; margin: 12px 0; }
+  .sum-item.dev { border-left-color: #b45309; }
+  .sum-item.gap { border-left-color: #b91c1c; }
+  .sum-item.met { border-left-color: #0f8e5a; }
+  .sum-q { font-weight: 600; font-size: 14px; }
+  .sum-sec { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: #7b8a9c; }
+  .sum-note { font-size: 14px; margin-top: 5px; white-space: pre-wrap; }
+  .sum-note.empty { color: #9aa7b6; font-style: italic; }
+  .sum-none { color: #55677d; font-size: 14px; }
+  #summaryTools { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+  @media print {
+    #summaryLayer { position: static; inset: auto; background: #fff; padding: 0; overflow: visible; }
+    #summaryLayer.open ~ * { display: none !important; }
+    #summarySheet { box-shadow: none; max-width: none; padding: 0; }
+    #summaryTools { display: none !important; }
+    body.summary-open #toc, body.summary-open header, body.summary-open main,
+    body.summary-open #glossarySidebar, body.summary-open #glossaryToggle,
+    body.summary-open #modeBar, body.summary-open #cardLayer { display: none !important; }
+  }
   @media print { #modeBar, #cardLayer, #testTools, .reveal-btn { display: none !important; } body { padding-top: 0; } }
 </style>
 <script id="loft-modes-js">
@@ -2675,6 +2786,16 @@ Explain your role in maintaining and operating emergency response equipment for 
     brand.innerHTML = 'LOFT <span>Process Safety</span>';
     bar.appendChild(brand);
 
+    var tocBtn = document.createElement('button');
+    tocBtn.type = 'button'; tocBtn.id = 'tocToggle'; tocBtn.textContent = 'Contents';
+    tocBtn.setAttribute('aria-controls', 'toc');
+    tocBtn.setAttribute('aria-expanded', 'false');
+    tocBtn.addEventListener('click', function () {
+      var open = document.body.classList.toggle('toc-open');
+      tocBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    bar.appendChild(tocBtn);
+
     MODES.forEach(function (m) {
       var b = document.createElement('button');
       b.type = 'button'; b.className = 'mode-btn'; b.textContent = m.label;
@@ -2699,7 +2820,9 @@ Explain your role in maintaining and operating emergency response equipment for 
     document.getElementById('modeHint').textContent = m ? m.hint : '';
 
     if (next === 'test') { hideAnswers(true); }
-    else if (next === 'guide') { hideAnswers(false); clearFilter(); }
+    else if (next === 'guide') { hideAnswers(false); }
+    // The search term is deliberately kept when switching between Guide and Test,
+    // so looking something up does not reset on a mode change.
     if (next === 'cards') { renderCard(); }
     try { localStorage.setItem(MODE_KEY, next); } catch (e) { /* ignore */ }
     window.scrollTo(0, 0);
@@ -2739,7 +2862,12 @@ Explain your role in maintaining and operating emergency response equipment for 
     wrap.id = 'testTools';
     var inp = document.createElement('input');
     inp.id = 'testSearch'; inp.type = 'search';
+    inp.setAttribute('aria-label', 'Search questions and answers');
     inp.placeholder = 'Search questions and answers (e.g. ALARP, SIMOPS, temporary defeat)';
+    var clear = document.createElement('button');
+    clear.type = 'button'; clear.className = 'tool-btn keep'; clear.textContent = 'Clear';
+    clear.style.display = 'inline-block';
+    clear.addEventListener('click', function () { inp.value = ''; applyFilter(''); inp.focus(); });
     inp.addEventListener('input', function () { applyFilter(inp.value); });
     var count = document.createElement('span'); count.id = 'testCount';
     var showAll = document.createElement('button');
@@ -2750,7 +2878,8 @@ Explain your role in maintaining and operating emergency response equipment for 
     hideAll.type = 'button'; hideAll.className = 'tool-btn';
     hideAll.textContent = 'Hide all';
     hideAll.addEventListener('click', function () { hideAnswers(true); });
-    wrap.appendChild(inp); wrap.appendChild(showAll); wrap.appendChild(hideAll); wrap.appendChild(count);
+    wrap.appendChild(inp); wrap.appendChild(clear);
+    wrap.appendChild(showAll); wrap.appendChild(hideAll); wrap.appendChild(count);
     var main = document.getElementById('mainContent');
     var bar = document.getElementById('assessSession');
     if (main) { main.insertBefore(wrap, bar ? bar.nextSibling : main.firstChild); }
@@ -2958,6 +3087,164 @@ Explain your role in maintaining and operating emergency response equipment for 
     var saved = 'guide';
     try { saved = localStorage.getItem(MODE_KEY) || 'guide'; } catch (e) { /* ignore */ }
     setMode(['guide', 'test', 'cards'].indexOf(saved) === -1 ? 'guide' : saved);
+  }
+
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); }
+  else { init(); }
+})();
+</script>
+
+
+<script id="loft-summary-js">
+(function () {
+  'use strict';
+
+  var LABEL = { met: 'Demonstrated', dev: 'Needs development', gap: 'Gap - action required' };
+
+  function data() {
+    return (window.__loftAssessmentData && window.__loftAssessmentData()) || { session: {}, notes: {} };
+  }
+
+  function esc(t) {
+    return String(t == null ? '' : t)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function rows(notes, want) {
+    return Object.keys(notes).map(function (k) { return notes[k]; })
+      .filter(function (r) { return want.indexOf(r.outcome || '') !== -1; });
+  }
+
+  function itemHtml(r, cls) {
+    return '<div class="sum-item ' + cls + '">' +
+      '<div class="sum-sec">' + esc(r.section || '') + ' &middot; ' + esc(LABEL[r.outcome] || 'No outcome recorded') + '</div>' +
+      '<div class="sum-q">' + esc(r.q || '') + '</div>' +
+      (r.text ? '<div class="sum-note">' + esc(r.text) + '</div>'
+              : '<div class="sum-note empty">No notes recorded.</div>') +
+      '</div>';
+  }
+
+  function build() {
+    var d = data();
+    var n = d.notes || {}, ses = d.session || {};
+    var met = rows(n, ['met']), dev = rows(n, ['dev']), gap = rows(n, ['gap']);
+    var noOutcome = rows(n, ['']);
+    var total = document.querySelectorAll('[data-note-panel]').length;
+
+    var h = '';
+    h += '<h2>LOFT Process Safety &mdash; Assessment Summary</h2>';
+    h += '<div class="sum-meta">' +
+         '<div><b>Candidate</b>' + (esc(ses.candidate) || '&mdash;') + '</div>' +
+         '<div><b>Position</b>' + (esc(ses.position) || '&mdash;') + '</div>' +
+         '<div><b>Assessment team</b>' + (esc(ses.assessors) || '&mdash;') + '</div>' +
+         '<div><b>Date</b>' + (esc(ses.date) || '&mdash;') + '</div>' +
+         '</div>';
+
+    h += '<div class="sum-tally">' +
+         '<div class="tally met"><b>' + met.length + '</b><span>Demonstrated</span></div>' +
+         '<div class="tally dev"><b>' + dev.length + '</b><span>Needs development</span></div>' +
+         '<div class="tally gap"><b>' + gap.length + '</b><span>Gap</span></div>' +
+         '<div class="tally"><b>' + (met.length + dev.length + gap.length) + ' / ' + total +
+         '</b><span>Questions assessed</span></div>' +
+         '</div>';
+
+    h += '<h3>Gap closure plan</h3>';
+    if (!dev.length && !gap.length) {
+      h += '<p class="sum-none">Nothing marked <em>Needs development</em> or <em>Gap</em>. ' +
+           'No gap closure plan required on the basis of what has been recorded.</p>';
+    } else {
+      h += '<p class="sum-none">The Assessor Guide requires a gap closure plan for each item below, ' +
+           'and identified gaps to be closed before Full Risk Approval Authority is granted.</p>';
+      gap.forEach(function (r) { h += itemHtml(r, 'gap'); });
+      dev.forEach(function (r) { h += itemHtml(r, 'dev'); });
+    }
+
+    if (noOutcome.length) {
+      h += '<h3>Notes recorded without an outcome (' + noOutcome.length + ')</h3>';
+      noOutcome.forEach(function (r) { h += itemHtml(r, ''); });
+    }
+
+    if (met.length) {
+      h += '<h3>Demonstrated (' + met.length + ')</h3>';
+      met.forEach(function (r) { h += itemHtml(r, 'met'); });
+    }
+    return h;
+  }
+
+  function stampName() {
+    var ses = data().session || {};
+    var c = (ses.candidate || 'assessment').replace(/[^A-Za-z0-9_-]+/g, '-');
+    return ('LOFT-summary-' + c + (ses.date ? '-' + ses.date : '')).replace(/-+/g, '-');
+  }
+
+  function open() {
+    document.getElementById('summarySheetBody').innerHTML = build();
+    document.getElementById('summaryLayer').classList.add('open');
+    document.body.classList.add('summary-open');
+    document.getElementById('summaryLayer').scrollTop = 0;
+  }
+  function close() {
+    document.getElementById('summaryLayer').classList.remove('open');
+    document.body.classList.remove('summary-open');
+  }
+
+  function downloadHtml() {
+    var doc = '<!doctype html><html lang="en"><head><meta charset="utf-8">' +
+      '<title>LOFT Assessment Summary</title><style>' +
+      'body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;' +
+      'max-width:860px;margin:32px auto;padding:0 20px;color:#1f2937;line-height:1.55}' +
+      'h2{color:#002244}h3{color:#0056b3;text-transform:uppercase;font-size:14px;letter-spacing:.06em;' +
+      'border-bottom:2px solid #e5e7eb;padding-bottom:5px;margin-top:26px}' +
+      '.sum-meta{display:flex;flex-wrap:wrap;gap:6px 26px;margin:10px 0}' +
+      '.sum-meta div{min-width:150px}.sum-meta b{display:block;font-size:11px;text-transform:uppercase;color:#55677d}' +
+      '.sum-tally{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}' +
+      '.tally{border:1px solid #e5e7eb;border-radius:6px;padding:8px 14px;min-width:108px}' +
+      '.tally b{display:block;font-size:22px}.tally span{font-size:11px;text-transform:uppercase;color:#55677d}' +
+      '.tally.met b{color:#0f8e5a}.tally.dev b{color:#b45309}.tally.gap b{color:#b91c1c}' +
+      '.sum-item{border-left:4px solid #e5e7eb;padding:8px 0 8px 12px;margin:12px 0}' +
+      '.sum-item.dev{border-left-color:#b45309}.sum-item.gap{border-left-color:#b91c1c}' +
+      '.sum-item.met{border-left-color:#0f8e5a}' +
+      '.sum-q{font-weight:600}.sum-sec{font-size:11px;text-transform:uppercase;color:#7b8a9c}' +
+      '.sum-note{white-space:pre-wrap;margin-top:5px}.sum-note.empty{color:#9aa7b6;font-style:italic}' +
+      '.sum-none{color:#55677d}' +
+      '</style></head><body>' + build() + '</body></html>';
+    var blob = new Blob([doc], { type: 'text/html' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = stampName() + '.html';
+    document.body.appendChild(a); a.click();
+    setTimeout(function () { URL.revokeObjectURL(url); a.remove(); }, 0);
+  }
+
+  function init() {
+    var layer = document.createElement('div');
+    layer.id = 'summaryLayer';
+    layer.innerHTML =
+      '<div id="summarySheet">' +
+        '<div id="summaryTools">' +
+          '<button type="button" class="tool-btn keep" id="sumClose">Back to guide</button>' +
+          '<button type="button" class="tool-btn keep" id="sumPrint">Print / PDF</button>' +
+          '<button type="button" class="tool-btn keep" id="sumSave">Download summary</button>' +
+        '</div>' +
+        '<div id="summarySheetBody"></div>' +
+      '</div>';
+    document.body.appendChild(layer);
+    document.getElementById('sumClose').addEventListener('click', close);
+    document.getElementById('sumPrint').addEventListener('click', function () { window.print(); });
+    document.getElementById('sumSave').addEventListener('click', downloadHtml);
+    layer.addEventListener('click', function (e) { if (e.target === layer) { close(); } });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && layer.classList.contains('open')) { close(); }
+    });
+
+    var bar = document.getElementById('assessSession');
+    if (bar) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.textContent = 'Summary'; b.id = 'openSummary';
+      b.addEventListener('click', open);
+      var first = bar.querySelector('button');
+      bar.insertBefore(b, first || null);
+    }
   }
 
   if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); }

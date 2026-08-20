@@ -21,6 +21,9 @@ offline. One file, three modes, switched from the bar at the top:
 All three modes read the **same** questions and answers. Correcting an answer fixes it
 everywhere at once — there is no second copy to drift out of step.
 
+Search works in Guide and Test modes, so a question can be found mid-interview without
+scrolling. On a phone or tablet the contents list collapses into a **Contents** drawer.
+
 It covers 100 questions across the ten Process Safety categories: Risk Management,
 Training, Operating Procedures, Critical Equipment, Alarm Management, Work Management,
 Management of Change, Incident Investigation, Environmental, and Emergency Response.
@@ -51,8 +54,15 @@ To keep or share an assessment, use **Save file** — it downloads a `.json` fil
 the candidate and date. **Load file** restores it, on any machine. That file is the record
 to pass to the assessment team; hand it over rather than relying on the browser copy.
 
-**Print / PDF** produces a clean record: sidebars and buttons drop away, and the candidate,
-assessment team and date print at the top with each question, its notes and its outcome.
+**Summary** builds the assessment record and the **gap closure plan**: counts of
+demonstrated / needs development / gap, then every question marked *Gap* or *Needs
+development* with its notes, followed by anything noted without an outcome. The Assessor
+Guide requires a gap closure plan for each of those before Full Risk Approval Authority is
+granted. Print it, or **Download summary** for a standalone HTML file to send on.
+
+**Print / PDF** produces a clean record of the full guide: sidebars and buttons drop away,
+and the candidate, assessment team and date print at the top with each question, its notes
+and its outcome.
 
 **Clear all** wipes the page. Save to a file first if the notes matter.
 
