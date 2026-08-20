@@ -721,4 +721,42 @@ simply finding it missing.
 Counts after this pass: `Loft.html` 69 questions, flip card **93** cards (was 88),
 study guide **101** questions (was 96).
 
+### 10.1 Why the three files have different question counts
+
+They are not meant to be equal, and forcing them to be would make the aids worse.
+
+| | Total | Global module | Asset specific |
+|---|---|---|---|
+| `Loft.html` | 69 | 54 | 15 |
+| Flip card | 93 | 69 | 24 |
+| Study guide | 101 | 61 | 40 |
+
+Two things drive the spread:
+
+- **Asset-specific depth.** The Asset Specific Task Book (UPBP-410) holds 34 questions the
+  Business Unit answers locally. The study guide covers those in depth, the flip card
+  partially, `Loft.html` least. This is the largest factor.
+- **Granularity.** The flip card deliberately splits multi-part questions so each card drills
+  one thing &mdash; the source's single "Describe your role in the RAM process" becomes a
+  separate SLS card and TLS card. `Loft.html` goes the other way, merging §1.1&ndash;1.6 into
+  one reading block.
+
+**What should match is topic coverage, not item count.** Verified with 57 curated topic
+probes (multiple alternate phrasings each, so paraphrase does not cause false misses):
+**57 of 57 topics present in all three**.
+
+A first attempt at this used auto-generated 5-gram fingerprints taken from the source answer
+text. That method was discarded &mdash; it demands near-exact wording and flagged topics as
+missing that were verifiably present, because the aids legitimately paraphrase. The probe
+list used is kept in `tools-coverage-check.py` so the check is repeatable.
+
+**One real gap was found and fixed.** The breaking-containment single-valve-isolation
+scenario was answered from two different authorities: `Loft.html` gave the Global Module
+answer (flange class &ge;300 &rarr; Operations AA witnesses zero energy; &lt;300 &rarr;
+Operations AO, and it cannot be delegated to the Permit Holder), while the flip card and
+study guide gave only the Hebron/Hibernia process (Appendix A WMS Addendum, risk screening,
+third-party engineer's stamp, Permit Vision, OIM signature, AA at first break). Both are
+correct but answer different things, and the flange-class rule is a Global Module answer an
+assessor can ask. All three now carry both, each labelled with its authority.
+
 - **§4.10 filename** and **§6.4 duplicate Task Book** — both owner's calls, left alone.
