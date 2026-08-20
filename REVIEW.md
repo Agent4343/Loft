@@ -828,32 +828,30 @@ and exits non-zero if a topic goes missing, so it can be run after any edit.
 
 ---
 
-## 12. Attempt to flatten the nested question divs (not completed)
+## 12. Repairing the nested question divs (completed)
 
-**Asked for, attempted four times, reverted each time. The file is unchanged.**
+**Done. 42 sites repaired, none reverted, rendered text byte-identical before and after.**
 
 ### The defect
 
-48 of 101 `.question` divs contain content that belongs outside them, because they
-were unclosed in the source and the parser nested whatever followed. The largest holds
-**53,757 characters, of which 49 are the actual question**.
+48 of the 101 `.question` divs contained content that belonged outside them. They were
+left unclosed in the source, so the browser's error recovery nested whatever followed
+inside them. The worst held **53,757 characters, of which 49 were the actual question**;
+one question div had swallowed half the document.
 
-### Why it no longer matters functionally
+### Why it was worth fixing even though nothing was visibly broken
 
-Every user-visible symptom was already fixed in commit `765165f`:
+Every user-visible symptom had already been fixed in commit `765165f` &mdash; text
+extraction ignored nested content, note panels were anchored per question rather than per
+wrapper, and the search filter re-showed any ancestor of a match. What remained was markup
+that nobody could hand-edit safely: opening the file in an editor, the boundary between
+one question and the next was not where it appeared to be on screen.
 
-- text extraction ignores nested content, so search, records and labels read only the
-  question's own text;
-- note panels are placed after each question's own answer, not in the shared wrapper;
-- the search filter re-shows any ancestor of a match.
+### Why the first four attempts failed
 
-What remains is untidy markup, not broken behaviour.
-
-### Why four attempts failed
-
-Each attempt promoted the nested blocks out of the question div, and each preserved the
-total text exactly (105,714 characters every time &mdash; nothing was ever lost). Each
-also **reordered** some of it, which is not acceptable in safety-training content.
+Four bulk-flattening rules were tried. Each preserved the total text exactly (105,714
+characters every time &mdash; nothing was ever lost) and each **reordered** some of it,
+which is not acceptable in safety-training content.
 
 | Attempt | Rule | Outcome |
 |---|---|---|
@@ -862,7 +860,7 @@ also **reordered** some of it, which is not acceptable in safety-training conten
 | 3 | Move the nested blocks themselves, not their wrappers | Same heading reorder |
 | 4 | Split at the first nested block in document order | New reorder elsewhere &mdash; a question label vanished from its position |
 
-The reason attempts kept finding new failures is that the source contains **at least four
+The reason each attempt found a new failure is that the source contains **at least four
 distinct malformation patterns**, for example:
 
 ```html
@@ -875,16 +873,41 @@ distinct malformation patterns**, for example:
   <div class="answer">The objective of the meeting is...   <!-- 2.7 heading ends up here -->
 ```
 
-A rule that fixes one pattern reorders another. Bulk flattening is not safely achievable
-this way.
+A rule that fixes one pattern reorders another, so no single rule was ever going to work.
 
-### What would actually work
+### What did work: one question at a time, verified individually
 
-- **Per-question repair**, roughly 48 sites, each inspected and verified individually
-  rather than by a single rule. Slow, but each change is small enough to check.
-- Or a **real HTML tree library** (`beautifulsoup4` / `lxml`), neither of which is
-  available in this environment, working from the original source rather than the
-  browser's recovered tree.
+Instead of one rule applied 48 times, each site was repaired on its own and the whole
+document re-rendered and compared after every single change. The loop was:
 
-Given the functional symptoms are resolved, this is tidiness work rather than a fix, and
-worth doing only if someone needs to hand-edit that markup.
+1. Find the next `.question` div that still contains an `<div class="answer">`.
+2. Close the question immediately before that answer, carrying any tags left open inside
+   the question (`<strong>`, `<p>`, and so on) across the boundary so the following
+   content keeps its formatting, and promote the rest back out to the question's parent.
+3. Re-render the file in headless Chromium and extract the visible text.
+4. Compare that text, character for character, against a baseline taken before any repair
+   began, along with the counts of questions, answers, sections and TOC links.
+5. **Identical &rarr; keep the change. Anything different &rarr; restore the previous
+   file and move on.** No judgement call, no partial acceptance.
+
+Each individual edit is small enough to read and check, and step 5 makes a bad edit cost
+one skipped site rather than a corrupted document. That is the whole reason this worked
+where the bulk rules did not: the four earlier attempts could only be evaluated after all
+48 changes were already in, by which point a single reorder meant discarding everything.
+
+### Result
+
+- **42 of the sites repaired, 0 reverted.** The remaining 6 were already well-formed once
+  their neighbours were fixed &mdash; no question div now contains an answer.
+- Rendered text **identical**: 105,714 characters before, 105,714 after, byte for byte.
+- Counts unchanged: 101 questions, 106 answers, 19 sections, 19 TOC links.
+- Longest question div now **710 characters** including its own markup, down from 53,757.
+  None exceeds 800.
+- All tags balanced: `div` 426/426, `p` 187/187, `ul` 93/93, `li` 575/575, `section`
+  19/19, `strong` 205/205, `main` 1/1.
+- Full regression re-run afterwards: no console errors, 100 of 100 note panels correctly
+  placed, search still returns one match for each probe, no horizontal overflow at any
+  width, and `tools-coverage-check.py` reports **57 of 57 topics present**.
+
+The markup can now be hand-edited: a question div starts and ends where the question
+starts and ends.

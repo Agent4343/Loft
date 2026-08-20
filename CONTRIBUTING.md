@@ -47,11 +47,17 @@ documents is not confused.
   Cards are three views of the same questions — do not fork it into separate files
   again. The reason it was consolidated is that every content fix previously had to
   be repeated in two or three places, and they drifted.
-- **Do not bulk-flatten the nested `.question` divs.** 48 of them contain content that
-  belongs outside them. Four different promotion rules were tried and every one reordered
-  text somewhere else in the document, because the source has at least four distinct
-  malformation patterns. Text extraction already ignores nested content, so the symptoms
-  are fixed; see `REVIEW.md` section 12 before attempting it.
+- **The `.question` divs are now well-formed — keep them that way.** 48 of them used to
+  swallow the content that followed, because they were left unclosed in the source and the
+  browser nested whatever came next inside them. They were repaired one at a time (see
+  `REVIEW.md` section 12); a question div now starts and ends where the question does. If
+  you add a question, close every tag you open inside it.
+- **Never fix that kind of markup with a single bulk rule.** Four were tried and every one
+  silently reordered text elsewhere in the document, because the source had several
+  different malformation patterns. What worked was repairing one site, re-rendering the
+  whole file, comparing the extracted text character for character against a baseline, and
+  reverting that one change if anything differed. Use the same loop for any structural
+  edit: one change, verify, keep or revert.
 - **Careful inserting new `<script>` blocks.** The summary script contains the literal
   string `'</body></html>'` inside the standalone report it generates, so a naive
   "insert before `</body>`" lands inside that string literal and breaks two scripts.
