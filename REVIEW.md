@@ -606,4 +606,54 @@ Two things still worth keeping in view:
 - **§5.5 "ten categories" miscount** in Assessor Guide Rev 3.0 — a source document defect.
 - **§5.4 CAS and Flag/Class coverage** — now documented as scope decisions in `README.md`;
   worth confirming those decisions are correct.
+
+---
+
+## 10. Source-question reconciliation (added after the review)
+
+Every question in the source documents was checked against all three study aids —
+101 source questions (67 in Global Module Assessor Guide Rev 3.0, 34 in Asset Specific
+Task Book UPBP-410 Rev 3.2). Coverage was verified by keyword probe against rendered
+text; fuzzy title matching alone proved unreliable and produced false gaps.
+
+**Five Global Module questions were missing from the flip card and the study guide.**
+All five existed only in `Loft.html`, because they were authored from source during its
+rebuild. They have now been added to both:
+
+| Question | Was in | Now |
+|---|---|---|
+| Purpose of a temporary defeat, and what drives the approval level | `Loft.html` only | all three |
+| How often LTIs are reviewed; what triggers engaging the Operations Manager | `Loft.html` only | all three |
+| Emergency management expectations of O&M / FLS / SLS / TLS / Site Manager | `Loft.html` only | all three |
+| Tactical Response Plan — definition, objectives, phases | `Loft.html` only | all three |
+| Objectives of each TRP phase | `Loft.html` only | all three |
+
+The temporary defeat question mattered most: the source carries an explicit teaching
+note that *"TD approval escalation is **not solely time based**, but escalation should
+occur immediately dependent on the complexity of the defeat."* A candidate studying
+only the flip card or study guide learned the 7/30/60-day ladder and never met the point
+that complexity alone can force immediate escalation.
+
+**Two factual divergences found and corrected**, both in the DWCM answer:
+
+| | Was | Source Rev 3.0 |
+|---|---|---|
+| DWCM review of Long Term Isolations (both files) | "weekly" | **monthly** |
+| LTI escalation to Operations Manager | *question absent* | minimum **6-month interval** |
+
+**Flag / Class remains the only deliberate omission** — four questions the source scopes
+to "BUs with floating vessels e.g. FPSO, FSO", which does not describe Hebron or
+Hibernia. Recorded in `README.md`.
+
+**Still open:** the Assessor Guide carries two variants of several Operating Procedures
+and Training questions — one for the CAS route, one for the Training and Competency UBP
+(CVPE) route — with materially different answers (three-year vs 36-month revalidation;
+Site Manager vs SLS deviation approval). `Loft.html` presents both routes. The flip card
+and study guide carry only the CAS/IC variant, so for a work area that has completed
+CVPE they give the wrong answer. Resolving this needs someone to confirm which route
+Hebron/Hibernia is on; it was not assumed.
+
+Counts after this pass: `Loft.html` 69 questions, flip card **93** cards (was 88),
+study guide **101** questions (was 96).
+
 - **§4.10 filename** and **§6.4 duplicate Task Book** — both owner's calls, left alone.

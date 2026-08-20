@@ -13,8 +13,8 @@ Open any of these directly in a browser — no build step, no server, no depende
 
 | File | What it is | Best for |
 |---|---|---|
-| `LOFT Training Flip Card.v1.html` | 88 flip cards across 10 categories, with Known / Needs Review tracking, filters, keyboard shortcuts and progress saved in the browser | Drilling and self-testing |
-| `LOFT_Assessment_Study Use Google Chrome20260212.html` | Full study guide — 19 sections, 96 questions, 44-term glossary, links to source material | Reading end to end |
+| `LOFT Training Flip Card.v1.html` | 93 flip cards across 10 categories, with Known / Needs Review tracking, filters, keyboard shortcuts and progress saved in the browser | Drilling and self-testing |
+| `LOFT_Assessment_Study Use Google Chrome20260212.html` | Full study guide — 19 sections, 101 questions, 44-term glossary, links to source material | Reading end to end |
 | `Loft.html` | Interactive Q&A over the Global Module, with Study Mode / Test Mode and search | Working through the Assessor Guide question by question |
 
 All three cover the same categories: Risk Management, Training, Operating
@@ -61,7 +61,8 @@ states this mapping on the page.
   aids follow the CVPE route.
 - **Flag / Class** questions in the Assessor Guide apply to Business Units with
   floating vessels (FPSO, FSO). They are not covered here, as they do not apply to
-  Hebron or Hibernia.
+  Hebron or Hibernia. This is the only part of the Assessor Guide deliberately
+  omitted — every other Global Module question appears in all three study aids.
 - Links into `ishareteam*.na.xom.com`, `teamwork1.exxonmobil.com` and
   `us1.aconex.com` resolve only on the corporate network.
 

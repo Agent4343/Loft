@@ -837,6 +837,39 @@ Implementation of the Training and Competency Verification <strong>Upstream Best
   "Work Management": [
     {
       type: "knowledge",
+      q: "What is the purpose of a temporary defeat, and what drives the level of approval required for one?",
+      a: `<span class="section-title">Purpose of the TD process and certificate:</span>
+<ul>
+<li>Control the <strong>defeating and reinstatement</strong> of critical devices on equipment that remains in service</li>
+<li>Confirm <strong>alternative mitigative or preventative controls</strong> are put in place</li>
+<li>Confirm appropriate <strong>approvals are obtained</strong></li>
+<li>Confirm <strong>affected personnel are aware</strong> of the defeat</li>
+<li>Confirm <strong>no other work is underway</strong> that requires the critical device or system to be operational</li>
+</ul>
+<span class="section-title">Approval level:</span>
+<ul>
+<li>Temporary defeats of critical devices or systems must be approved by the <strong>Area Authority</strong></li>
+<li>Escalation to higher management approval is sought if necessary, due to the <strong>magnitude/complexity</strong> of the defeat <em>or</em> the duration of the proposed defeat</li>
+</ul>
+<span class="hl">Key point: TD approval escalation is NOT solely time based — escalation should occur immediately depending on the complexity of the defeat.</span>`
+    },
+    {
+      type: "knowledge",
+      q: "How often must Long Term Isolations (LTIs) be reviewed by the PIC/AA? What triggers engaging the Operations Manager?",
+      a: `<ul>
+<li><strong>Monthly</strong> PIC/AA review of the LTI register to confirm status and forward plans (repairs scheduled, parts not arrived, equipment not required, physical disconnection or blinding required)</li>
+<li><strong>Quarterly</strong> field assessment to physically check the integrity of all isolation points</li>
+<li>LTIs must be assessed by the <strong>OMT</strong> (Operations / Maintenance / Technical team). If deemed to pose a risk to safe and reliable continued operations, they must be reported to the <strong>Operations Manager</strong> on a minimum <strong>6-month interval</strong></li>
+</ul>
+<span class="section-title">The Operations Manager helps determine:</span>
+<ul>
+<li>Additional controls/mitigations needed for continued operations</li>
+<li>Alignment on prioritization for repair and reinstatement</li>
+<li>Alignment on need for temporary or permanent positive isolation/removal (MOC)</li>
+</ul>`
+    },
+    {
+      type: "knowledge",
       q: "What is the objective of the Work Management System (WMS)? What work activities does the PTWS address?",
       a: `<span class="section-title">WMS Objectives — confirm activities are performed per Company, government, and OIMS System 6-4 requirements:</span>
 <ul>
@@ -949,7 +982,7 @@ Implementation of the Training and Competency Verification <strong>Upstream Best
 <li>Identify <strong>high risk activities</strong> and ensure adequate oversight</li>
 <li>Review requested and applied <strong>Temporary Defeats</strong></li>
 <li>Review and assign <strong>assessments</strong> as required</li>
-<li>Weekly: review <strong>Long Term Isolations</strong></li>
+<li>Monthly: review <strong>Long Term Isolations</strong></li>
 </ul>
 <span class="section-title">Attendees:</span>
 <ul>
@@ -1301,6 +1334,86 @@ Implementation of the Training and Competency Verification <strong>Upstream Best
     }
   ],
   "Emergency Response": [
+    {
+      type: "knowledge",
+      q: "What are the emergency management expectations of O&M Technicians, FLS, SLS, TLS and Site Managers?",
+      a: `<span class="section-title">O&M Technician:</span>
+<ul>
+<li>Understands the BU's <strong>emergency alerting procedure</strong> (field to direct supervisor or control center; avoid voice messages)</li>
+<li>Understands response expectations — <strong>no personal risks</strong>, mustering, immediate medical care; in fire or toxic environments must follow training and established emergency operating procedures (ESDs)</li>
+<li>Frequently participates in exercise drills; supports improvement and validation of response capabilities</li>
+</ul>
+<span class="section-title">Front Line Supervisor:</span>
+<ul>
+<li>Verifies their work group understands response capabilities and <strong>limitations</strong></li>
+<li>Understands Response Plan responsibilities; demonstrates <strong>notification responsibilities</strong> (internal upline and external agency)</li>
+<li>Participates in HC exercise field/facility drills and models performance expectations (annual); monitors competency training and exercise schedule</li>
+</ul>
+<span class="section-title">Second Line Supervisor:</span>
+<ul>
+<li>Able to <strong>implement</strong> the BU/asset emergency response plan and function within an assigned incident management role (On-Scene Commander, Safety, Operations)</li>
+<li>Able to select and use proper <strong>specialized PPE</strong>; competent technical reviewer of Emergency Operating Procedures</li>
+<li>Understands response aspects (e.g. <strong>Tactical Response Plan</strong>) to an HC process safety event</li>
+<li>Ensures staffing across normal, off-shift, weekend and rotational situations; approves control of defeat ER mitigations; contributes to HC drills (annual)</li>
+</ul>
+<span class="section-title">Third Line Supervisor:</span>
+<ul>
+<li>Understands and implements the ER plan and functions within an incident management role</li>
+<li>Understands depth of <strong>corporate response capabilities</strong> and the mobilization process</li>
+<li>Monitors and tracks <strong>response readiness</strong> (exercise roadmap, response capability, response organizations)</li>
+<li>Participates in an HC exercise (Functional+) or contributes as Exercise Design Team member (24 months); approves exercise roadmap and offsite ER training</li>
+</ul>
+<span class="section-title">Site Manager:</span>
+<ul>
+<li>Demonstrates SSHE leadership consistent with <strong>OIMS Element 1</strong> expectations</li>
+<li>Seeks to understand initial notifications, assesses personnel status, inquires about additional resources (<strong>investigate later</strong>)</li>
+<li>Trained in the BU emergency response model. The <strong>Emergency Support Group</strong> is owned by the Business (LCM) and may be delegated to the Site Manager</li>
+<li><strong>Incident Management</strong> is owned and executed by Operations</li>
+</ul>
+<span class="hl">Resource: goto/LeadersEPRGuide</span>`
+    },
+    {
+      type: "knowledge",
+      q: "What is a Tactical Response Plan (TRP)? What are its objectives and what are the response phases?",
+      a: `<p>The TRP outlines <strong>initial responding actions</strong> to an unplanned but identified emergency scenario, to mitigate escalation and thereby limit potential harm to people and the environment.</p>
+<p>Audience: process operators/technicians competently trained in process anomalies, familiar with the material's inherent properties, and qualified in emergency response decision-making.</p>
+<span class="section-title">Objectives:</span>
+<ul>
+<li>Provide <strong>clear, simple direction</strong> for personnel who discover or respond to a potential HC event</li>
+<li>Establish an <strong>emergency response mentality immediately</strong> upon discovery</li>
+<li>Drive response mitigation options to monitor and control a potentially serious emergency outcome</li>
+</ul>
+<span class="section-title">Response phases:</span>
+<ul>
+<li>Initial discovery</li>
+<li>Initial response</li>
+<li>Proactive response leading to recovery</li>
+</ul>
+<span class="hl">Resources: goto/hlvi SharePoint site; goto/leakresponse — 2023 HLVI-01 Leak Response Principles</span>`
+    },
+    {
+      type: "knowledge",
+      q: "What are the objectives of each Tactical Response Plan phase?",
+      a: `<span class="section-title">Initial Discovery:</span>
+<ul>
+<li>Protect personnel in the <strong>immediate area</strong></li>
+<li>Assess and report initial discovery</li>
+<li>Determine initial response, <strong>minimize escalation potential</strong></li>
+</ul>
+<span class="section-title">Initial Response:</span>
+<ul>
+<li><strong>Control or mitigate sources</strong> — escalation imminent</li>
+<li><strong>Account for personnel</strong></li>
+<li>Initiate notification process, support resources and inform stakeholders</li>
+</ul>
+<span class="section-title">Proactive Response leading to Recovery:</span>
+<ul>
+<li>Understand the <strong>developing hazard and looming risks</strong> before choosing mitigation or further actions</li>
+<li>Execute the mitigation plan</li>
+<li>Maintain <strong>formal communication</strong></li>
+<li>Transition to the <strong>recovery organization</strong></li>
+</ul>`
+    },
     {
       type: "scenario",
       q: "SCENARIO: Apply PEAR to a turbine explosion and fire. Identify 3 People, 2 Environment, 2 Asset, and 2 Reputation issues.",
