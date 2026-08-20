@@ -2190,7 +2190,7 @@ Explain your role in maintaining and operating emergency response equipment for 
   .outcome-btn[data-outcome="met"][aria-pressed="true"]     { background: var(--met); }
   .outcome-btn[data-outcome="dev"][aria-pressed="true"]     { background: var(--dev); }
   .outcome-btn[data-outcome="gap"][aria-pressed="true"]     { background: var(--gap); }
-  .qa.has-note { box-shadow: inset 3px 0 0 var(--note-accent); }
+  .note-panel.has-note { border-left-color: #0f8e5a; background: #f2fbf7; }
 
   @media print {
     #toc, #glossarySidebar, #glossaryToggle, #overlay { display: none !important; }
@@ -2264,27 +2264,51 @@ Explain your role in maintaining and operating emergency response equipment for 
 
   /* ---------- question discovery ---------- */
 
+  /* .qa wrappers nest, and one of them holds 51 questions - anchoring to .qa put
+     52 of 100 panels somewhere other than under their own question. Walk in document
+     order instead so each panel lands after that question's own answer. */
+  /* Many .question divs in the source swallow everything that follows them - the
+     largest holds 53,757 characters. Read only the question's own text so search,
+     records and labels are not polluted by nested content. */
+  function ownText(el) {
+    var c = el.cloneNode(true);
+    var junk = c.querySelectorAll('.question, .answer, .note-panel, .reveal-btn');
+    for (var i = 0; i < junk.length; i++) { junk[i].parentNode.removeChild(junk[i]); }
+    return (c.textContent || '').replace(/\s+/g, ' ').trim();
+  }
+
   function questions() {
-    var out = [];
-    var seen = {};
-    [].forEach.call(document.querySelectorAll('.question'), function (q) {
-      var text = (q.textContent || '').replace(/\s+/g, ' ').trim();
-      if (text.length < 8) { return; }                       // skip stray/empty nodes
-      var base = 'q' + hash(text.slice(0, 220));
-      seen[base] = (seen[base] || 0) + 1;
-      // Two places can legitimately carry the same wording; suffix repeats so each
-      // gets its own panel and its own stored note rather than being dropped.
-      var id = seen[base] === 1 ? base : base + '_' + seen[base];
-      var sec = q.closest('section');
-      out.push({
-        el: q,
-        id: id,
-        text: text,
-        host: q.closest('.qa') || q.parentElement,
-        section: sec ? (sec.querySelector('h2') ? sec.querySelector('h2').textContent.trim() : sec.id) : ''
-      });
+    var nodes = document.querySelectorAll('main section, .question, .answer');
+    var out = [], cur = null, seen = {}, sectionName = '';
+    [].forEach.call(nodes, function (n) {
+      if (n.tagName === 'SECTION') {
+        var h2 = n.querySelector(':scope > h2') || n.querySelector('h2');
+        sectionName = h2 ? h2.textContent.replace(/\s+/g, ' ').trim() : (n.id || sectionName);
+        return;
+      }
+      if (n.classList.contains('question')) {
+        var text = ownText(n);
+        if (text.length < 8) { cur = null; return; }
+        var base = 'q' + hash(text.slice(0, 220));
+        seen[base] = (seen[base] || 0) + 1;
+        cur = {
+          el: n,
+          id: seen[base] === 1 ? base : base + '_' + seen[base],
+          text: text,
+          answers: [],
+          section: sectionName
+        };
+        out.push(cur);
+      } else if (cur) {
+        cur.answers.push(n);
+      }
     });
     return out;
+  }
+
+  function placePanel(item, panel) {
+    var anchor = item.answers.length ? item.answers[item.answers.length - 1] : item.el;
+    anchor.parentNode.insertBefore(panel, anchor.nextSibling);
   }
 
   /* ---------- panel construction ---------- */
@@ -2340,9 +2364,8 @@ Explain your role in maintaining and operating emergency response equipment for 
     rec.section = item.section;
     if (!rec.text && !rec.outcome) { delete state.notes[item.id]; }
     else { state.notes[item.id] = rec; }
-    if (item.host && item.host.classList) {
-      item.host.classList.toggle('has-note', !!state.notes[item.id]);
-    }
+    var panel = document.querySelector('[data-note-panel="' + item.id + '"]');
+    if (panel) { panel.classList.toggle('has-note', !!state.notes[item.id]); }
     queueSave();
   }
 
@@ -2474,11 +2497,8 @@ Explain your role in maintaining and operating emergency response equipment for 
     var items = questions();
     items.forEach(function (item) {
       var panel = buildPanel(item);
-      if (item.host && item.host.appendChild) { item.host.appendChild(panel); }
-      else { item.el.parentNode.insertBefore(panel, item.el.nextSibling); }
-      if (state.notes[item.id] && item.host && item.host.classList) {
-        item.host.classList.add('has-note');
-      }
+      placePanel(item, panel);
+      if (state.notes[item.id]) { panel.classList.add('has-note'); }
     });
     var main = document.getElementById('mainContent');
     if (main) { main.insertBefore(buildSessionBar(), main.firstChild); }
@@ -2509,8 +2529,8 @@ Explain your role in maintaining and operating emergency response equipment for 
     if (!rec.text && !rec.outcome) { delete state.notes[id]; } else { state.notes[id] = rec; }
     var panel = document.querySelector('[data-note-panel="' + id + '"] textarea');
     if (panel && panel.value !== text) { panel.value = text; }
-    var host = panel ? panel.closest('.qa') : null;
-    if (host) { host.classList.toggle('has-note', !!state.notes[id]); }
+    var box = panel ? panel.closest('[data-note-panel]') : null;
+    if (box) { box.classList.toggle('has-note', !!state.notes[id]); }
     queueSave();
   };
 
@@ -2797,6 +2817,16 @@ Explain your role in maintaining and operating emergency response equipment for 
   /* Sections in this document are nested rather than siblings, so closest('section')
      attributes most questions to the wrong topic. Walk in document order instead and
      take the most recently opened section as the current one. */
+  /* Many .question divs in the source swallow everything that follows them - the
+     largest holds 53,757 characters. Read only the question's own text so search,
+     records and labels are not polluted by nested content. */
+  function ownText(el) {
+    var c = el.cloneNode(true);
+    var junk = c.querySelectorAll('.question, .answer, .note-panel, .reveal-btn');
+    for (var i = 0; i < junk.length; i++) { junk[i].parentNode.removeChild(junk[i]); }
+    return (c.textContent || '').replace(/\s+/g, ' ').trim();
+  }
+
   function buildIndex() {
     var nodes = document.querySelectorAll('main section, .question, .answer');
     var out = [], cur = null, seen = {}, sectionName = 'Other';
@@ -2807,7 +2837,7 @@ Explain your role in maintaining and operating emergency response equipment for 
         return;
       }
       if (n.classList.contains('question')) {
-        var t = (n.textContent || '').replace(/\s+/g, ' ').trim();
+        var t = ownText(n);
         if (t.length < 8) { cur = null; return; }
         var base = 'q' + hash(t.slice(0, 220));
         seen[base] = (seen[base] || 0) + 1;
@@ -2951,12 +2981,27 @@ Explain your role in maintaining and operating emergency response equipment for 
   function applyFilter(term) {
     var q = (term || '').toLowerCase().trim();
     var shown = 0;
+    var keep = [];
     index.forEach(function (it) {
-      var host = it.el.closest('.qa') || it.el;
-      var hay = (it.q + ' ' + it.answers.map(function (a) { return a.textContent; }).join(' ')).toLowerCase();
+      var hay = (it.q + ' ' + it.answers.map(function (a) { return ownText(a); }).join(' ')).toLowerCase();
       var hit = !q || hay.indexOf(q) !== -1;
-      host.classList.toggle('q-hidden', !hit);
-      if (hit) { shown++; }
+      /* Hide the question's own parts, not the .qa wrapper - that would take out every
+         other question nested inside it. */
+      var parts = [it.el].concat(it.answers);
+      var panel = document.querySelector('[data-note-panel="' + it.id + '"]');
+      if (panel) { parts.push(panel); }
+      parts.forEach(function (el) { el.classList.toggle('q-hidden', !hit); });
+      if (hit) { shown++; keep = keep.concat(parts); }
+    });
+
+    /* Questions nest inside other questions in this document, so a hidden outer
+       element can bury a match. Re-show any ancestor of something that matched. */
+    keep.forEach(function (el) {
+      var a = el.parentElement;
+      while (a && a !== document.body) {
+        if (a.classList && a.classList.contains('q-hidden')) { a.classList.remove('q-hidden'); }
+        a = a.parentElement;
+      }
     });
     var c = document.getElementById('testCount');
     if (c) { c.textContent = q ? (shown + ' of ' + index.length + ' match') : ''; }
