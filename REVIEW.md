@@ -649,13 +649,34 @@ August 2026 that Hebron and Hibernia are **not floating vessels**, so these ques
 not apply and are correctly absent. This is no longer an open assumption — recorded in
 `README.md`.
 
-**Still open:** the Assessor Guide carries two variants of several Operating Procedures
-and Training questions — one for the CAS route, one for the Training and Competency UBP
-(CVPE) route — with materially different answers (three-year vs 36-month revalidation;
-Site Manager vs SLS deviation approval). `Loft.html` presents both routes. The flip card
-and study guide carry only the CAS/IC variant, so for a work area that has completed
-CVPE they give the wrong answer. Resolving this needs someone to confirm which route
-Hebron/Hibernia is on; it was not assumed.
+**CAS vs CVPE route — resolved.** The Assessor Guide carries two variants of several
+Operating Procedures and Training questions, gated by the line *"The following section
+only applicable if Your Work Area has not completed CVPE and is still using the CAS
+standard ... or Skip to Chapter 3."* The asset confirmed (August 2026) that
+**Hebron/Hibernia has completed CVPE**, so the Training and Competency UBP answers apply
+and the CAS section should be skipped.
+
+The flip card and study guide carried **only** the CAS variant, so three answers were
+outright wrong for this asset, and three questions were being studied from a section the
+source says to skip. Corrected across all three aids:
+
+| Question | Was (CAS) | Now (CVPE) |
+|---|---|---|
+| Procedure revalidation | IC 3 years / Normal 5 years / Work Aid BU-defined | successfully used in the field; **not to exceed 36 months** |
+| Deviation approval | IC = Site Manager / Normal = SLS / Work Aid = FLS | stop work; documented approval from the **SLS** [or BU defined position] |
+| New or revalidated procedure | SME + user validate, FLS/SLS/TLS endorse, Site Manager approves | technically verified, site validated, endorsed **FLS**, approved **SLS** |
+| Training objective | objective of the Competency Assurance Standard (CAS Manual) | objective of the **Training and Competency UBP** |
+| Competency roles | CAS list, including a Site Manager row | UBP list for O&M / FLS / SLS / TLS (no Site Manager row) |
+| Tools and triggers | tools and triggers only | adds the **DIF (Difficulty, Importance, Frequency)** calculation |
+
+Three questions exist **only** on the CAS route — the Integrity Critical Procedure
+definition, the global IC examples list, and the night-time IC error scenario. Rather
+than delete them (IC procedures remain a live concept in the asset-specific material),
+they are retained and marked as not assessed under the current UBP.
+
+Superseded answers are shown alongside the applicable one and colour-coded in all three
+files, so a candidate who has seen the older material can tell which is which rather than
+simply finding it missing.
 
 Counts after this pass: `Loft.html` 69 questions, flip card **93** cards (was 88),
 study guide **101** questions (was 96).

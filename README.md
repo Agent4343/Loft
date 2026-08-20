@@ -57,8 +57,20 @@ states this mapping on the page.
 ## Scope notes
 
 - **Competency Assurance Standard (CAS)** applies only where a work area has not yet
-  completed CVPE. `Loft.html` covers both routes where they differ; the other two
-  aids follow the CVPE route.
+  completed CVPE. **Hebron/Hibernia has completed CVPE** (confirmed by the asset,
+  August 2026), so the **Training and Competency UBP answers apply**. All three aids
+  now lead with the CVPE answer. Where the Assessor Guide also carries a superseded
+  CAS-route answer it is shown and labelled, so a candidate can tell them apart:
+
+  | | CVPE route (applies here) | CAS route (superseded) |
+  |---|---|---|
+  | Procedure revalidation | successfully used in the field; **not to exceed 36 months** | IC 3 years / Normal 5 years / Work Aid BU-defined |
+  | Deviation approval | stop work; documented approval from the **SLS** | IC = Site Manager / Normal = SLS / Work Aid = FLS |
+  | New or revalidated procedure | technically verified, site validated, endorsed **FLS**, approved **SLS** | SME + user validate, FLS/SLS/TLS endorse, Site Manager approves |
+
+  Three questions exist only on the CAS route — the Integrity Critical Procedure
+  definition, the global IC examples list, and the night-time IC error scenario. They
+  are retained for reference and marked as not assessed under the current UBP.
 - **Flag / Class** questions in the Assessor Guide apply only to Business Units with
   floating vessels (FPSO, FSO). **Hebron and Hibernia are not floating vessels**
   (confirmed by the asset, August 2026), so these four questions are out of scope and
