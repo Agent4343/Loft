@@ -47,6 +47,10 @@ documents is not confused.
   Cards are three views of the same questions — do not fork it into separate files
   again. The reason it was consolidated is that every content fix previously had to
   be repeated in two or three places, and they drifted.
+- **Careful inserting new `<script>` blocks.** The summary script contains the literal
+  string `'</body></html>'` inside the standalone report it generates, so a naive
+  "insert before `</body>`" lands inside that string literal and breaks two scripts.
+  Insert before the **last** `</body>`.
 - It is standalone: no build, no dependencies, no server. Keep it that way — it is
   opened from disk, sometimes offshore.
 - After any content edit run `python3 tools-coverage-check.py`. It verifies that all

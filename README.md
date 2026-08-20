@@ -43,8 +43,17 @@ assessment team to use during a verification interview.
 
 - **Notes** — a free-text box per question for evidence, examples given, and follow-ups.
 - **Outcome** — mark each question *Demonstrated*, *Needs development*, or
-  *Gap — action required*. A running count sits in the header bar.
-- **Session details** — candidate, position, assessment team, date.
+  *Gap — action required*. A running count sits in the header bar. These are the
+  evidence behind the module decision, not the decision itself.
+- **Modules** — section 1.5 verifies competency per module, so each module is marked
+  *Competency demonstrated* or *Gap closure required*, with a re-assessed tick for gaps
+  that have since been closed. Overall competency only reads as demonstrated when every
+  module does, and the panel states the Risk Approval Authority position either way.
+- **Session details** — candidate, position, date assumed position, assessment date, and
+  the team by role: Assessment Lead, Assessment Facilitator, Technical Assessor(s). The
+  file counts the team and flags if it falls outside the three-to-five that section 1.6
+  requires, and computes the 90-day verification target from the date the position was
+  assumed (section 1.3).
 
 **Saving.** Everything is saved in the browser as you type, so closing the tab or
 reloading will not lose it. That copy lives only in that browser on that machine, so it is

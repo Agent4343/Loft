@@ -2226,7 +2226,7 @@ Explain your role in maintaining and operating emergency response equipment for 
     { id: 'dev', label: 'Needs development' },
     { id: 'gap', label: 'Gap - action required' }
   ];
-  var state = { session: {}, notes: {} };
+  var state = { session: {}, notes: {}, modules: {} };
   var saveTimer = null;
 
   function hash(str) {
@@ -2242,6 +2242,7 @@ Explain your role in maintaining and operating emergency response equipment for 
         var parsed = JSON.parse(raw);
         state.session = parsed.session || {};
         state.notes = parsed.notes || {};
+        state.modules = parsed.modules || {};
       }
     } catch (e) { /* storage unavailable - session stays in memory */ }
   }
@@ -2347,11 +2348,17 @@ Explain your role in maintaining and operating emergency response equipment for 
 
   /* ---------- session bar ---------- */
 
+  /* Fields follow sections 1.3 and 1.6: the 90-day target runs from the date the
+     candidate assumed the position, and the team is recorded by role so the record
+     shows the composition met the three-to-five requirement. */
   var FIELDS = [
-    { k: 'candidate', l: 'Candidate' },
-    { k: 'position',  l: 'Position' },
-    { k: 'assessors', l: 'Assessment team' },
-    { k: 'date',      l: 'Date', type: 'date' }
+    { k: 'candidate',   l: 'Candidate' },
+    { k: 'position',    l: 'Position' },
+    { k: 'assumed',     l: 'Assumed position', type: 'date' },
+    { k: 'date',        l: 'Assessment date', type: 'date' },
+    { k: 'lead',        l: 'Assessment Lead' },
+    { k: 'facilitator', l: 'Assessment Facilitator' },
+    { k: 'technical',   l: 'Technical Assessor(s)' }
   ];
 
   function buildSessionBar() {
@@ -2421,8 +2428,9 @@ Explain your role in maintaining and operating emergency response equipment for 
   function saveFile() {
     persist();
     download(stamp() + '.json', 'application/json',
-             JSON.stringify({ format: 'loft-assessor-notes', version: 1, saved: new Date().toISOString(),
-                              session: state.session, notes: state.notes }, null, 2));
+             JSON.stringify({ format: 'loft-assessor-notes', version: 2, saved: new Date().toISOString(),
+                              session: state.session, notes: state.notes,
+                              modules: state.modules || {} }, null, 2));
   }
 
   function loadFile() {
@@ -2440,6 +2448,7 @@ Explain your role in maintaining and operating emergency response equipment for 
               !window.confirm('Replace the notes currently on this page with the file contents?')) { return; }
           state.session = d.session || {};
           state.notes = d.notes || {};
+          state.modules = d.modules || {};
           persist();
           window.location.reload();
         } catch (e) {
@@ -2453,7 +2462,7 @@ Explain your role in maintaining and operating emergency response equipment for 
 
   function clearAll() {
     if (!window.confirm('Clear all notes and outcomes on this page? Save to a file first if you need them.')) { return; }
-    state = { session: {}, notes: {} };
+    state = { session: {}, notes: {}, modules: {} };
     persist();
     window.location.reload();
   }
@@ -2479,7 +2488,15 @@ Explain your role in maintaining and operating emergency response equipment for 
 
   /* Read by the assessment summary / gap closure plan view. */
   window.__loftAssessmentData = function () {
-    return { session: state.session, notes: state.notes };
+    return { session: state.session, notes: state.notes, modules: state.modules || {} };
+  };
+  window.__loftSetModule = function (id, patch) {
+    if (!state.modules) { state.modules = {}; }
+    var rec = state.modules[id] || {};
+    Object.keys(patch).forEach(function (k) { rec[k] = patch[k]; });
+    if (!rec.outcome && !rec.reassessed) { delete state.modules[id]; }
+    else { state.modules[id] = rec; }
+    queueSave();
   };
 
   /* Shared with Cards mode so a note typed in either place is the same note. */
@@ -2663,6 +2680,45 @@ Explain your role in maintaining and operating emergency response equipment for 
   }
 
 
+
+  /* ---------- module competency (section 1.5) ---------- */
+  #moduleLayer {
+    position: fixed; inset: 44px 0 0 0; z-index: 1150; display: none;
+    background: rgba(15,23,32,.55); overflow-y: auto; padding: 24px 16px 60px;
+  }
+  #moduleLayer.open { display: block; }
+  #moduleSheet {
+    max-width: 900px; margin: 0 auto; background: #fff; color: #1f2937;
+    border-radius: 8px; padding: 26px 30px; box-shadow: 0 10px 40px rgba(0,0,0,.35);
+  }
+  #moduleSheet h2 { margin: 0 0 6px; color: #002244; font-size: 22px; }
+  #moduleSheet .lede { font-size: 14px; color: #55677d; margin: 0 0 18px; }
+  .mod-row {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+    padding: 10px 0; border-bottom: 1px solid #eef2f6;
+  }
+  .mod-name { flex: 1 1 240px; font-weight: 600; font-size: 14px; }
+  .mod-ev { font-size: 11px; color: #7b8a9c; flex-basis: 100%; }
+  .mod-btn {
+    font: inherit; font-size: 12px; padding: 5px 12px; cursor: pointer;
+    border: 1px solid #b8c6d6; border-radius: 999px; background: #fff; color: #40536b;
+  }
+  .mod-btn[aria-pressed="true"] { color: #fff; border-color: transparent; font-weight: 600; }
+  .mod-btn[data-o="met"][aria-pressed="true"] { background: #0f8e5a; }
+  .mod-btn[data-o="gap"][aria-pressed="true"] { background: #b91c1c; }
+  .mod-re { font-size: 12px; display: inline-flex; align-items: center; gap: 5px; color: #55677d; }
+  .overall {
+    margin: 20px 0 0; padding: 14px 16px; border-radius: 6px; font-size: 15px;
+    border: 1px solid #e5e7eb; background: #f8fafc;
+  }
+  .overall.done { background: #ecfdf5; border-color: #0f8e5a; }
+  .overall.pending { background: #fef2f6; border-color: #b91c1c; }
+  .overall b { display: block; font-size: 17px; margin-bottom: 3px; }
+  .raa { font-size: 13px; margin-top: 8px; color: #40536b; }
+  .team-check { font-size: 13px; margin: 4px 0 0; }
+  .team-check.bad { color: #b91c1c; font-weight: 600; }
+  .team-check.ok { color: #0f8e5a; }
+  #assessSession .warn { color: #fca5a5; font-size: 12px; width: 100%; }
   /* ---------- assessment summary / gap closure plan ---------- */
   #summaryLayer {
     position: fixed; inset: 44px 0 0 0; z-index: 1150; display: none;
@@ -2698,6 +2754,13 @@ Explain your role in maintaining and operating emergency response equipment for 
   .sum-note { font-size: 14px; margin-top: 5px; white-space: pre-wrap; }
   .sum-note.empty { color: #9aa7b6; font-style: italic; }
   .sum-none { color: #55677d; font-size: 14px; }
+  .sum-mods { border-collapse: collapse; width: 100%; font-size: 14px; margin-top: 6px; }
+  .sum-mods td { padding: 6px 8px; border-bottom: 1px solid #eef2f6; }
+  .sum-mods td:first-child { font-weight: 600; }
+  .sum-mods tr.met td:nth-child(2) { color: #0f8e5a; font-weight: 600; }
+  .sum-mods tr.gap td:nth-child(2) { color: #b91c1c; font-weight: 600; }
+  .sum-mods tr.none td:nth-child(2) { color: #9aa7b6; }
+  .sum-mods td:last-child { color: #7b8a9c; font-size: 12px; }
   #summaryTools { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
   @media print {
     #summaryLayer { position: static; inset: auto; background: #fff; padding: 0; overflow: visible; }
@@ -3136,9 +3199,49 @@ Explain your role in maintaining and operating emergency response equipment for 
     h += '<div class="sum-meta">' +
          '<div><b>Candidate</b>' + (esc(ses.candidate) || '&mdash;') + '</div>' +
          '<div><b>Position</b>' + (esc(ses.position) || '&mdash;') + '</div>' +
-         '<div><b>Assessment team</b>' + (esc(ses.assessors) || '&mdash;') + '</div>' +
-         '<div><b>Date</b>' + (esc(ses.date) || '&mdash;') + '</div>' +
+         '<div><b>Assumed position</b>' + (esc(ses.assumed) || '&mdash;') + '</div>' +
+         '<div><b>Assessment date</b>' + (esc(ses.date) || '&mdash;') + '</div>' +
          '</div>';
+    h += '<div class="sum-meta">' +
+         '<div><b>Assessment Lead</b>' + (esc(ses.lead) || '&mdash;') + '</div>' +
+         '<div><b>Assessment Facilitator</b>' + (esc(ses.facilitator) || '&mdash;') + '</div>' +
+         '<div><b>Technical Assessor(s)</b>' + (esc(ses.technical) || '&mdash;') + '</div>' +
+         '</div>';
+
+    /* Section 1.5 decides competency per module, so the module table leads the record
+       and the per-question notes below are the evidence behind it. */
+    var mods = (window.__loftModuleState && window.__loftModuleState()) || null;
+    if (mods) {
+      h += '<h3>Module competency</h3>';
+      h += '<table class="sum-mods"><tbody>';
+      mods.rows.forEach(function (r) {
+        var label = r.outcome === 'met' ? 'Competency demonstrated'
+                  : r.outcome === 'gap' ? 'Gap closure required'
+                  : 'Not assessed';
+        h += '<tr class="' + (r.outcome || 'none') + '"><td>' + esc(r.name) + '</td>' +
+             '<td>' + label + '</td>' +
+             '<td>' + (r.reassessed ? 're-assessed' : '') + '</td></tr>';
+      });
+      h += '</tbody></table>';
+      h += '<p class="overall ' + (mods.complete ? 'done' : 'pending') + '"><b>' +
+        (mods.complete ? 'Overall competency demonstrated'
+                       : 'Overall competency not yet demonstrated') + '</b>' +
+        mods.met + ' of ' + mods.total + ' modules demonstrated' +
+        (mods.gap ? ', ' + mods.gap + ' requiring gap closure' : '') + '. ' +
+        (mods.complete
+          ? 'Full Risk Approval Authority may be granted once any identified gaps are closed.'
+          : 'A continued delegation of Risk Approval Authority must remain in place until competency is demonstrated (section 1.5).') +
+        '</p>';
+      h += '<p class="team-check ' + (mods.teamOk ? 'ok' : 'bad') + '">Assessment team recorded: ' +
+        mods.teamCount + (mods.teamOk
+          ? ' &mdash; within the 3 to 5 required by section 1.6.'
+          : ' &mdash; section 1.6 requires at least three and no more than five.') + '</p>';
+      if (mods.target) {
+        h += '<p class="sum-none">Target verification by ' + esc(mods.target) +
+             ' (90 days from assuming position, section 1.3).' +
+             (mods.late ? ' Assessment date is after the target.' : '') + '</p>';
+      }
+    }
 
     h += '<div class="sum-tally">' +
          '<div class="tally met"><b>' + met.length + '</b><span>Demonstrated</span></div>' +
@@ -3207,6 +3310,17 @@ Explain your role in maintaining and operating emergency response equipment for 
       '.sum-q{font-weight:600}.sum-sec{font-size:11px;text-transform:uppercase;color:#7b8a9c}' +
       '.sum-note{white-space:pre-wrap;margin-top:5px}.sum-note.empty{color:#9aa7b6;font-style:italic}' +
       '.sum-none{color:#55677d}' +
+      '.sum-mods{border-collapse:collapse;width:100%;font-size:14px;margin-top:6px}' +
+      '.sum-mods td{padding:6px 8px;border-bottom:1px solid #eef2f6}' +
+      '.sum-mods td:first-child{font-weight:600}' +
+      '.sum-mods tr.met td:nth-child(2){color:#0f8e5a;font-weight:600}' +
+      '.sum-mods tr.gap td:nth-child(2){color:#b91c1c;font-weight:600}' +
+      '.sum-mods tr.none td:nth-child(2){color:#9aa7b6}' +
+      '.overall{padding:12px 14px;border:1px solid #e5e7eb;border-radius:6px}' +
+      '.overall.done{background:#ecfdf5;border-color:#0f8e5a}' +
+      '.overall.pending{background:#fef2f6;border-color:#b91c1c}' +
+      '.overall b{display:block;margin-bottom:3px}' +
+      '.team-check.bad{color:#b91c1c;font-weight:600}.team-check.ok{color:#0f8e5a}' +
       '</style></head><body>' + build() + '</body></html>';
     var blob = new Blob([doc], { type: 'text/html' });
     var url = URL.createObjectURL(blob);
@@ -3244,6 +3358,198 @@ Explain your role in maintaining and operating emergency response equipment for 
       b.addEventListener('click', open);
       var first = bar.querySelector('button');
       bar.insertBefore(b, first || null);
+    }
+  }
+
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); }
+  else { init(); }
+})();
+</script>
+
+
+<script id="loft-modules-js">
+(function () {
+  'use strict';
+
+  function api() { return window.__loftAssessmentData ? window.__loftAssessmentData() : { session: {}, notes: {}, modules: {} }; }
+
+  function moduleList() {
+    var seen = [], out = [];
+    [].forEach.call(document.querySelectorAll('main section'), function (sec) {
+      var h2 = sec.querySelector(':scope > h2') || sec.querySelector('h2');
+      if (!h2) { return; }
+      var n = h2.textContent.replace(/\s+/g, ' ').trim();
+      if (seen.indexOf(n) === -1) { seen.push(n); out.push({ id: n, name: n }); }
+    });
+    // only modules that actually carry questions
+    var withQ = {};
+    var nodes = document.querySelectorAll('main section, .question');
+    var cur = null;
+    [].forEach.call(nodes, function (n) {
+      if (n.tagName === 'SECTION') {
+        var h = n.querySelector(':scope > h2') || n.querySelector('h2');
+        cur = h ? h.textContent.replace(/\s+/g, ' ').trim() : cur;
+      } else if (cur && n.textContent.replace(/\s+/g, ' ').trim().length >= 8) {
+        withQ[cur] = (withQ[cur] || 0) + 1;
+      }
+    });
+    return out.filter(function (m) { return withQ[m.id]; })
+              .map(function (m) { m.count = withQ[m.id]; return m; });
+  }
+
+  function evidenceFor(name) {
+    var n = api().notes || {}, c = { total: 0, gap: 0, dev: 0, met: 0 };
+    Object.keys(n).forEach(function (k) {
+      if (n[k].section !== name) { return; }
+      c.total++;
+      if (n[k].outcome && c[n[k].outcome] !== undefined) { c[n[k].outcome]++; }
+    });
+    return c;
+  }
+
+  function teamCount() {
+    var ses = api().session || {};
+    var n = 0;
+    if ((ses.lead || '').trim()) { n++; }
+    if ((ses.facilitator || '').trim()) { n++; }
+    (ses.technical || '').split(/[,;]/).forEach(function (t) { if (t.trim()) { n++; } });
+    return n;
+  }
+
+  function overall() {
+    var mods = moduleList(), rec = api().modules || {};
+    var met = 0, gap = 0;
+    mods.forEach(function (m) {
+      var r = rec[m.id] || {};
+      if (r.outcome === 'met') { met++; }
+      if (r.outcome === 'gap') { gap++; }
+    });
+    return { total: mods.length, met: met, gap: gap, complete: met === mods.length && mods.length > 0 };
+  }
+
+  function render() {
+    var mods = moduleList(), rec = api().modules || {};
+    var body = document.getElementById('moduleSheetBody');
+    var h = '';
+    mods.forEach(function (m) {
+      var r = rec[m.id] || {}, ev = evidenceFor(m.name);
+      h += '<div class="mod-row" data-mod="' + m.id.replace(/"/g, '&quot;') + '">' +
+        '<span class="mod-name">' + m.name + '</span>' +
+        '<button type="button" class="mod-btn" data-o="met" aria-pressed="' + (r.outcome === 'met') + '">Competency demonstrated</button>' +
+        '<button type="button" class="mod-btn" data-o="gap" aria-pressed="' + (r.outcome === 'gap') + '">Gap closure required</button>' +
+        '<label class="mod-re"><input type="checkbox" class="mod-reass"' + (r.reassessed ? ' checked' : '') + '> re-assessed</label>' +
+        '<span class="mod-ev">' + m.count + ' questions &middot; ' + ev.total + ' with notes' +
+          (ev.gap ? ' &middot; ' + ev.gap + ' marked gap' : '') +
+          (ev.dev ? ' &middot; ' + ev.dev + ' needs development' : '') +
+        '</span>' +
+        '</div>';
+    });
+
+    var o = overall();
+    var tc = teamCount();
+    var teamOk = tc >= 3 && tc <= 5;
+    h += '<div class="overall ' + (o.complete ? 'done' : 'pending') + '">' +
+      '<b>' + (o.complete
+        ? 'Overall competency demonstrated'
+        : 'Overall competency not yet demonstrated') + '</b>' +
+      o.met + ' of ' + o.total + ' modules demonstrated' +
+      (o.gap ? ', ' + o.gap + ' requiring gap closure' : '') + '.' +
+      '<div class="raa">' + (o.complete
+        ? 'Full Risk Approval Authority may be granted once any identified gaps are closed.'
+        : 'A continued delegation of Risk Approval Authority must remain in place until competency is demonstrated (section 1.5).') +
+      '</div>' +
+      '<p class="team-check ' + (teamOk ? 'ok' : 'bad') + '">Assessment team recorded: ' + tc +
+        (teamOk ? ' &mdash; within the 3 to 5 required by section 1.6.'
+                : ' &mdash; section 1.6 requires at least three and no more than five.') + '</p>' +
+      '</div>';
+    body.innerHTML = h;
+
+    [].forEach.call(body.querySelectorAll('.mod-row'), function (row) {
+      var id = row.getAttribute('data-mod');
+      [].forEach.call(row.querySelectorAll('.mod-btn'), function (b) {
+        b.addEventListener('click', function () {
+          var cur = (api().modules || {})[id] || {};
+          window.__loftSetModule(id, { outcome: cur.outcome === b.dataset.o ? '' : b.dataset.o });
+          render();
+        });
+      });
+      row.querySelector('.mod-reass').addEventListener('change', function () {
+        window.__loftSetModule(id, { reassessed: this.checked });
+        render();
+      });
+    });
+  }
+
+  /* Consumed by the assessment summary so both views agree. */
+  window.__loftModuleState = function () {
+    var mods = moduleList(), rec = api().modules || {}, o = overall(), tc = teamCount();
+    var ses = api().session || {}, target = '', late = false;
+    if (ses.assumed) {
+      var d = new Date(ses.assumed + 'T00:00:00');
+      if (!isNaN(d)) {
+        d.setDate(d.getDate() + 90);
+        target = d.toISOString().slice(0, 10);
+        late = !!(ses.date && ses.date > target);
+      }
+    }
+    return {
+      rows: mods.map(function (m) {
+        var r = rec[m.id] || {};
+        return { name: m.name, outcome: r.outcome || '', reassessed: !!r.reassessed };
+      }),
+      total: o.total, met: o.met, gap: o.gap, complete: o.complete,
+      teamCount: tc, teamOk: tc >= 3 && tc <= 5, target: target, late: late
+    };
+  };
+
+  function open() { render(); document.getElementById('moduleLayer').classList.add('open'); }
+  function close() { document.getElementById('moduleLayer').classList.remove('open'); }
+
+  function init() {
+    var layer = document.createElement('div');
+    layer.id = 'moduleLayer';
+    layer.innerHTML = '<div id="moduleSheet">' +
+      '<div id="summaryTools">' +
+        '<button type="button" class="tool-btn keep" id="modClose">Back to guide</button>' +
+      '</div>' +
+      '<h2>Module competency</h2>' +
+      '<p class="lede">Section 1.5: competency is verified for each module. Where a module is not ' +
+      'demonstrated a gap closure plan is required, and all gaps must be re-assessed in each module ' +
+      'before overall competency is demonstrated.</p>' +
+      '<div id="moduleSheetBody"></div></div>';
+    document.body.appendChild(layer);
+    document.getElementById('modClose').addEventListener('click', close);
+    layer.addEventListener('click', function (e) { if (e.target === layer) { close(); } });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && layer.classList.contains('open')) { close(); }
+    });
+
+    var bar = document.getElementById('assessSession');
+    if (bar) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.textContent = 'Modules'; b.id = 'openModules';
+      b.addEventListener('click', open);
+      var sum = document.getElementById('openSummary');
+      bar.insertBefore(b, sum || bar.querySelector('button'));
+
+      // 90-day target from the date the candidate assumed the position (section 1.3)
+      var warn = document.createElement('div');
+      warn.className = 'warn'; warn.id = 'targetWarn';
+      bar.appendChild(warn);
+      function refreshTarget() {
+        var ses = api().session || {};
+        var el = document.getElementById('targetWarn');
+        if (!ses.assumed) { el.textContent = ''; return; }
+        var d = new Date(ses.assumed + 'T00:00:00');
+        if (isNaN(d)) { el.textContent = ''; return; }
+        d.setDate(d.getDate() + 90);
+        var target = d.toISOString().slice(0, 10);
+        var msg = 'Target verification by ' + target + ' (90 days from assuming position, section 1.3).';
+        if (ses.date && ses.date > target) { msg += '  Assessment date is after the target.'; }
+        el.textContent = msg;
+      }
+      bar.addEventListener('input', refreshTarget);
+      refreshTarget();
     }
   }
 
