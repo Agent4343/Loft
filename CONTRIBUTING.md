@@ -4,6 +4,19 @@ This repository holds process safety training material. A wrong answer here is a
 safety-training defect, not a failing test — so the bar for content changes is
 traceability to a controlled source document, not code style.
 
+## The Assessor Guide governs
+
+Where a study aid and the Assessor Guide disagree, **the Assessor Guide wins** — even when
+the source looks wrong. A candidate is assessed against what the assessor is reading, so a
+study aid that "corrects" the controlling document sets them up to give an answer the
+assessor marks wrong.
+
+If you believe the source is defective, raise it with the Assessor Guide's owner and leave
+the study aid matching the source until the source changes. Two known examples are recorded
+in `REVIEW.md` §9: the guide says it covers "ten Process Safety categories" then lists
+eleven, and it has both the SLS and the TLS informing the Site Manager of a failed critical
+safeguard. Both are carried as written.
+
 ## Before changing any answer
 
 1. **Identify the governing source.** For Global Module content that is

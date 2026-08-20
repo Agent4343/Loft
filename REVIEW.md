@@ -444,12 +444,17 @@ words are correct in asset-specific answers and wrong in global-module answers:
 - Each file now states the AM/PM mapping on the page, so a candidate reading either
   convention knows what the other means.
 
-One item worth a second opinion: in the source, the SLS is told to "immediately inform
-**Site Manager**" of a failed critical safeguard, while the TLS is told to inform the
-**Site Manager** too. The HTML had the SLS informing the Asset Manager (i.e. the TLS) and
-the TLS informing the Production Manager (i.e. the Site Manager) — a cleaner one-level-up
-escalation. The source wording has been followed, but if the intent really is
-single-step escalation, the *source* is what needs amending.
+One item was raised for a second opinion: in the source, the SLS is told to "immediately
+inform **Site Manager**" of a failed critical safeguard, while the TLS is told to inform
+the **Site Manager** too. The HTML previously had the SLS informing the Asset Manager
+(i.e. the TLS) and the TLS informing the Production Manager (i.e. the Site Manager) — a
+cleaner one-level-up escalation.
+
+**Decision: follow the Assessor Guide.** The owner directed that the source governs, so
+both roles inform the Site Manager, exactly as Rev 3.0 states (lines 87 and 96). Verified
+in all three aids. If the intent really was single-step escalation, that is a change to
+make in the *source document*, not in the study aids — a candidate should answer what the
+assessor is reading from.
 
 ### 5.3 Risk Management role lists diverge from the source
 
@@ -492,10 +497,13 @@ glossary defines "Cat 1, Cat 2, Cat 3, Cat 4" but not `1E`.
   in the source document, inherited by the study guide's §1.1. Flag it upstream.
 
 **Applied** for the ALARP wording (the flip card now matches the source's "As Low As **is**
-Reasonably Practicable"). The ten-versus-eleven miscount is a defect in the **source
-document** and has been left alone — correcting the study aids to disagree with the
-controlling document would be worse than inheriting its error. It should be raised with the
-Assessor Guide's owner.
+Reasonably Practicable").
+
+**Decision on the ten-versus-eleven miscount: follow the Assessor Guide.** The study guide
+carries the source's own wording, "ten Process Safety categories", verified against Rev 3.0.
+Correcting the study aids to disagree with the controlling document would be worse than
+inheriting its error, and the owner confirmed the source governs. This stays as a defect to
+raise with the Assessor Guide's owner rather than an edit to the study aids.
 
 **Corporate Risk Matrix citation &mdash; resolved by following the source.** The study
 guide cited the Corporate Risk Matrix as **TMEE211**; Assessor Guide Rev 3.0 cites the
@@ -612,17 +620,34 @@ Two things still worth keeping in view:
 7. **`Loft.html`** — rebuilt with all 69 answers authored from source (§2).
 8. **`README.md` / `CONTRIBUTING.md`** — rewritten for what the repository actually is (§6).
 
-## 9. Still open for the owner
+## 9. Open items
 
-- **§5.2 SLS escalation.** The source has both SLS and TLS informing the Site Manager. The
-  study aids now follow the source, but if single-step escalation was intended, the source
-  needs amending.
-- **§5.5 TMEE211 / TMEE330.** All three aids now use the Assessor Guide's citation
-  (TMEE330). Confirm in the controlled document library whether TMEE211 is superseded or
-  is a separate current document — if the latter, cite both.
-- **§5.5 "ten categories" miscount** in Assessor Guide Rev 3.0 — a source document defect.
-- **§5.4 CAS coverage** — the CAS-vs-CVPE route question below is the live part of this;
-  the Flag/Class half is now closed (asset confirmed not a floating vessel).
+Everything in this review has been actioned or decided. What follows is not outstanding
+work in this repository.
+
+**Standing decision: where a study aid and the Assessor Guide disagree, the Assessor Guide
+governs.** The owner confirmed this. A candidate is assessed against what the assessor is
+reading, so a study aid that "corrects" the controlling document would set them up to give
+an answer the assessor marks wrong. Where the source itself looks defective, the fix belongs
+in the source.
+
+Applied to the two items previously carried here:
+
+- **SLS / TLS escalation (§5.2)** — the source has both roles informing the Site Manager.
+  Followed as written; verified in all three aids.
+- **"ten categories" miscount (§5.5)** — Rev 3.0 says "ten" then lists eleven. The study
+  guide carries the source's wording unchanged.
+
+**One suggestion, not a defect:** confirm in the controlled document library whether
+**TMEE211** is superseded by **TMEE330** or is a separate current document (§5.5). All three
+aids now use the Assessor Guide's TMEE330 citation either way; if both are current, citing
+both would be more accurate.
+
+**Two source-document defects worth raising with the Assessor Guide's owner**, neither of
+which is repo work:
+
+1. The ten-versus-eleven category miscount.
+2. The SLS/TLS escalation wording, if single-step escalation was the intent.
 
 ---
 
