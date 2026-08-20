@@ -59,9 +59,10 @@ states this mapping on the page.
 - **Competency Assurance Standard (CAS)** applies only where a work area has not yet
   completed CVPE. `Loft.html` covers both routes where they differ; the other two
   aids follow the CVPE route.
-- **Flag / Class** questions in the Assessor Guide apply to Business Units with
-  floating vessels (FPSO, FSO). They are not covered here, as they do not apply to
-  Hebron or Hibernia. This is the only part of the Assessor Guide deliberately
+- **Flag / Class** questions in the Assessor Guide apply only to Business Units with
+  floating vessels (FPSO, FSO). **Hebron and Hibernia are not floating vessels**
+  (confirmed by the asset, August 2026), so these four questions are out of scope and
+  are deliberately not covered here. This is the only part of the Assessor Guide
   omitted — every other Global Module question appears in all three study aids.
 - Links into `ishareteam*.na.xom.com`, `teamwork1.exxonmobil.com` and
   `us1.aconex.com` resolve only on the corporate network.

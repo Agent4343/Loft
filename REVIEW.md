@@ -476,9 +476,11 @@ glossary defines "Cat 1, Cat 2, Cat 3, Cat 4" but not `1E`.
 - **Flag / Class (floating vessels).** Four questions in the source — Flag State and
   Classification Society roles, Annual Alignment Workshops, external exposures, and the
   decision to maintain Class. Zero occurrences of "Flag State" or "Classification Societ" in
-  any HTML file. The source scopes these to "BUs with floating vessels e.g., FPSO, FSO", so
-  excluding them for Hebron/Hibernia may well be correct — but that scoping decision should be
-  written down rather than inferred from an absence.
+  any HTML file. The source scopes these to "BUs with floating vessels e.g., FPSO, FSO".
+
+  **Closed.** The asset confirmed (August 2026) that Hebron and Hibernia are not floating
+  vessels, so the exclusion is correct. It is now written down in `README.md` rather than
+  inferred from an absence.
 
 ### 5.5 Minor wording
 
@@ -604,8 +606,8 @@ Two things still worth keeping in view:
 - **§5.5 TMEE211 vs TMEE330.** Conflicting Corporate Risk Matrix references between the study
   guide and Assessor Guide Rev 3.0. Cannot be resolved from material in this repository.
 - **§5.5 "ten categories" miscount** in Assessor Guide Rev 3.0 — a source document defect.
-- **§5.4 CAS and Flag/Class coverage** — now documented as scope decisions in `README.md`;
-  worth confirming those decisions are correct.
+- **§5.4 CAS coverage** — the CAS-vs-CVPE route question below is the live part of this;
+  the Flag/Class half is now closed (asset confirmed not a floating vessel).
 
 ---
 
@@ -641,9 +643,11 @@ that complexity alone can force immediate escalation.
 | DWCM review of Long Term Isolations (both files) | "weekly" | **monthly** |
 | LTI escalation to Operations Manager | *question absent* | minimum **6-month interval** |
 
-**Flag / Class remains the only deliberate omission** — four questions the source scopes
-to "BUs with floating vessels e.g. FPSO, FSO", which does not describe Hebron or
-Hibernia. Recorded in `README.md`.
+**Flag / Class remains the only deliberate omission, now confirmed.** Four questions the
+source scopes to "BUs with floating vessels e.g. FPSO, FSO". The asset confirmed in
+August 2026 that Hebron and Hibernia are **not floating vessels**, so these questions do
+not apply and are correctly absent. This is no longer an open assumption — recorded in
+`README.md`.
 
 **Still open:** the Assessor Guide carries two variants of several Operating Procedures
 and Training questions — one for the CAS route, one for the Training and Competency UBP
