@@ -14,12 +14,38 @@ Open any of these directly in a browser — no build step, no server, no depende
 | File | What it is | Best for |
 |---|---|---|
 | `LOFT Training Flip Card.v1.html` | 93 flip cards across 10 categories, with Known / Needs Review tracking, filters, keyboard shortcuts and progress saved in the browser | Drilling and self-testing |
-| `LOFT_Assessment_Study Use Google Chrome20260212.html` | Full study guide — 19 sections, 101 questions, 44-term glossary, links to source material | Reading end to end |
+| `LOFT_Assessment_Study Use Google Chrome20260212.html` | Full study guide — 19 sections, 101 questions, 44-term glossary, plus an **assessor notes panel** on every question | Reading end to end, and recording an assessment |
 | `Loft.html` | Interactive Q&A over the Global Module, with Study Mode / Test Mode and search | Working through the Assessor Guide question by question |
 
 All three cover the same categories: Risk Management, Training, Operating
 Procedures, Critical Equipment, Alarm Management, Work Management, Management of
 Change, Incident Investigation, Environmental, and Emergency Response.
+
+## Recording an assessment
+
+The study guide carries a notes panel under every question, for the assessor or the
+assessment team to use during a verification interview.
+
+- **Notes** — a free-text box per question for evidence, examples given, and follow-ups.
+- **Outcome** — mark each question *Demonstrated*, *Needs development*, or
+  *Gap — action required*. A running count sits in the header bar.
+- **Session details** — candidate, position, assessment team, date.
+
+**Saving.** Everything is saved in the browser as you type, so closing the tab or
+reloading will not lose it. That copy lives only in that browser on that machine, so it is
+working state, not a record.
+
+To keep or share an assessment, use **Save file** — it downloads a `.json` file named for
+the candidate and date. **Load file** restores it, on any machine. That file is the record
+to pass to the assessment team; hand it over rather than relying on the browser copy.
+
+**Print / PDF** produces a clean record: sidebars and buttons drop away, and the candidate,
+assessment team and date print at the top with each question, its notes and its outcome.
+
+**Clear all** wipes the page. Save to a file first if the notes matter.
+
+> If two people assess on the same computer and browser, they share the same working copy.
+> Save to a file and clear between candidates.
 
 ## Source documents
 

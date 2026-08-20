@@ -2128,5 +2128,355 @@ Explain your role in maintaining and operating emergency response equipment for 
     <p>
       Explain the basic process flows of the facilities within your assigned asset—either Hebron or Hibernia. Work with the Production Advisor to gain an understanding. The explanation should focus on the general flow of materials and key process units, without detailing operating conditions. You only need to understand the basic process flow—pressure, temperature, and flow conditions are not required.
       </p></div></div></section></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></strong></strong></strong></strong></strong></strong></strong></strong></strong></section></main>
+
+<style id="assessor-notes-css">
+  :root { --note-accent:#0056b3; --met:#0f8e5a; --dev:#b45309; --gap:#b91c1c; }
+
+  #assessSession {
+    position: sticky; top: 0; z-index: 500;
+    background: #002244; color: #fff;
+    padding: 10px 16px; margin: 0 0 16px;
+    border-radius: 6px;
+    display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: flex-end;
+  }
+  /* The glossary toggle is position:fixed and sits over the top-left of the
+     content column while the glossary is closed - reserve space so it never
+     covers the Candidate field. */
+  #mainContent.collapsed #assessSession { padding-left: 140px; }
+  #assessSession .fld { display: flex; flex-direction: column; gap: 3px; }
+  #assessSession label { font-size: 11px; letter-spacing: .04em; text-transform: uppercase; opacity: .8; }
+  #assessSession input {
+    font: inherit; font-size: 14px; padding: 5px 8px;
+    border: 1px solid #38618f; border-radius: 4px; background: #fff; color: #111; min-width: 150px;
+  }
+  #assessSession .spacer { flex: 1 1 auto; }
+  #assessSession button {
+    font: inherit; font-size: 13px; padding: 7px 12px; cursor: pointer;
+    border: 1px solid #6f92c0; border-radius: 5px; background: #14427a; color: #fff;
+  }
+  #assessSession button:hover { background: #1b5699; }
+  #assessSession button.primary { background: #0f8e5a; border-color: #0f8e5a; }
+  #assessProgress { font-size: 12px; opacity: .9; width: 100%; }
+  #assessProgress b { color: #7fd8b4; }
+
+  .note-panel {
+    border-left: 4px solid var(--note-accent);
+    background: #f7fafd; border-radius: 0 6px 6px 0;
+    padding: 10px 12px; margin: 12px 0 4px;
+  }
+  .note-panel > .np-head {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 6px;
+  }
+  .note-panel .np-label {
+    font-size: 11px; font-weight: 700; letter-spacing: .05em;
+    text-transform: uppercase; color: var(--note-accent);
+  }
+  .note-panel textarea {
+    width: 100%; box-sizing: border-box; font: inherit; font-size: 14px;
+    padding: 8px; border: 1px solid #c9d6e5; border-radius: 5px;
+    resize: vertical; min-height: 62px; background: #fff;
+  }
+  .note-panel textarea:focus { outline: 2px solid var(--note-accent); outline-offset: -1px; }
+  .outcome-btn {
+    font: inherit; font-size: 12px; padding: 4px 10px; cursor: pointer;
+    border: 1px solid #b8c6d6; border-radius: 999px; background: #fff; color: #40536b;
+  }
+  .outcome-btn[aria-pressed="true"] { color: #fff; border-color: transparent; font-weight: 600; }
+  .outcome-btn[data-outcome="met"][aria-pressed="true"]     { background: var(--met); }
+  .outcome-btn[data-outcome="dev"][aria-pressed="true"]     { background: var(--dev); }
+  .outcome-btn[data-outcome="gap"][aria-pressed="true"]     { background: var(--gap); }
+  .qa.has-note { box-shadow: inset 3px 0 0 var(--note-accent); }
+
+  @media print {
+    #toc, #glossarySidebar, #glossaryToggle, #overlay { display: none !important; }
+    /* Keep candidate / assessor / date on the printed record - drop only the controls. */
+    #assessSession {
+      position: static !important; background: #fff !important; color: #000 !important;
+      padding: 0 0 10px !important; margin-bottom: 14px !important;
+      border-bottom: 2px solid #002244; border-radius: 0; page-break-after: avoid;
+    }
+    #assessSession button, #assessSaveFlag { display: none !important; }
+    #assessSession label { color: #444 !important; opacity: 1 !important; }
+    #assessSession input {
+      border: none !important; border-bottom: 1px solid #999 !important;
+      border-radius: 0 !important; padding-left: 0 !important; font-weight: 600;
+    }
+    #assessProgress { color: #333 !important; }
+    header { margin-left: 0 !important; }
+    main { margin-left: 0 !important; max-width: none !important; }
+    section { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+    .note-panel { break-inside: avoid; }
+    .note-panel textarea { border: 1px solid #999; min-height: 0; height: auto; }
+    .outcome-btn:not([aria-pressed="true"]) { display: none; }
+  }
+</style>
+
+<script id="assessor-notes-js">
+(function () {
+  'use strict';
+
+  var KEY = 'loft-assessor-notes-v1';
+  var OUTCOMES = [
+    { id: 'met', label: 'Demonstrated' },
+    { id: 'dev', label: 'Needs development' },
+    { id: 'gap', label: 'Gap - action required' }
+  ];
+  var state = { session: {}, notes: {} };
+  var saveTimer = null;
+
+  function hash(str) {
+    var h = 5381, i;
+    for (i = 0; i < str.length; i++) { h = ((h << 5) + h + str.charCodeAt(i)) >>> 0; }
+    return h.toString(36);
+  }
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (raw) {
+        var parsed = JSON.parse(raw);
+        state.session = parsed.session || {};
+        state.notes = parsed.notes || {};
+      }
+    } catch (e) { /* storage unavailable - session stays in memory */ }
+  }
+
+  function persist() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* ignore */ }
+  }
+
+  function queueSave() {
+    clearTimeout(saveTimer);
+    flag('Saving...');
+    saveTimer = setTimeout(function () { persist(); updateProgress(); flag('Saved'); }, 400);
+  }
+
+  function flag(msg) {
+    var el = document.getElementById('assessSaveFlag');
+    if (el) { el.textContent = msg; }
+  }
+
+  /* ---------- question discovery ---------- */
+
+  function questions() {
+    var out = [];
+    var seen = {};
+    [].forEach.call(document.querySelectorAll('.question'), function (q) {
+      var text = (q.textContent || '').replace(/\s+/g, ' ').trim();
+      if (text.length < 8) { return; }                       // skip stray/empty nodes
+      var base = 'q' + hash(text.slice(0, 220));
+      seen[base] = (seen[base] || 0) + 1;
+      // Two places can legitimately carry the same wording; suffix repeats so each
+      // gets its own panel and its own stored note rather than being dropped.
+      var id = seen[base] === 1 ? base : base + '_' + seen[base];
+      var sec = q.closest('section');
+      out.push({
+        el: q,
+        id: id,
+        text: text,
+        host: q.closest('.qa') || q.parentElement,
+        section: sec ? (sec.querySelector('h2') ? sec.querySelector('h2').textContent.trim() : sec.id) : ''
+      });
+    });
+    return out;
+  }
+
+  /* ---------- panel construction ---------- */
+
+  function buildPanel(item) {
+    var rec = state.notes[item.id] || {};
+    var panel = document.createElement('div');
+    panel.className = 'note-panel';
+    panel.setAttribute('data-note-panel', item.id);
+
+    var head = document.createElement('div');
+    head.className = 'np-head';
+    var lbl = document.createElement('span');
+    lbl.className = 'np-label';
+    lbl.textContent = 'Assessor notes';
+    head.appendChild(lbl);
+
+    OUTCOMES.forEach(function (o) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'outcome-btn';
+      b.dataset.outcome = o.id;
+      b.textContent = o.label;
+      b.setAttribute('aria-pressed', rec.outcome === o.id ? 'true' : 'false');
+      b.addEventListener('click', function () {
+        var cur = (state.notes[item.id] || {}).outcome;
+        setRecord(item, { outcome: cur === o.id ? '' : o.id });
+        [].forEach.call(head.querySelectorAll('.outcome-btn'), function (x) {
+          x.setAttribute('aria-pressed',
+            x.dataset.outcome === (state.notes[item.id] || {}).outcome ? 'true' : 'false');
+        });
+      });
+      head.appendChild(b);
+    });
+    panel.appendChild(head);
+
+    var ta = document.createElement('textarea');
+    ta.rows = 3;
+    ta.placeholder = 'Evidence given, examples, follow-up required...';
+    ta.value = rec.text || '';
+    ta.setAttribute('aria-label', 'Assessor notes for: ' + item.text.slice(0, 90));
+    ta.addEventListener('input', function () { setRecord(item, { text: ta.value }); });
+    panel.appendChild(ta);
+
+    return panel;
+  }
+
+  function setRecord(item, patch) {
+    var rec = state.notes[item.id] || { q: item.text.slice(0, 300), section: item.section };
+    if ('text' in patch) { rec.text = patch.text; }
+    if ('outcome' in patch) { rec.outcome = patch.outcome; }
+    rec.q = item.text.slice(0, 300);
+    rec.section = item.section;
+    if (!rec.text && !rec.outcome) { delete state.notes[item.id]; }
+    else { state.notes[item.id] = rec; }
+    if (item.host && item.host.classList) {
+      item.host.classList.toggle('has-note', !!state.notes[item.id]);
+    }
+    queueSave();
+  }
+
+  /* ---------- session bar ---------- */
+
+  var FIELDS = [
+    { k: 'candidate', l: 'Candidate' },
+    { k: 'position',  l: 'Position' },
+    { k: 'assessors', l: 'Assessment team' },
+    { k: 'date',      l: 'Date', type: 'date' }
+  ];
+
+  function buildSessionBar() {
+    var bar = document.createElement('div');
+    bar.id = 'assessSession';
+
+    FIELDS.forEach(function (f) {
+      var w = document.createElement('div'); w.className = 'fld';
+      var l = document.createElement('label'); l.textContent = f.l; l.htmlFor = 'sess_' + f.k;
+      var i = document.createElement('input');
+      i.id = 'sess_' + f.k; i.type = f.type || 'text';
+      i.value = state.session[f.k] || '';
+      i.addEventListener('input', function () { state.session[f.k] = i.value; queueSave(); });
+      w.appendChild(l); w.appendChild(i); bar.appendChild(w);
+    });
+
+    var sp = document.createElement('div'); sp.className = 'spacer'; bar.appendChild(sp);
+
+    [['Save file', saveFile, 'primary'],
+     ['Load file', loadFile, ''],
+     ['Print / PDF', function () { window.print(); }, ''],
+     ['Clear all', clearAll, '']].forEach(function (t) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.textContent = t[0]; if (t[2]) { b.className = t[2]; }
+      b.addEventListener('click', t[1]);
+      bar.appendChild(b);
+    });
+
+    var prog = document.createElement('div');
+    prog.id = 'assessProgress';
+    prog.innerHTML = '<span id="assessCount"></span> &middot; <span id="assessSaveFlag">Saved</span>';
+    bar.appendChild(prog);
+    return bar;
+  }
+
+  function updateProgress() {
+    var total = document.querySelectorAll('[data-note-panel]').length;
+    var done = Object.keys(state.notes).length;
+    var counts = { met: 0, dev: 0, gap: 0 };
+    Object.keys(state.notes).forEach(function (k) {
+      var o = state.notes[k].outcome; if (o && counts[o] !== undefined) { counts[o]++; }
+    });
+    var el = document.getElementById('assessCount');
+    if (el) {
+      el.innerHTML = '<b>' + done + '</b> of ' + total + ' questions recorded &middot; ' +
+        counts.met + ' demonstrated, ' + counts.dev + ' needs development, ' + counts.gap + ' gap';
+    }
+  }
+
+  /* ---------- file save / load ---------- */
+
+  function stamp() {
+    var c = (state.session.candidate || 'assessment').replace(/[^A-Za-z0-9_-]+/g, '-');
+    var d = state.session.date || '';
+    return ('LOFT-' + c + (d ? '-' + d : '')).replace(/-+/g, '-');
+  }
+
+  function download(name, mime, text) {
+    var blob = new Blob([text], { type: mime });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = name;
+    document.body.appendChild(a); a.click();
+    setTimeout(function () { URL.revokeObjectURL(url); a.remove(); }, 0);
+  }
+
+  function saveFile() {
+    persist();
+    download(stamp() + '.json', 'application/json',
+             JSON.stringify({ format: 'loft-assessor-notes', version: 1, saved: new Date().toISOString(),
+                              session: state.session, notes: state.notes }, null, 2));
+  }
+
+  function loadFile() {
+    var inp = document.createElement('input');
+    inp.type = 'file'; inp.accept = '.json,application/json';
+    inp.addEventListener('change', function () {
+      var f = inp.files && inp.files[0];
+      if (!f) { return; }
+      var r = new FileReader();
+      r.onload = function () {
+        try {
+          var d = JSON.parse(r.result);
+          if (d.format !== 'loft-assessor-notes') { throw new Error('not a LOFT notes file'); }
+          if (Object.keys(state.notes).length &&
+              !window.confirm('Replace the notes currently on this page with the file contents?')) { return; }
+          state.session = d.session || {};
+          state.notes = d.notes || {};
+          persist();
+          window.location.reload();
+        } catch (e) {
+          window.alert('Could not read that file: ' + e.message);
+        }
+      };
+      r.readAsText(f);
+    });
+    inp.click();
+  }
+
+  function clearAll() {
+    if (!window.confirm('Clear all notes and outcomes on this page? Save to a file first if you need them.')) { return; }
+    state = { session: {}, notes: {} };
+    persist();
+    window.location.reload();
+  }
+
+  /* ---------- init ---------- */
+
+  function init() {
+    load();
+    var items = questions();
+    items.forEach(function (item) {
+      var panel = buildPanel(item);
+      if (item.host && item.host.appendChild) { item.host.appendChild(panel); }
+      else { item.el.parentNode.insertBefore(panel, item.el.nextSibling); }
+      if (state.notes[item.id] && item.host && item.host.classList) {
+        item.host.classList.add('has-note');
+      }
+    });
+    var main = document.getElementById('mainContent');
+    if (main) { main.insertBefore(buildSessionBar(), main.firstChild); }
+    updateProgress();
+    window.addEventListener('beforeunload', persist);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else { init(); }
+})();
+</script>
+
 </body>
 </html>
