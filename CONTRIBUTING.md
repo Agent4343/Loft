@@ -40,14 +40,20 @@ the mapping.
 
 ## Changing the HTML
 
-- All three files are standalone: no build, no dependencies, no server. Keep them
-  that way — they are opened from disk, sometimes offshore.
+- There is **one** study aid file now, `LOFT-Process-Safety.html`. Guide, Test and
+  Cards are three views of the same questions — do not fork it into separate files
+  again. The reason it was consolidated is that every content fix previously had to
+  be repeated in two or three places, and they drifted.
+- It is standalone: no build, no dependencies, no server. Keep it that way — it is
+  opened from disk, sometimes offshore.
+- After any content edit run `python3 tools-coverage-check.py`. It verifies that all
+  57 Assessor Guide topics are still present and exits non-zero if one goes missing.
 - Open the file in a browser and confirm it renders and behaves before committing.
   Check the browser console is clean.
-- `LOFT Training Flip Card.v1.html` stores progress in `localStorage` keyed on a
-  hash of the question text. **Changing question wording resets a user's progress
-  for that card.** That is acceptable for a correction; avoid it for cosmetic edits.
-- The study guide's markup was repaired in August 2026 — it previously had a
+- Card progress and assessor notes are stored keyed on a hash of the question text.
+  **Changing question wording resets progress and unlinks any note for that
+  question.** That is acceptable for a correction; avoid it for cosmetic edits.
+- The markup was repaired in August 2026 — it previously had a
   premature `</body></html>` partway down, with the TOC and all 19 sections
   sitting after it. Tags are balanced now; keep them that way. If you ever
   regenerate the file wholesale, verify afterwards that the rendered

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>LOFT Assessment Study Guide</title>
+  <title>LOFT Process Safety &ndash; Study Guide, Test and Cards</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -2472,9 +2472,496 @@ Explain your role in maintaining and operating emergency response equipment for 
     window.addEventListener('beforeunload', persist);
   }
 
+  /* Shared with Cards mode so a note typed in either place is the same note. */
+  window.__loftGetNote = function (id) {
+    return (state.notes[id] || {}).text || '';
+  };
+  window.__loftSetNote = function (id, q, section, text) {
+    var rec = state.notes[id] || {};
+    rec.text = text; rec.q = (q || '').slice(0, 300); rec.section = section || rec.section || '';
+    if (!rec.text && !rec.outcome) { delete state.notes[id]; } else { state.notes[id] = rec; }
+    var panel = document.querySelector('[data-note-panel="' + id + '"] textarea');
+    if (panel && panel.value !== text) { panel.value = text; }
+    var host = panel ? panel.closest('.qa') : null;
+    if (host) { host.classList.toggle('has-note', !!state.notes[id]); }
+    queueSave();
+  };
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else { init(); }
+})();
+</script>
+
+<style id="loft-modes-css">
+  :root { --mode-bar:#001a33; --card-bg:#0f1720; }
+
+  /* ---------- mode bar ---------- */
+  #modeBar {
+    position: fixed; top: 0; left: 0; right: 0; height: 44px; z-index: 1200;
+    background: var(--mode-bar); color: #fff;
+    display: flex; align-items: center; gap: 6px; padding: 0 14px;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  #modeBar .brand { font-weight: 700; font-size: 14px; letter-spacing: .02em; margin-right: 10px; white-space: nowrap; }
+  #modeBar .brand span { color: #7fd8b4; font-weight: 400; }
+  .mode-btn {
+    font: inherit; font-size: 13px; padding: 6px 14px; cursor: pointer;
+    background: transparent; color: #b9cbe0; border: 1px solid transparent; border-radius: 5px;
+  }
+  .mode-btn:hover { background: #123252; color: #fff; }
+  .mode-btn[aria-pressed="true"] { background: #0056b3; color: #fff; font-weight: 600; }
+  #modeBar .grow { flex: 1; }
+  #modeHint { font-size: 12px; color: #8ba6c2; white-space: nowrap; }
+
+  /* push the existing fixed chrome below the bar */
+  body { padding-top: 44px; }
+  #toc { top: 44px !important; height: calc(100vh - 44px) !important; }
+  #glossarySidebar { top: 44px !important; height: calc(95vh - 44px) !important; }
+  #glossaryToggle { top: 59px !important; }
+  #assessSession { top: 44px; }
+
+  /* ---------- test mode ---------- */
+  body.mode-test .answer[data-hidden="1"] { display: none; }
+  .reveal-btn {
+    font: inherit; font-size: 13px; margin: 8px 0 2px; padding: 6px 14px; cursor: pointer;
+    background: #fff; color: #0056b3; border: 1px solid #0056b3; border-radius: 6px;
+  }
+  .reveal-btn:hover { background: #0056b3; color: #fff; }
+  body:not(.mode-test) .reveal-btn { display: none; }
+  .tool-btn {
+    font: inherit; font-size: 13px; padding: 7px 14px; cursor: pointer; white-space: nowrap;
+    background: #fff; color: #0056b3; border: 1px solid #0056b3; border-radius: 6px;
+  }
+  .tool-btn:hover { background: #0056b3; color: #fff; }
+  #testTools { display: none; gap: 10px; align-items: center; margin: 0 0 14px; flex-wrap: wrap; }
+  body.mode-test #testTools { display: flex; }
+  #testSearch {
+    font: inherit; font-size: 14px; padding: 8px 10px; min-width: 260px; flex: 1;
+    border: 1px solid #c9d6e5; border-radius: 6px;
+  }
+  #testCount { font-size: 13px; color: #55677d; }
+  .q-hidden { display: none !important; }
+
+  /* ---------- card mode ---------- */
+  #cardLayer {
+    position: fixed; inset: 44px 0 0 0; z-index: 1100; display: none;
+    background: var(--card-bg); color: #d7e2ee;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    flex-direction: column;
+  }
+  body.mode-cards #cardLayer { display: flex; }
+  body.mode-cards { overflow: hidden; }
+  #cardCats {
+    display: flex; gap: 4px; padding: 10px 16px; overflow-x: auto;
+    background: #16202b; border-bottom: 1px solid #24313f; flex-shrink: 0;
+  }
+  .cat-chip {
+    font: inherit; font-size: 12px; padding: 5px 12px; white-space: nowrap; cursor: pointer;
+    background: transparent; color: #8ea4bb; border: 1px solid #2c3a49; border-radius: 999px;
+  }
+  .cat-chip[aria-pressed="true"] { background: #0056b3; color: #fff; border-color: #0056b3; }
+  #cardStage { flex: 1; display: flex; flex-direction: column; align-items: center;
+               justify-content: center; padding: 18px; gap: 14px; min-height: 0; }
+  #cardBox {
+    width: min(860px, 100%); flex: 1; max-height: 460px; background: #1b2735;
+    border: 1px solid #2c3a49; border-radius: 10px; display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  #cardHead {
+    display: flex; justify-content: space-between; align-items: center; gap: 10px;
+    padding: 10px 16px; border-bottom: 1px solid #2c3a49; font-size: 12px; color: #7f97b0;
+  }
+  #cardHead .cat { color: #7fd8b4; font-weight: 600; }
+  #cardBody { flex: 1; overflow-y: auto; padding: 22px 26px; font-size: 16px; line-height: 1.6; }
+  #cardBody.q-face { display: flex; align-items: center; justify-content: center; text-align: center; font-size: 19px; }
+  #cardBody ul { padding-left: 1.2em; } #cardBody li { margin: .3em 0; }
+  #cardBody .route-cvpe, #cardBody .route-cas { color: #cfe0f0; }
+  #cardFoot { padding: 10px 16px; border-top: 1px solid #2c3a49; display: flex; gap: 8px; justify-content: center; }
+  .card-ctrl {
+    font: inherit; font-size: 13px; padding: 8px 16px; cursor: pointer;
+    background: #22303f; color: #cfe0f0; border: 1px solid #33445a; border-radius: 6px;
+  }
+  .card-ctrl:hover:not(:disabled) { background: #2c3d50; }
+  .card-ctrl:disabled { opacity: .35; cursor: default; }
+  .card-ctrl.flip { background: #0056b3; border-color: #0056b3; color: #fff; font-weight: 600; min-width: 160px; }
+  .card-ctrl.got { border-color: #0f8e5a; color: #6ee7b7; }
+  .card-ctrl.rev { border-color: #b91c1c; color: #fca5a5; }
+  #cardStats { font-size: 12px; color: #7f97b0; display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+  #cardStats b { color: #cfe0f0; }
+  #cardKeys { font-size: 11px; color: #5f7288; }
+  #cardNote { width: min(860px,100%); }
+  #cardNote textarea {
+    width: 100%; box-sizing: border-box; font: inherit; font-size: 13px; padding: 7px 9px;
+    background: #16202b; color: #d7e2ee; border: 1px solid #2c3a49; border-radius: 6px;
+    resize: vertical; min-height: 44px;
+  }
+  #cardNote label { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: #7f97b0; }
+  @media print { #modeBar, #cardLayer, #testTools, .reveal-btn { display: none !important; } body { padding-top: 0; } }
+</style>
+<script id="loft-modes-js">
+(function () {
+  'use strict';
+
+  var PROGRESS_KEY = 'loft-study-progress-v1';
+  var MODE_KEY = 'loft-mode-v1';
+  var progress = {};          // candidate self-study: id -> 'done' | 'review'
+  var index = [];             // [{id, q, el, answers, section}]
+  var mode = 'guide';
+
+  // card state
+  var cat = null, pos = 0, flipped = false, order = null;
+
+  function hash(str) {
+    var h = 5381, i;
+    for (i = 0; i < str.length; i++) { h = ((h << 5) + h + str.charCodeAt(i)) >>> 0; }
+    return h.toString(36);
+  }
+
+  /* ---------------- index ---------------- */
+
+  /* Sections in this document are nested rather than siblings, so closest('section')
+     attributes most questions to the wrong topic. Walk in document order instead and
+     take the most recently opened section as the current one. */
+  function buildIndex() {
+    var nodes = document.querySelectorAll('main section, .question, .answer');
+    var out = [], cur = null, seen = {}, sectionName = 'Other';
+    [].forEach.call(nodes, function (n) {
+      if (n.tagName === 'SECTION') {
+        var h2 = n.querySelector(':scope > h2') || n.querySelector('h2');
+        sectionName = h2 ? h2.textContent.replace(/\s+/g, ' ').trim() : (n.id || sectionName);
+        return;
+      }
+      if (n.classList.contains('question')) {
+        var t = (n.textContent || '').replace(/\s+/g, ' ').trim();
+        if (t.length < 8) { cur = null; return; }
+        var base = 'q' + hash(t.slice(0, 220));
+        seen[base] = (seen[base] || 0) + 1;
+        cur = {
+          id: seen[base] === 1 ? base : base + '_' + seen[base],
+          q: t, el: n, answers: [], section: sectionName
+        };
+        out.push(cur);
+      } else if (cur) {
+        cur.answers.push(n);
+      }
+    });
+    return out;
+  }
+
+  /* ---------------- storage ---------------- */
+
+  function loadProgress() {
+    try { progress = JSON.parse(localStorage.getItem(PROGRESS_KEY)) || {}; }
+    catch (e) { progress = {}; }
+  }
+  function saveProgress() {
+    try { localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress)); } catch (e) { /* ignore */ }
+  }
+
+  /* ---------------- mode bar ---------------- */
+
+  var MODES = [
+    { id: 'guide', label: 'Guide',  hint: 'Read the questions with model answers' },
+    { id: 'test',  label: 'Test',   hint: 'Answers hidden - reveal one at a time' },
+    { id: 'cards', label: 'Cards',  hint: 'One question at a time - Space flips, G / R mark, S shuffles' }
+  ];
+
+  function buildBar() {
+    var bar = document.createElement('div');
+    bar.id = 'modeBar';
+    var brand = document.createElement('div');
+    brand.className = 'brand';
+    brand.innerHTML = 'LOFT <span>Process Safety</span>';
+    bar.appendChild(brand);
+
+    MODES.forEach(function (m) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'mode-btn'; b.textContent = m.label;
+      b.dataset.mode = m.id;
+      b.addEventListener('click', function () { setMode(m.id); });
+      bar.appendChild(b);
+    });
+
+    var grow = document.createElement('div'); grow.className = 'grow'; bar.appendChild(grow);
+    var hint = document.createElement('div'); hint.id = 'modeHint'; bar.appendChild(hint);
+    document.body.appendChild(bar);
+  }
+
+  function setMode(next) {
+    mode = next;
+    document.body.classList.remove('mode-guide', 'mode-test', 'mode-cards');
+    document.body.classList.add('mode-' + next);
+    [].forEach.call(document.querySelectorAll('.mode-btn'), function (b) {
+      b.setAttribute('aria-pressed', b.dataset.mode === next ? 'true' : 'false');
+    });
+    var m = MODES.filter(function (x) { return x.id === next; })[0];
+    document.getElementById('modeHint').textContent = m ? m.hint : '';
+
+    if (next === 'test') { hideAnswers(true); }
+    else if (next === 'guide') { hideAnswers(false); clearFilter(); }
+    if (next === 'cards') { renderCard(); }
+    try { localStorage.setItem(MODE_KEY, next); } catch (e) { /* ignore */ }
+    window.scrollTo(0, 0);
+  }
+
+  /* ---------------- test mode ---------------- */
+
+  function hideAnswers(on) {
+    [].forEach.call(document.querySelectorAll('.answer'), function (a) {
+      if (on) { a.setAttribute('data-hidden', '1'); }
+      else { a.removeAttribute('data-hidden'); }
+    });
+    index.forEach(function (it) {
+      if (it.revealBtn) { it.revealBtn.textContent = on ? 'Reveal answer' : 'Hide answer'; }
+    });
+  }
+
+  function addRevealButtons() {
+    index.forEach(function (it) {
+      if (!it.answers.length) { return; }
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'reveal-btn'; b.textContent = 'Reveal answer';
+      b.addEventListener('click', function () {
+        var hidden = it.answers[0].hasAttribute('data-hidden');
+        it.answers.forEach(function (a) {
+          if (hidden) { a.removeAttribute('data-hidden'); } else { a.setAttribute('data-hidden', '1'); }
+        });
+        b.textContent = hidden ? 'Hide answer' : 'Reveal answer';
+      });
+      it.el.parentNode.insertBefore(b, it.el.nextSibling);
+      it.revealBtn = b;
+    });
+  }
+
+  function buildTestTools() {
+    var wrap = document.createElement('div');
+    wrap.id = 'testTools';
+    var inp = document.createElement('input');
+    inp.id = 'testSearch'; inp.type = 'search';
+    inp.placeholder = 'Search questions and answers (e.g. ALARP, SIMOPS, temporary defeat)';
+    inp.addEventListener('input', function () { applyFilter(inp.value); });
+    var count = document.createElement('span'); count.id = 'testCount';
+    var showAll = document.createElement('button');
+    showAll.type = 'button'; showAll.className = 'tool-btn';
+    showAll.textContent = 'Reveal all';
+    showAll.addEventListener('click', function () { hideAnswers(false); });
+    var hideAll = document.createElement('button');
+    hideAll.type = 'button'; hideAll.className = 'tool-btn';
+    hideAll.textContent = 'Hide all';
+    hideAll.addEventListener('click', function () { hideAnswers(true); });
+    wrap.appendChild(inp); wrap.appendChild(showAll); wrap.appendChild(hideAll); wrap.appendChild(count);
+    var main = document.getElementById('mainContent');
+    var bar = document.getElementById('assessSession');
+    if (main) { main.insertBefore(wrap, bar ? bar.nextSibling : main.firstChild); }
+  }
+
+  function applyFilter(term) {
+    var q = (term || '').toLowerCase().trim();
+    var shown = 0;
+    index.forEach(function (it) {
+      var host = it.el.closest('.qa') || it.el;
+      var hay = (it.q + ' ' + it.answers.map(function (a) { return a.textContent; }).join(' ')).toLowerCase();
+      var hit = !q || hay.indexOf(q) !== -1;
+      host.classList.toggle('q-hidden', !hit);
+      if (hit) { shown++; }
+    });
+    var c = document.getElementById('testCount');
+    if (c) { c.textContent = q ? (shown + ' of ' + index.length + ' match') : ''; }
+  }
+
+  function clearFilter() {
+    var inp = document.getElementById('testSearch');
+    if (inp) { inp.value = ''; }
+    applyFilter('');
+  }
+
+  /* ---------------- card mode ---------------- */
+
+  /* Ordered by section position in the document, not by whichever question
+     happened to appear first, so the chips read 1.0, 2.0, 2.1 ... in order. */
+  function categories() {
+    var order = [];
+    [].forEach.call(document.querySelectorAll('main section'), function (sec) {
+      var h2 = sec.querySelector('h2');
+      var name = h2 ? h2.textContent.replace(/\s+/g, ' ').trim() : sec.id;
+      if (order.indexOf(name) === -1) { order.push(name); }
+    });
+    var present = {};
+    index.forEach(function (it) { present[it.section] = 1; });
+    var out = order.filter(function (n) { return present[n]; });
+    Object.keys(present).forEach(function (n) { if (out.indexOf(n) === -1) { out.push(n); } });
+    return out;
+  }
+
+  function deck() {
+    var list = index.filter(function (it) { return !cat || it.section === cat; });
+    if (order) {
+      var byId = {};
+      list.forEach(function (it) { byId[it.id] = it; });
+      var reordered = [];
+      order.forEach(function (id) { if (byId[id]) { reordered.push(byId[id]); delete byId[id]; } });
+      Object.keys(byId).forEach(function (k) { reordered.push(byId[k]); });
+      return reordered;
+    }
+    return list;
+  }
+
+  function buildCardLayer() {
+    var layer = document.createElement('div');
+    layer.id = 'cardLayer';
+
+    var cats = document.createElement('div'); cats.id = 'cardCats';
+    var all = document.createElement('button');
+    all.type = 'button'; all.className = 'cat-chip'; all.textContent = 'All';
+    all.addEventListener('click', function () { cat = null; pos = 0; order = null; renderCats(); renderCard(); });
+    cats.appendChild(all);
+    categories().forEach(function (c) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'cat-chip'; b.dataset.cat = c;
+      b.textContent = c;
+      b.addEventListener('click', function () { cat = c; pos = 0; order = null; renderCats(); renderCard(); });
+      cats.appendChild(b);
+    });
+    layer.appendChild(cats);
+
+    var stage = document.createElement('div'); stage.id = 'cardStage';
+    stage.innerHTML =
+      '<div id="cardBox">' +
+        '<div id="cardHead"><span class="cat" id="cardCat"></span><span id="cardPos"></span></div>' +
+        '<div id="cardBody" class="q-face"></div>' +
+        '<div id="cardFoot">' +
+          '<button type="button" class="card-ctrl" id="cPrev">&#9664; Prev</button>' +
+          '<button type="button" class="card-ctrl flip" id="cFlip">Flip card</button>' +
+          '<button type="button" class="card-ctrl" id="cNext">Next &#9654;</button>' +
+          '<button type="button" class="card-ctrl got" id="cGot">&#10003; Got it</button>' +
+          '<button type="button" class="card-ctrl rev" id="cRev">&#10007; Review</button>' +
+          '<button type="button" class="card-ctrl" id="cShuf" title="Shuffle">&#8646;</button>' +
+        '</div>' +
+      '</div>' +
+      '<div id="cardNote"><label for="cardNoteBox">Assessor notes for this question</label>' +
+      '<textarea id="cardNoteBox" rows="2" placeholder="Notes typed here also appear in Guide mode"></textarea></div>' +
+      '<div id="cardStats"></div>' +
+      '<div id="cardKeys">Space flip &middot; &larr; &rarr; move &middot; G got it &middot; R review &middot; S shuffle</div>';
+    layer.appendChild(stage);
+    document.body.appendChild(layer);
+
+    document.getElementById('cPrev').addEventListener('click', function () { move(-1); });
+    document.getElementById('cNext').addEventListener('click', function () { move(1); });
+    document.getElementById('cFlip').addEventListener('click', flip);
+    document.getElementById('cGot').addEventListener('click', function () { mark('done'); });
+    document.getElementById('cRev').addEventListener('click', function () { mark('review'); });
+    document.getElementById('cShuf').addEventListener('click', shuffle);
+    document.getElementById('cardNoteBox').addEventListener('input', function () {
+      var d = deck()[pos];
+      if (d && window.__loftSetNote) { window.__loftSetNote(d.id, d.q, d.section, this.value); }
+    });
+    renderCats();
+  }
+
+  function renderCats() {
+    [].forEach.call(document.querySelectorAll('.cat-chip'), function (b) {
+      b.setAttribute('aria-pressed', (b.dataset.cat || null) === cat ? 'true' : 'false');
+    });
+  }
+
+  function renderCard() {
+    var list = deck();
+    var body = document.getElementById('cardBody');
+    if (!list.length) {
+      body.className = 'q-face'; body.textContent = 'No questions in this section.';
+      return;
+    }
+    if (pos >= list.length) { pos = list.length - 1; }
+    if (pos < 0) { pos = 0; }
+    var it = list[pos];
+    document.getElementById('cardCat').textContent = it.section;
+    document.getElementById('cardPos').textContent = (pos + 1) + ' / ' + list.length;
+
+    if (flipped) {
+      body.className = '';
+      body.innerHTML = it.answers.length
+        ? it.answers.map(function (a) { return a.innerHTML; }).join('<hr style="border-color:#2c3a49">')
+        : '<p style="color:#7f97b0">No model answer recorded for this question &mdash; see Guide mode.</p>';
+    } else {
+      body.className = 'q-face';
+      body.textContent = it.q;
+    }
+    document.getElementById('cFlip').textContent = flipped ? 'Show question' : 'Flip card';
+    document.getElementById('cPrev').disabled = pos === 0;
+    document.getElementById('cNext').disabled = pos === list.length - 1;
+    var nb = document.getElementById('cardNoteBox');
+    if (nb && window.__loftGetNote) { nb.value = window.__loftGetNote(it.id) || ''; }
+    renderStats(list);
+  }
+
+  function renderStats(list) {
+    var done = 0, rev = 0;
+    list.forEach(function (it) {
+      if (progress[it.id] === 'done') { done++; }
+      if (progress[it.id] === 'review') { rev++; }
+    });
+    document.getElementById('cardStats').innerHTML =
+      '<span><b>' + list.length + '</b> cards</span>' +
+      '<span><b style="color:#6ee7b7">' + done + '</b> got it</span>' +
+      '<span><b style="color:#fca5a5">' + rev + '</b> needs review</span>';
+  }
+
+  function flip() { flipped = !flipped; renderCard(); }
+  function move(d) {
+    var list = deck();
+    var n = pos + d;
+    if (n < 0 || n >= list.length) { return; }
+    pos = n; flipped = false; renderCard();
+  }
+  function mark(status) {
+    var list = deck(); var it = list[pos];
+    if (!it) { return; }
+    progress[it.id] = progress[it.id] === status ? undefined : status;
+    if (!progress[it.id]) { delete progress[it.id]; }
+    saveProgress();
+    renderStats(list);
+    if (pos < list.length - 1) { setTimeout(function () { move(1); }, 220); }
+  }
+  function shuffle() {
+    var list = deck().slice();
+    for (var i = list.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = list[i]; list[i] = list[j]; list[j] = t;
+    }
+    order = list.map(function (it) { return it.id; });
+    pos = 0; flipped = false; renderCard();
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (mode !== 'cards') { return; }
+    if (/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) { return; }
+    switch (e.key) {
+      case ' ': e.preventDefault(); flip(); break;
+      case 'ArrowRight': move(1); break;
+      case 'ArrowLeft': move(-1); break;
+      case 'g': case 'G': mark('done'); break;
+      case 'r': case 'R': mark('review'); break;
+      case 's': case 'S': shuffle(); break;
+    }
+  });
+
+  /* ---------------- init ---------------- */
+
+  function init() {
+    index = buildIndex();
+    loadProgress();
+    buildBar();
+    addRevealButtons();
+    buildTestTools();
+    buildCardLayer();
+    var saved = 'guide';
+    try { saved = localStorage.getItem(MODE_KEY) || 'guide'; } catch (e) { /* ignore */ }
+    setMode(['guide', 'test', 'cards'].indexOf(saved) === -1 ? 'guide' : saved);
+  }
+
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); }
+  else { init(); }
 })();
 </script>
 

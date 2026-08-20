@@ -760,3 +760,57 @@ correct but answer different things, and the flange-class rule is a Global Modul
 assessor can ask. All three now carry both, each labelled with its authority.
 
 - **§4.10 filename** and **§6.4 duplicate Task Book** — both owner's calls, left alone.
+
+
+---
+
+## 11. Consolidation to a single file (2026-08-20)
+
+The three study aids were merged into one: **`LOFT-Process-Safety.html`**.
+`Loft.html` and `LOFT Training Flip Card.v1.html` were removed; both remain in git
+history.
+
+**Why.** They held overlapping copies of the same material, so every content
+correction had to be made two or three times. Measured over this review's commits,
+**5 of 7 content commits touched more than one HTML file**:
+
+| Fix | Files touched |
+|---|---|
+| Role titles, 90-day window, initial defects | 3 |
+| CVPE route alignment | 3 |
+| Five missing questions + DWCM cadence | 2 |
+| Global flange-class answer | 2 |
+| TMEE330 citation | 2 |
+
+That duplication is what produced the drift this review had to clean up in the first
+place &mdash; the flip card and study guide disagreeing on role titles, on the CAS/CVPE
+route, and on whether LTIs are reviewed weekly or monthly.
+
+**What replaced them.** One file with three modes over a single set of questions:
+
+- **Guide** &mdash; questions with model answers by section, glossary, source links.
+- **Test** &mdash; answers hidden, revealed per question, with search.
+- **Cards** &mdash; one question at a time, flip, *Got it* / *Needs review*, shuffle,
+  category filter, keyboard shortcuts.
+
+Nothing is duplicated: all three modes read the same DOM, so a correction lands
+everywhere at once. Assessor notes and outcomes work across modes &mdash; a note typed on
+a card is the same note shown in Guide mode.
+
+**Two defects found and fixed while building it**, both caused by the document's
+nested `<section>` structure:
+
+- `closest('section')` attributed **79 of 100 questions to the wrong category**,
+  because 11 sections are nested rather than siblings. Replaced with a document-order
+  walk that tracks the most recently opened section. Categories now split
+  17/6/11/7/7/20/8/7/7/9/1, summing to 100.
+- Category chips were ordered by first question rather than section position, so 2.1
+  preceded 2.0.
+
+**Verification.** 101 questions, 106 answers, 100 note panels, 44 glossary terms, 19 TOC
+entries with no dead links, no console errors, no horizontal overflow; all three modes
+render; assessor save-to-file and reload round-trip confirmed; and
+`tools-coverage-check.py` reports **57 of 57 Assessor Guide topics present**.
+
+The coverage tool was rewritten to be self-contained &mdash; it reads the HTML directly
+and exits non-zero if a topic goes missing, so it can be run after any edit.

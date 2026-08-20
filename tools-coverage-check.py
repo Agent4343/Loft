@@ -1,5 +1,18 @@
+#!/usr/bin/env python3
+"""Checks that every Assessor Guide topic is still present in the study aid.
+
+Run after any content edit:   python3 tools-coverage-check.py
+Exits non-zero if a topic goes missing, so it can be wired into a check.
+
+Each topic carries several alternate phrasings because the aid paraphrases the
+source; matching on a single exact phrase produces false misses.
+"""
+import html
 import re
-# Curated topic probes: several alternate phrasings each, so paraphrase does not cause false misses.
+import sys
+
+TARGET = 'LOFT-Process-Safety.html'
+
 T = [
  ('2.1 RAM intent',                    ['common framework for identifying','intent of the ram']),
  ('2.1 Communicating RAM outcomes',    ['directly affected by identified risks','nature of the risk']),
@@ -59,16 +72,34 @@ T = [
  ('3.0 TRP phase objectives',          ['initial discovery','proactive response']),
  ('3.0 PEAR / IMT scenario',           ['pear','holding statement','imt']),
 ]
-files={'Loft':'rendered_lo.txt','Flip':'rendered_fc.txt','Study':'rendered_sg.txt'}
-txt={k:open(v,encoding='utf8').read() for k,v in files.items()}
-print('%-36s %-6s %-6s %-6s' % ('topic','Loft','Flip','Study'))
-print('-'*60)
-gaps=[]
-for name,ps in T:
-    row={k:any(p in txt[k] for p in ps) for k in files}
-    mark=lambda b:'yes' if b else 'NO'
-    line='%-36s %-6s %-6s %-6s' % (name,mark(row['Loft']),mark(row['Flip']),mark(row['Study']))
-    if not all(row.values()): gaps.append((name,row)); line+='  <--'
-    print(line)
-print()
-print('topics probed: %d | present in all three: %d | partial: %d' % (len(T),len(T)-len(gaps),len(gaps)))
+
+
+def text_of(path):
+    raw = open(path, encoding='utf8').read()
+    raw = re.sub(r'<(script|style)\b.*?</\1>', ' ', raw, flags=re.S | re.I)
+    raw = re.sub(r'<[^>]+>', ' ', raw)
+    return re.sub(r'\s+', ' ', html.unescape(raw)).lower()
+
+
+def main():
+    try:
+        body = text_of(TARGET)
+    except FileNotFoundError:
+        print('cannot find %s' % TARGET)
+        return 2
+    missing = [name for name, probes in T if not any(p in body for p in probes)]
+    for name, probes in T:
+        ok = any(p in body for p in probes)
+        print('%-42s %s' % (name, 'ok' if ok else 'MISSING'))
+    print()
+    print('%d topics checked, %d present, %d missing' % (len(T), len(T) - len(missing), len(missing)))
+    if missing:
+        print('\nMissing:')
+        for m in missing:
+            print('  - ' + m)
+        return 1
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())

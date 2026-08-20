@@ -7,19 +7,31 @@ Supervisor positions and the assessment teams who verify them.
 This repository is not an application. It holds three interactive HTML study aids
 and the controlled source documents they are derived from.
 
-## Study aids
+## The study aid
 
-Open any of these directly in a browser — no build step, no server, no dependencies.
+**`LOFT-Process-Safety.html`** — open it in any browser. No install, no server, works
+offline. One file, three modes, switched from the bar at the top:
 
-| File | What it is | Best for |
+| Mode | What it does | For |
 |---|---|---|
-| `LOFT Training Flip Card.v1.html` | 93 flip cards across 10 categories, with Known / Needs Review tracking, filters, keyboard shortcuts and progress saved in the browser | Drilling and self-testing |
-| `LOFT_Assessment_Study Use Google Chrome20260212.html` | Full study guide — 19 sections, 101 questions, 44-term glossary, plus an **assessor notes panel** on every question | Reading end to end, and recording an assessment |
-| `Loft.html` | Interactive Q&A over the Global Module, with Study Mode / Test Mode and search | Working through the Assessor Guide question by question |
+| **Guide** | Every question with its model answer, by section, with the glossary and source links | Reading through; running an assessment |
+| **Test** | Answers hidden, revealed one at a time, with search across questions and answers | Self-testing before the interview |
+| **Cards** | One question at a time — flip to the answer, mark *Got it* or *Needs review*, shuffle, filter by category | Practising recall |
 
-All three cover the same categories: Risk Management, Training, Operating
-Procedures, Critical Equipment, Alarm Management, Work Management, Management of
-Change, Incident Investigation, Environmental, and Emergency Response.
+All three modes read the **same** questions and answers. Correcting an answer fixes it
+everywhere at once — there is no second copy to drift out of step.
+
+It covers 100 questions across the ten Process Safety categories: Risk Management,
+Training, Operating Procedures, Critical Equipment, Alarm Management, Work Management,
+Management of Change, Incident Investigation, Environmental, and Emergency Response.
+
+Keyboard shortcuts in Cards mode: **Space** flips, **←/→** move, **G** marks got it,
+**R** marks needs review, **S** shuffles.
+
+> **This file replaces `Loft.html` and `LOFT Training Flip Card.v1.html`,** which were
+> removed. They held overlapping copies of the same material, and every content
+> correction had to be made in two or three places — five of seven content fixes in
+> August 2026 touched more than one file. Both remain in git history if needed.
 
 ## Recording an assessment
 
