@@ -59,7 +59,7 @@
     }
 
     #glossaryToggle.collapsed {
-      left: 10px;
+      left: calc(var(--toc-w) + 10px);
       border-radius: 0 6px 6px 0;
       box-shadow: 0 2px 6px rgba(0,86,179,0.4);
     }
@@ -69,13 +69,26 @@
       box-shadow: 0 4px 12px rgba(0, 61, 128, 0.6);
     }
 
+    #overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.35);
+      z-index: 900;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.25s ease, visibility 0.25s ease;
+    }
+    #overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
     #glossarySidebar {
       height: 95vh;
-      width: 300px;
+      width: var(--glossary-w);
       position: fixed;
       z-index: 1000;
       top: 0;
-      left: 180px;
+      left: var(--toc-w);
       background-color: #ffffff;
       border-right: 1px solid #ccc;
       overflow-y: auto;
@@ -94,6 +107,16 @@
       box-shadow: none;
     }
 
+    .glossary-note {
+      background: #fffbeb;
+      border: 1px solid #fcd34d;
+      border-radius: 6px;
+      padding: 8px 10px;
+      margin-bottom: 14px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #4b3f10;
+    }
     #glossarySidebar h2 {
       font-size: 20px;
       margin-bottom: 15px;
@@ -134,10 +157,16 @@
       max-height: 1000px;
     }
 
+    :root {
+      --toc-w: 200px;
+      --glossary-w: 300px;
+    }
     #toc {
       background: #e0e0e0;
       padding: 1rem;
-      max-width: 180px;
+      box-sizing: border-box;
+      width: var(--toc-w);
+      max-width: var(--toc-w);
       height: 100vh;
       overflow-y: auto;
       position: fixed;
@@ -173,8 +202,11 @@
       text-decoration: underline;
     }
 
+    header {
+      margin-left: var(--toc-w);
+    }
     main {
-      margin-left: 480px;
+      margin-left: calc(var(--toc-w) + var(--glossary-w));
       margin-right: auto;
       max-width: 1500px;
       padding: 1rem 2rem;
@@ -185,10 +217,13 @@
     }
 
       main.collapsed {
-        margin-left: 200px;
+        margin-left: calc(var(--toc-w) + 40px);
         margin-right: auto;
       }
 
+    section.section-current {
+      box-shadow: 0 0 0 2px #0056b3, 0 0 8px #ccc;
+    }
     section {
       background: white;
       padding: 1rem;
@@ -232,6 +267,10 @@
 
   <div id="glossarySidebar">
     <h2>Glossary</h2>
+    <div class="glossary-note">Global-module answers use the role titles as written in
+      Assessor Guide Rev 3.0: <strong>AM = Operations Manager</strong> and
+      <strong>PM = Site Manager</strong>. Asset-specific answers keep local Hebron/Hibernia
+      titles (Asset Manager, Production Manager).</div>
     <div class="glossary-term">ALARP</div>
     <div class="glossary-definition">As Low As is Reasonably Practicable - A risk management principle to reduce risk to a level that is as low as reasonably achievable.</div>
     <div class="glossary-term">HC1, HC2</div>
@@ -241,7 +280,7 @@
     <div class="glossary-term">SLS</div>
     <div class="glossary-definition">Second Line Supervisor - a supervisory role responsible for overseeing frontline supervisors and operational activities.</div>
     <div class="glossary-term">TLS</div>
-    <div class="glossary-definition">Third Line Supervisor (Asset Manager) - senior supervisory role responsible for asset management and risk approval.</div>
+    <div class="glossary-definition">Third Line Supervisor (Operations Manager) - senior supervisory role responsible for asset management and risk approval.</div>
     <div class="glossary-term">PIC</div>
     <div class="glossary-definition">Person In Charge - individual responsible for endorsing permits and coordinating work activities at the facility.</div>
     <div class="glossary-term">AA</div>
@@ -323,76 +362,52 @@
   </div>
 
   <script>
-      document.addEventListener('DOMContentLoaded', function() {
-      const terms = document.querySelectorAll('.glossary-term');
-      terms.forEach(term => {
-        term.addEventListener('click', () => {
-          term.classList.toggle('active');
+      document.addEventListener('DOMContentLoaded', function () {
+        var terms = document.querySelectorAll('.glossary-term');
+        terms.forEach(function (term) {
+          term.addEventListener('click', function () {
+            term.classList.toggle('active');
+          });
         });
-      });
 
-      // Add toggle functionality for glossary sidebar
-      const toggleBtn = document.getElementById('glossaryToggle');
-      const glossary = document.getElementById('glossarySidebar');
-      const toc = document.getElementById('toc');
-      const mainContent = document.getElementById('mainContent');
-      const overlay = document.createElement('div');
-      overlay.id = 'overlay';
-      document.body.appendChild(overlay);
+        var toggleBtn = document.getElementById('glossaryToggle');
+        var glossary = document.getElementById('glossarySidebar');
+        var toc = document.getElementById('toc');
+        var mainContent = document.getElementById('mainContent');
 
-      // Ensure glossary is collapsed by default, TOC visible
-      glossary.classList.add('collapsed');
-      toc.classList.remove('collapsed');
-      mainContent.classList.remove('collapsed');
-      toggleBtn.classList.add('collapsed');
-      overlay.classList.remove('active');
-      toggleBtn.textContent = 'Show Glossary';
+        var overlay = document.createElement('div');
+        overlay.id = 'overlay';
+        document.body.appendChild(overlay);
 
-      // Set initial main content margin based on glossary state
-      if (glossary.classList.contains('collapsed')) {
-        mainContent.style.marginLeft = '300px';
-      } else {
-        mainContent.style.marginLeft = '480px';
-      }
-
-      toggleBtn.addEventListener('click', () => {
-        glossary.classList.toggle('collapsed');
-        // TOC remains visible, do not toggle its collapsed state
-        mainContent.classList.toggle('collapsed');
-        toggleBtn.classList.toggle('collapsed');
-
-        if (glossary.classList.contains('collapsed')) {
-          toggleBtn.textContent = 'Show Glossary';
-          // Adjust main content margin when glossary is hidden (TOC width + padding)
-    mainContent.style.marginLeft = '300px';
-          // Hide overlay when glossary is collapsed
-          overlay.classList.remove('active');
-          // Allow pointer events on TOC
-          toc.style.pointerEvents = 'auto';
-        } else {
-          toggleBtn.textContent = 'Hide Glossary';
-          // Adjust main content margin when glossary is visible (TOC + glossary width)
-          mainContent.style.marginLeft = '480px';
-          // Show overlay when glossary is visible
-          overlay.classList.add('active');
-          // Disable pointer events on TOC to prevent interaction under overlay
-          toc.style.pointerEvents = 'none';
+        /* Single owner of the open/closed state. Widths live in the stylesheet
+           (main / main.collapsed) rather than inline styles, so the two paths
+           out of "open" cannot disagree. */
+        function setGlossary(open) {
+          glossary.classList.toggle('collapsed', !open);
+          toggleBtn.classList.toggle('collapsed', !open);
+          mainContent.classList.toggle('collapsed', !open);
+          overlay.classList.toggle('active', open);
+          toc.style.pointerEvents = open ? 'none' : 'auto';
+          toggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+          toggleBtn.textContent = open ? 'Hide Glossary' : 'Show Glossary';
         }
-      });
 
-      overlay.addEventListener('click', () => {
-        glossary.classList.add('collapsed');
-        // TOC remains visible
-        mainContent.classList.add('collapsed');
-        toggleBtn.classList.add('collapsed');
-        overlay.classList.remove('active');
-        toggleBtn.textContent = 'Show Glossary';
-        mainContent.style.marginLeft = '180px';
-        // Allow pointer events on TOC
-        toc.style.pointerEvents = 'auto';
+        toggleBtn.setAttribute('aria-controls', 'glossarySidebar');
+        toggleBtn.addEventListener('click', function () {
+          setGlossary(glossary.classList.contains('collapsed'));
+        });
+        overlay.addEventListener('click', function () {
+          setGlossary(false);
+        });
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && !glossary.classList.contains('collapsed')) {
+            setGlossary(false);
+          }
+        });
+
+        setGlossary(false);
       });
-    });
-  </script>
+    </script>
 </body>
 </html>
 
@@ -404,7 +419,7 @@
     <li data-section="purpose">1.2 Purpose of Leadership Assessor Guide</li>
     <li data-section="supervisor-role">1.3 Supervisor’s Role</li>
     <li data-section="candidate-role">1.4 Candidate’s Role</li>
-    <li data-section="verification">1.5 Verification and Assessment Process</li>
+    <li data-section="verification-assessment-process">1.5 Verification and Assessment Process</li>
     <li data-section="assessment-team">1.6 Assessment Team</li>
     <li data-section="process-safety">2.0 Process Safety Knowledge Requirements</li>
     <li data-section="risk-management">2.1 Risk Management</li>
@@ -430,7 +445,7 @@
       <h3>1.1 Introduction</h3>
       <p>This Assessor Guide provides the questions and model answers across ten Process Safety categories for the Global Process Safety Modules. The answers to these questions should be the same for all Upstream Oil and Gas Business Units globally. It also contains the Asset Specific questions. It is an expectation that each Business Unit develop their own Asset Specific Assessor Guide from this template with the asset/facility specific answers to each of these questions. This guide should be utilized by both the candidate, in preparing for their face to face interview, and by the assessment teams, to ensure a consistency in assessment across all Business Units. This Guide is referred to as Appendix B under the LOFT Framework UBP.</p>
       <p>This Combined Assessor Guide should be used for a specified position to conduct a complete assessment of Process Safety competency. This guide should be utilized by both the candidate, in preparing for their face to face interview, and by the assessment teams, to ensure a consistency in assessment across all Business Units. This Guide is referred to as Appendix B under the LOFT Framework UBP.</p>
-      <p>The assessment process can be undertaken once the candidate has completed their task book and is ready to demonstrate their competency. It is expected that this is conducted within 60 days of assuming the position. Risk Approval Authority for each position cannot be granted until the competency in the Process Safety Modules is demonstrated.</p>
+      <p>The assessment process can be undertaken once the candidate has completed their task book and is ready to demonstrate their competency. It is expected that this is conducted within 90 days of assuming position. Risk Approval Authority for each position cannot be granted until the competency in the Process Safety Modules is demonstrated.</p>
     </div>
   </section>
   <section id="purpose">
@@ -447,7 +462,7 @@
       <li>Review the Leadership Process Safety Competency Demonstration Assessor Guide / expectations with the candidate.</li>
       <li>Based on the individual’s previous assignments/work experiences assess the current “gap” for each section.</li>
       <li>Identify any extra developmental activities that would assist the candidate to improve their depth of understanding.</li>
-      <li>Based on current gaps and recommended developmental activities identify a target timing for the verification – target should be within 60 days of assuming position.</li>
+      <li>Based on current gaps and recommended developmental activities identify a target timing for the verification – target should be within 90 days of assuming position.</li>
       <li>Ensure Risk Approval Authority is delegated until verification of competency has been completed.</li>
     </ol>
   </section>
@@ -537,7 +552,7 @@ FOR OPERATING BUSINESS LINE</strong>
   <div class="qa">
     <div class="question">Describe your role in effectively communicating the outcomes of Risk assessments and any process safety implications and possible temporary mitigations to your team</div>
     <div class="answer">
-      <p>Personnel who could be directly affected by identified risks must understand the nature of the risk and subsequent follow-up activities. This information should be accessible to and communicated to those involved and affected by the hazards, Asset Manager and site management.</p>
+      <p>Personnel who could be directly affected by identified risks must understand the nature of the risk and subsequent follow-up activities. This information should be accessible to and communicated to those involved and affected by the hazards, Site Manager and site management.</p>
       <p><strong>For additional information see Enterprise Risk Standard section 5.3 Risk Management Communication</strong></p>
     </div>
   </div>
@@ -557,11 +572,11 @@ FOR OPERATING BUSINESS LINE</strong>
         <li>Ensure effectiveness of risk communication to impacted personnel.</li>
         <li>Drive closure of risk assessment action items.</li>
         <li>Understand and ensure adequate management of applicable Scenario Management bowties, critical safeguards, and performance criteria.</li>
-        <li>Immediately inform Asset Manager of any critical safeguards no longer meeting performance criteria.</li>
+        <li>Immediately inform the Site Manager of any critical safeguards no longer meeting performance criteria.</li>
       </ul>
 
       <ul>
-        <li><strong>Role of the TLS (Asset Manager)</strong></li>
+        <li><strong>Role of the TLS (Operations Manager)</strong></li>
         <li>Approve risk screenings</li>
         <li>Charter risk assessments</li>
         <li>Know your approved Risk Assessment Team Leaders (per BU addendum).</li>
@@ -570,7 +585,7 @@ FOR OPERATING BUSINESS LINE</strong>
         <li>Provide approval for closure of Cat. 3 risks</li>
         <li>Drive progress on open risk assessment action items</li>
         <li>Understand and ensure adequate management of applicable Scenario Management bowties, critical safeguards, and performance criteria.</li>
-        <li>Immediately inform Production Manager of any critical safeguards no longer meeting performance criteria and facilitate leadership team discussion on continued safe operations</li>
+        <li>Immediately inform the Site Manager of any critical safeguards no longer meeting performance criteria and facilitate leadership team discussion on continued safe operations</li>
       </ul>
 
       <p>For further information consider the completion of Technical Level Risk Assessment CBT in Career Connect.</p>
@@ -888,7 +903,7 @@ FOR OPERATING BUSINESS LINE</strong>
           <li><strong>Front Line Supervisor</strong>: Verifies that employees in their work group demonstrate the competencies required to safely operate and maintain the facility. Implementing job restrictions consistent with approved mitigation.</li>
           <li><strong>Second Line Supervisor</strong>: Implementing job restrictions on FLSs consistent with approved mitigation.</li>
           <li><strong>Third Line Supervisor</strong>: Approving job mitigation plans (e.g. collective competency) for individuals who have not met all the required competencies for their role, and endorsing appropriate job restrictions when mitigation for the individual’s training requirements cannot be put in place</li>
-          <li><strong>Production Manager</strong>: Approves temporary exceptions for an individual who does not meet the required competencies to occupy a key position when appropriate job restrictions cannot be put in place</li>
+          <li><strong>Site Manager</strong>: Approves temporary exceptions for an individual who does not meet the required competencies to occupy a key position when appropriate job restrictions cannot be put in place</li>
 <div>
         </ul>
       </div>
@@ -971,7 +986,7 @@ FOR OPERATING BUSINESS LINE</strong>
               <li>Steps to address a COP, CAT 1 HAZOP, or CAT 1 Risk Assessment finding</li>
             </ul>
           </li>
-          <li>Applying anything but an IC procedure to these tasks requires an exception approved by the Production Manager.</li>
+          <li>Applying anything but an IC procedure to these tasks requires an exception approved by the Site Manager.</li>
 </div>
         </ul>
       </div>
@@ -980,7 +995,7 @@ FOR OPERATING BUSINESS LINE</strong>
       <div class="question">During normal operations, who can approve a deviation from the different categories of approved procedures?</div>
       <div class="answer">
         <ul>
-          <li>IC Procedure – Production Manager except for operator adjustments to address an abnormal situation during facility start-up. This specific instance can be managed with SLS approval.</li>
+          <li>IC Procedure – Site Manager except for operator adjustments to address an abnormal situation during facility start-up. This specific instance can be managed with SLS approval.</li>
           <li>Normal Procedure – Second Line Supervisor or higher.</li>
           <li>Work Aid – Front Line Supervisor or higher.</li>
 </div>
@@ -990,7 +1005,7 @@ FOR OPERATING BUSINESS LINE</strong>
     <div class="qa">
       <div class="question">What level of review and approval is required for either a new or revalidated ‘Integrity Critical’ Procedure?</div>
     
-<div class="answer">An IC Procedure should be validated by an SME and a procedure user, endorsed by FLS/SLS/TLS and then finally approved by the Production Manager.</div>
+<div class="answer">An IC Procedure should be validated by an SME and a procedure user, endorsed by FLS/SLS/TLS and then finally approved by the Site Manager.</div>
     </div>
     <div class="qa">
       <div class="question">Describe how you know personnel are following Integrity Critical Procedures.</div>
@@ -1034,7 +1049,7 @@ FOR OPERATING BUSINESS LINE</strong>
       <div class="answer">
         <ul>
           <li>Ask questions about the error and the nature of it. Review plan with field team about requirement to start up that night.</li>
-          <li>If the plan is still to start up, initiate an Interim Directive to adjust the procedure to enable use before it can be formally re-written and validated. As it is an IC procedure, this Interim Directive process will require Production Manager approval.</li>
+          <li>If the plan is still to start up, initiate an Interim Directive to adjust the procedure to enable use before it can be formally re-written and validated. As it is an IC procedure, this Interim Directive process will require Site Manager approval.</li>
 </div>
         </ul>
       </div>
@@ -1108,8 +1123,8 @@ Identify and explain where you have Critical Safeguards that are highly dependen
       <div class="answer">
         <ul>
           <li>PIC- approves defeat after 1 shift for up to 7 days</li>
-          <li>AM (asset manager) approval required after 7 day not to exceed 30 days</li>
-          <li>PM (production manager) approval required after 30 days and again every subsequent 30 days.</li>
+          <li>AM (Operations Manager) approval required after 7 days not to exceed 30 days</li>
+          <li>PM (Site Manager) approval required after 30 days and again every subsequent 30 days.</li>
           <li>Temporary defeats extending beyond 60 days must be reviewed and risk assessed if necessary and the repair/resolution plan captured.</li>
 </div>
 </ul>
@@ -1447,7 +1462,7 @@ Identify and explain where you have Critical Safeguards that are highly dependen
     </ul>
     <p>Restrictions are determined by using the SIMOPS Matrix. The Matrix is a quick reference tool used to indicate if activities can be performed simultaneously</p>
     <p>Work activities are evaluated for SIMOPS at the DWCM. Identified SIMOPS issues are managed using the standardized approval process according to the SIMOPS deviation guidelines. AA’s and AO’s are also required to monitor any break-in activities for SIMOPS implications</p>
-    <p>Depending on the level identified by the matrix the deviations can be approved through the use of the SIMOPS deviation form. Level 1 Deviations can be approved by the Site PIC, Level 2 by the Operations Superintendent and Level 3 by the Production Manager</p>
+    <p>Depending on the level identified by the matrix the deviations can be approved through the use of the SIMOPS deviation form. Level 1 Deviations can be approved by the Site PIC, Level 2 by the Operations Manager and Level 3 by the Site Manager</p>
     </div>
     <div class="qa">
   <div class="question">Scenario Question: Breaking containment work is required to remove a faulty valve in hydrocarbon service. There is only a single valve isolation available to isolate and remove this valve. Describe the process approvals required to allow this work to progress.</strong></p>
@@ -1465,7 +1480,7 @@ Identify and explain where you have Critical Safeguards that are highly dependen
     <ul>
       <li>First question is to whether the job needs to be done that way? What is driving this? Is it a production impact etc.?</li>
       <li>In considering this work look at the flange-breaking procedures that would be used and any extra precaution that would be put in place as a result of being unable to demonstrate zero energy.</li>
-      <li>If it is confirmed that the job should go ahead with this method then a deviation from the manual can be sought. A Risk Assessment must be conducted and the deviation properly documented. As this is a deviation from a “Must” requirement (to demonstrate zero energy) then the Production Manager must approve the deviation</li>
+      <li>If it is confirmed that the job should go ahead with this method then a deviation from the manual can be sought. A Risk Assessment must be conducted and the deviation properly documented. As this is a deviation from a “Must” requirement (to demonstrate zero energy) then the Site Manager must approve the deviation</li>
     </ul>
     </div>
     <div class="qa">
@@ -1648,7 +1663,7 @@ INCIDENT NOTIFICATION INVESTIGATION AND REPORTING PROCESS
       
 </div>
     <div class="qa">
-  <div class="question">Scenario Question - Your facility has experienced a sizeable release of flammable gas? The IRAT score (100) comes to you as Asset Manager for review, which you feel is low given the severity of the release. What are some questions you pose to test the accuracy of the information?</p>
+  <div class="question">Scenario Question - Your facility has experienced a sizeable release of flammable gas? The IRAT score (100) comes to you as Operations Manager for review, which you feel is low given the severity of the release. What are some questions you pose to test the accuracy of the information?</p>
       <div class="answer">Before you ask anything clarify why you want to know – be conscious of the bias it can introduce in your team if you are anxious about the IRAT outcome. Reinforce the desire to accurately capture high potential incidents/near misses.</p>
           <li>Talk me through the work sheet
           <li>How bad was it? (Actual Consequence)</li>
@@ -1933,39 +1948,36 @@ Scenario Question: Consider a release of 10kg gas/ 2 bbl hydrocarbon liquid to l
    </div>
  
   <script>
-    const tocItems = document.querySelectorAll('#toc li');
-    const sections = document.querySelectorAll('main section');
+    (function () {
+      var tocItems = document.querySelectorAll('#toc li');
+      var sections = document.querySelectorAll('main section');
 
-    tocItems.forEach(item => {
-      item.addEventListener('click', () => {
-        console.log('TOC item clicked:', item.textContent);
-        const targetId = item.getAttribute('data-section');
-        console.log('Target section ID:', targetId);
-        sections.forEach(section => {
-          if (section.id === targetId) {
-            section.classList.add('active');
-            console.log('Added active class to:', section.id);
-          } else {
-            section.classList.remove('active');
-            console.log('Removed active class from:', section.id);
+      /* Every section stays on the page; the TOC scrolls to the chosen one and
+         highlights it. The previous .active toggle had no matching CSS rule for
+         sections, so it had no effect. */
+      function activate(targetId) {
+        var target = document.getElementById(targetId);
+        if (!target) { return false; }
+        sections.forEach(function (section) {
+          section.classList.toggle('section-current', section === target);
+        });
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return true;
+      }
+
+      tocItems.forEach(function (item) {
+        var targetId = item.getAttribute('data-section');
+        item.setAttribute('role', 'link');
+        item.setAttribute('tabindex', '0');
+        item.addEventListener('click', function () { activate(targetId); });
+        item.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            activate(targetId);
           }
         });
-        // Scroll to top of the section when activated
-        const targetSection = document.getElementById(targetId);
-        if (targetSection) {
-          targetSection.scrollIntoView({ behavior: 'smooth' });
-        }
       });
-    });
-
-    // Save and load comments from localStorage
-    document.querySelectorAll('textarea').forEach(textarea => {
-      const id = textarea.id;
-      textarea.value = localStorage.getItem(id) || '';
-      textarea.addEventListener('input', () => {
-        localStorage.setItem(id, textarea.value);
-      });
-    });
+    })();
   </script>
   <section id="asset-specific-process-flow">
     <h2>Asset Specific: Basic Process Flows of Facilities</h2>
