@@ -497,11 +497,25 @@ document** and has been left alone — correcting the study aids to disagree wit
 controlling document would be worse than inheriting its error. It should be raised with the
 Assessor Guide's owner.
 
-**New finding, not fixed:** the study guide cites the Corporate Risk Matrix as
-**TMEE211**, while Assessor Guide Rev 3.0 cites **TMEE330 Risk Matrix Application Guide**.
-One of the two is out of date. This is a document reference rather than a role title, and
-which revision is current cannot be determined from the material in this repository, so it
-has been left as-is and is flagged here for the owner.
+**Corporate Risk Matrix citation &mdash; resolved by following the source.** The study
+guide cited the Corporate Risk Matrix as **TMEE211**; Assessor Guide Rev 3.0 cites the
+**Corporate SSH&E Risk Matrix (as defined in TMEE330 Risk Matrix Application Guide)**.
+
+Characterising this as "one of the two is out of date" was probably wrong. The titles
+differ, which suggests these may be two different current documents &mdash; TMEE211 the
+*matrix* itself, TMEE330 the *application guide* that explains how to apply it. Nothing in
+this repository settles it: neither PDF nor either taskbook mentions TMEE at all, the
+Assessor Guide carries no effective date, and the `.docx` metadata is unusable (all four
+files show 2026-08-19, the date they were re-saved, not authored). Document numbers are
+library identifiers, not version numbers, so 330 cannot be assumed newer than 211.
+
+**Applied**, at the owner's direction: all three aids now use the Assessor Guide's
+citation, on the reasoning that the assessor works from that document. The flip card
+previously named the matrix with no document number at all and now carries the same
+citation, so all three agree.
+
+Still worth a lookup in the controlled document library: if TMEE211 and TMEE330 are
+distinct current documents, citing both would be more accurate than citing either alone.
 
 ---
 
@@ -603,8 +617,9 @@ Two things still worth keeping in view:
 - **§5.2 SLS escalation.** The source has both SLS and TLS informing the Site Manager. The
   study aids now follow the source, but if single-step escalation was intended, the source
   needs amending.
-- **§5.5 TMEE211 vs TMEE330.** Conflicting Corporate Risk Matrix references between the study
-  guide and Assessor Guide Rev 3.0. Cannot be resolved from material in this repository.
+- **§5.5 TMEE211 / TMEE330.** All three aids now use the Assessor Guide's citation
+  (TMEE330). Confirm in the controlled document library whether TMEE211 is superseded or
+  is a separate current document — if the latter, cite both.
 - **§5.5 "ten categories" miscount** in Assessor Guide Rev 3.0 — a source document defect.
 - **§5.4 CAS coverage** — the CAS-vs-CVPE route question below is the live part of this;
   the Flag/Class half is now closed (asset confirmed not a floating vessel).
