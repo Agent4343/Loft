@@ -824,3 +824,67 @@ render; assessor save-to-file and reload round-trip confirmed; and
 
 The coverage tool was rewritten to be self-contained &mdash; it reads the HTML directly
 and exits non-zero if a topic goes missing, so it can be run after any edit.
+
+
+---
+
+## 12. Attempt to flatten the nested question divs (not completed)
+
+**Asked for, attempted four times, reverted each time. The file is unchanged.**
+
+### The defect
+
+48 of 101 `.question` divs contain content that belongs outside them, because they
+were unclosed in the source and the parser nested whatever followed. The largest holds
+**53,757 characters, of which 49 are the actual question**.
+
+### Why it no longer matters functionally
+
+Every user-visible symptom was already fixed in commit `765165f`:
+
+- text extraction ignores nested content, so search, records and labels read only the
+  question's own text;
+- note panels are placed after each question's own answer, not in the shared wrapper;
+- the search filter re-shows any ancestor of a match.
+
+What remains is untidy markup, not broken behaviour.
+
+### Why four attempts failed
+
+Each attempt promoted the nested blocks out of the question div, and each preserved the
+total text exactly (105,714 characters every time &mdash; nothing was ever lost). Each
+also **reordered** some of it, which is not acceptable in safety-training content.
+
+| Attempt | Rule | Outcome |
+|---|---|---|
+| 1 | Move the first nested block and everything after it | Order preserved, but **6 questions emptied** |
+| 2 | Move only children that are or contain a nested block | Text kept, but a section heading moved earlier |
+| 3 | Move the nested blocks themselves, not their wrappers | Same heading reorder |
+| 4 | Split at the first nested block in document order | New reorder elsewhere &mdash; a question label vanished from its position |
+
+The reason attempts kept finding new failures is that the source contains **at least four
+distinct malformation patterns**, for example:
+
+```html
+<!-- question text inside an unclosed <strong>, so the answer nests inside it too -->
+<div class="question"><strong>Describe the principles of the MOC process.<p></p>
+  <div class="answer"> ... </div>
+
+<!-- answer unclosed, so the next section heading is swallowed into the question -->
+<div class="question">Together with the Person In Charge, attend the DWCM...<p></p>
+  <div class="answer">The objective of the meeting is...   <!-- 2.7 heading ends up here -->
+```
+
+A rule that fixes one pattern reorders another. Bulk flattening is not safely achievable
+this way.
+
+### What would actually work
+
+- **Per-question repair**, roughly 48 sites, each inspected and verified individually
+  rather than by a single rule. Slow, but each change is small enough to check.
+- Or a **real HTML tree library** (`beautifulsoup4` / `lxml`), neither of which is
+  available in this environment, working from the original source rather than the
+  browser's recovered tree.
+
+Given the functional symptoms are resolved, this is tidiness work rather than a fix, and
+worth doing only if someone needs to hand-edit that markup.

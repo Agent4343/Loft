@@ -47,6 +47,11 @@ documents is not confused.
   Cards are three views of the same questions — do not fork it into separate files
   again. The reason it was consolidated is that every content fix previously had to
   be repeated in two or three places, and they drifted.
+- **Do not bulk-flatten the nested `.question` divs.** 48 of them contain content that
+  belongs outside them. Four different promotion rules were tried and every one reordered
+  text somewhere else in the document, because the source has at least four distinct
+  malformation patterns. Text extraction already ignores nested content, so the symptoms
+  are fixed; see `REVIEW.md` section 12 before attempting it.
 - **Careful inserting new `<script>` blocks.** The summary script contains the literal
   string `'</body></html>'` inside the standalone report it generates, so a naive
   "insert before `</body>`" lands inside that string literal and breaks two scripts.
