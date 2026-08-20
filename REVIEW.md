@@ -9,9 +9,9 @@ documentation (`.docx` / `.pdf`) also committed here, plus the repository's own 
 (same engine as the "Use Google Chrome" instruction in one filename) and by extracting and
 diffing the text of the source `.docx`/`.pdf` files against the HTML.
 
-> **Status (2026-08-20): fixes applied.** Everything below has been acted on except
-> §4.7 (unbalanced markup), which is left in place deliberately — see the note there.
-> Each finding carries its outcome. §5.2 has been **corrected**: the original mapping
+> **Status (2026-08-20): fixes applied.** Every code and content finding below has been
+> acted on. Each finding carries its outcome; what remains in §9 is owner decisions and
+> source-document defects, not outstanding work in this repository. §5.2 has been **corrected**: the original mapping
 > in this review was wrong, and the fix that was applied differs from what it first
 > recommended.
 
@@ -23,7 +23,7 @@ diffing the text of the source `.docx`/`.pdf` files against the HTML.
 |---|---|---|---|
 | `Loft.html` | **Broken — do not use** | JavaScript fails to parse; 59 of 68 answers are placeholders | Rebuilt: 69 real answers, no errors |
 | `LOFT Training Flip Card.v1.html` | **Good — one data-integrity bug** | Shuffle silently reassigns your progress marks to the wrong questions | Fixed and regression-tested |
-| `LOFT_Assessment_Study Use Google Chrome20260212.html` | **Usable — several defects** | One dead TOC link; stated assessment window contradicts the UBP | Fixed, except §4.7 markup |
+| `LOFT_Assessment_Study Use Google Chrome20260212.html` | **Usable — several defects** | One dead TOC link; stated assessment window contradicts the UBP | Fixed, markup repaired |
 | Repository docs | **Inaccurate** | `README.md` describes a different project entirely | Rewritten |
 
 Two issues cut across the whole repository and matter more than any single bug:
@@ -315,20 +315,39 @@ closed. Browsers recover from all of this, but it makes the file fragile to edit
 process with any non-browser tool. There are also 96 `.question` elements against 101
 `.answer` elements.
 
-**Not applied — deliberately.** This was attempted and reverted. The approach tried was to
-let Chromium parse the document and write its corrected tree back to disk. That
-**duplicated the entire body**: 38 sections instead of 19, 192 questions instead of 96, and
-the text content doubled to 191,889 characters. The file was restored from git and every
-other study-guide fix re-applied without that step; content integrity was then re-verified
-against the original (19 sections / 96 questions / 101 answers / 44 glossary terms / 19
-links, all matching).
+**Applied**, on a second attempt, after finding the actual cause.
 
-The imbalance therefore remains: 56 unclosed `<div>`s, 10 unclosed `<section>`s, and the
-stray closers above. Browsers recover from it consistently, so the page renders and behaves
-correctly — this is a maintainability defect, not a functional one. Repairing it safely means
-fixing tags individually with content verification after each step, which is worth doing
-before anyone edits that markup by hand, but is not worth risking 96 Q&A pairs to do in bulk.
-`CONTRIBUTING.md` now warns against attempting the bulk approach.
+The first attempt duplicated the entire body (38 sections instead of 19, text doubled to
+191,889 characters) and was reverted. The cause was not the approach but the boundaries:
+the file contains a **premature `</body></html>` at byte 15957**, and the slice
+`<body> … </body>` therefore captured only the first 10KB — the header, glossary and first
+script. The real content, the entire TOC and all 19 sections, sits *after* the document's
+closing tags. Writing the full serialized body into that 10KB slot left the original content
+in place below it, hence the duplication.
+
+Structurally the file was:
+
+```
+<html><head>…</head>
+<body> header, glossary sidebar, script </body></html>   <-- document "ends" here
+<nav id="toc">…</nav>                                    <-- but content continues
+<main id="mainContent"> 19 sections …                    <-- never closed
+```
+
+Measured against the real end of file rather than that stray tag, the damage was larger than
+the original tag counts suggested: **81 elements left open at EOF** (77 `<div>`, 2
+`<section>`, `<main>`, `<p>`), **76 closed only implicitly**, and **184 stray closing tags**
+(64 `</p>`, 55 `</ul>`, 22 `</div>`, 21 `</li>`, 19 `</strong>`, 3 `</a>`).
+
+The fix replaces everything from `<body>` to EOF with the parser's own serialization of the
+tree, then closes the document properly. Result: every tag balanced — `div` 377/377, `p`
+145/145, `ul` 79/79, `li` 524/524, `section` 19/19, `strong` 160/160, `main` 1/1, one `<body>`
+and one `<html>`.
+
+Verified equivalent, not merely valid: the rendered `textContent` is **byte-for-byte
+identical** at 98,943 characters, with section count, question count, answer count, glossary
+terms, links, TOC items, section ids and link targets all unchanged, and the glossary, TOC
+and layout behaviour re-tested after the rewrite.
 
 ### 4.8 Debug logging left in
 
@@ -572,13 +591,13 @@ Two things still worth keeping in view:
 4. **Flip card shuffle** — fixed and regression-tested; progress now persists (§3.1–3.5).
 5. **Study guide navigation and layout** — dead TOC link, overlay, geometry, header clipping,
    debug logging and dead code all fixed (§4.1–4.9).
-6. **`Loft.html`** — rebuilt with all 69 answers authored from source (§2).
-7. **`README.md` / `CONTRIBUTING.md`** — rewritten for what the repository actually is (§6).
+6. **Study guide markup** — premature `</body></html>` found and the document structure
+   repaired; all tags now balanced, rendered text byte-for-byte identical (§4.7).
+7. **`Loft.html`** — rebuilt with all 69 answers authored from source (§2).
+8. **`README.md` / `CONTRIBUTING.md`** — rewritten for what the repository actually is (§6).
 
 ## 9. Still open for the owner
 
-- **§4.7 unbalanced markup in the study guide.** Renders correctly; needs careful per-tag
-  repair, not a bulk rewrite. See the note in §4.7 for what failed and why.
 - **§5.2 SLS escalation.** The source has both SLS and TLS informing the Site Manager. The
   study aids now follow the source, but if single-step escalation was intended, the source
   needs amending.

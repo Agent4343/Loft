@@ -34,9 +34,11 @@ the mapping.
 - `LOFT Training Flip Card.v1.html` stores progress in `localStorage` keyed on a
   hash of the question text. **Changing question wording resets a user's progress
   for that card.** That is acceptable for a correction; avoid it for cosmetic edits.
-- The study guide has known unbalanced markup (unclosed `<div>` and `<section>`
-  tags). Browsers recover from it. Do not attempt a bulk re-serialization to fix it
-  — that duplicates content. Repair tags individually if you touch that area.
+- The study guide's markup was repaired in August 2026 — it previously had a
+  premature `</body></html>` partway down, with the TOC and all 19 sections
+  sitting after it. Tags are balanced now; keep them that way. If you ever
+  regenerate the file wholesale, verify afterwards that the rendered
+  `textContent` is unchanged, not just that the HTML parses.
 
 ## Reporting a problem
 
