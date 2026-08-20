@@ -33,10 +33,13 @@ safeguard. Both are carried as written.
 
 ## Role titles
 
-Global-module answers use Assessor Guide Rev 3.0 titles: **AM = Operations
-Manager**, **PM = Site Manager**. Asset-specific answers keep local titles. Do not
-normalise one into the other — the difference is real and each study aid documents
-the mapping.
+Use Assessor Guide Rev 3.0 titles everywhere: **AM = Operations Manager**, **PM =
+Site Manager**. The asset confirmed these are correct (August 2026), so they apply to
+asset-specific answers too.
+
+Do not reintroduce "Asset Manager" or "Production Manager". Older material uses those
+names for the same two roles; the glossary notes this so a reader coming from the old
+documents is not confused.
 
 ## Changing the HTML
 

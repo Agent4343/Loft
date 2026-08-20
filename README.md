@@ -79,18 +79,18 @@ to a LOFT Process Safety position to complete the assessment within 90 days of
 assuming the position. Risk Approval Authority is delegated until competency is
 demonstrated.
 
-**Role titles differ between global and asset material.** Global-module answers use
-the titles as written in Assessor Guide Rev 3.0:
+**Role titles follow Assessor Guide Rev 3.0 throughout**, confirmed correct by the
+asset (August 2026):
 
-| Abbreviation | Assessor Guide Rev 3.0 | Seen locally as |
+| Abbreviation | Title used | Older material may say |
 |---|---|---|
-| AM | Operations Manager | Asset Manager |
-| PM | Site Manager | Production Manager |
+| AM | **Operations Manager** | Asset Manager |
+| PM | **Site Manager** | Production Manager |
 | TLS | Third Line Supervisor (Operations Manager) | — |
 
-Answers marked *Asset specific* keep the local Hebron/Hibernia titles, because the
-Business Unit — not the Global Module — is authoritative for those. Each study aid
-states this mapping on the page.
+This applies to every answer, global and asset-specific alike, so the file never mixes
+the two conventions. The glossary states the mapping for anyone arriving from older
+material.
 
 ## Scope notes
 

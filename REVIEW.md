@@ -434,15 +434,25 @@ Raw counts before the fix:
 words are correct in asset-specific answers and wrong in global-module answers:
 
 - **Global-module answers** (where the Assessor Guide is authoritative) were corrected to
-  the source titles — 19 occurrences in the flip card, 15 in the study guide, and all of
-  `Loft.html` as rebuilt.
-- **Asset-specific answers** keep their local titles, because no source document in this
-  repository governs them: the Asset Specific module (`UPBP-410`) is a question template
-  with the answers left for the Business Unit to supply. These are the KPI scenario owner,
-  the Problem Well Reporting email approvals, the PPC sign-off, the platform incident
-  notification chain, the IMT/ER roles, and the assessment-team composition.
-- Each file now states the AM/PM mapping on the page, so a candidate reading either
-  convention knows what the other means.
+  the source titles first — 19 occurrences in the flip card, 15 in the study guide, and all
+  of `Loft.html` as rebuilt.
+- **Asset-specific answers were initially left in local titles**, because no source document
+  in this repository governs them: `UPBP-410` is a question template with the answers left
+  for the Business Unit to supply.
+
+**Superseded &mdash; the split was removed (August 2026).** Leaving the two conventions
+side by side meant a reader met "Operations Manager" in one answer and "Asset Manager" in
+the next, with the mapping explained only in the collapsed glossary. The asset then
+confirmed that **Operations Manager and Site Manager are the correct titles**, which
+removed the reason for the split. A further 13 occurrences in asset-specific answers were
+converted (10 "Asset Manager", 3 "Production Manager"), covering the KPI scenario owner,
+the Problem Well Reporting email approvals, the PPC sign-off, the platform incident
+notification chain, the IMT/ER roles, and the assessment-team composition.
+
+The file now uses Assessor Guide titles throughout &mdash; 19 "Operations Manager", 18
+"Site Manager", zero of either old term. The glossary records that older material calls the
+same two roles Asset Manager and Production Manager, so anyone arriving from the previous
+documents can reconcile them.
 
 One item was raised for a second opinion: in the source, the SLS is told to "immediately
 inform **Site Manager**" of a failed critical safeguard, while the TLS is told to inform
