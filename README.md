@@ -4,8 +4,9 @@ Study material for the **LOFT** (Leadership for Operations Framework for Trainin
 Process Safety competency assessment, for candidates in Second- and Third-Line
 Supervisor positions and the assessment teams who verify them.
 
-This repository is not an application. It holds three interactive HTML study aids
-and the controlled source documents they are derived from.
+This repository is not an application. It holds one interactive HTML study aid, a
+review sheet for the answers that only the asset can confirm, and the controlled
+source documents both are derived from.
 
 ## The study aid
 
@@ -115,8 +116,8 @@ material.
 
 - **Competency Assurance Standard (CAS)** applies only where a work area has not yet
   completed CVPE. **Hebron/Hibernia has completed CVPE** (confirmed by the asset,
-  August 2026), so the **Training and Competency UBP answers apply**. All three aids
-  now lead with the CVPE answer. Where the Assessor Guide also carries a superseded
+  August 2026), so the **Training and Competency UBP answers apply**. The study aid
+  leads with the CVPE answer. Where the Assessor Guide also carries a superseded
   CAS-route answer it is shown and labelled, so a candidate can tell them apart:
 
   | | CVPE route (applies here) | CAS route (superseded) |
@@ -132,9 +133,35 @@ material.
   floating vessels (FPSO, FSO). **Hebron and Hibernia are not floating vessels**
   (confirmed by the asset, August 2026), so these four questions are out of scope and
   are deliberately not covered here. This is the only part of the Assessor Guide
-  omitted — every other Global Module question appears in all three study aids.
+  omitted — every other Global Module question is covered.
 - Links into `ishareteam*.na.xom.com`, `teamwork1.exxonmobil.com` and
   `us1.aconex.com` resolve only on the corporate network.
+
+## Reviewing the asset specific answers
+
+`ASSET-SPECIFIC-REVIEW-SHEET.html` is a standalone sheet for one job: getting the 38
+asset-local answers checked by somebody who knows the asset.
+
+**Why it exists.** Every other answer in the study aid can be checked against a source
+document in this repository. These cannot. UPBP-410 Rev 3.2 is a *question template* —
+it sets the questions and leaves the answers to the Business Unit. The answers in the
+study aid were carried forward from the existing Hebron/Hibernia material, and nothing
+here can confirm whether they are still current.
+
+It holds the 34 Asset Specific Task Book questions in source order, tagged with their
+UPBP-410 numbers, plus four items of asset-local content that are not Task Book
+questions: three critical-safeguard lists and one global question (breaking containment,
+single-valve isolation) that carries a Hebron/Hibernia answer alongside the global one.
+Each shows the answer exactly as it currently stands in the study aid, with a verdict —
+correct / needs change / not applicable / refer — and a box for the correction.
+
+Open it in a browser. Work saves in that browser as you type; **Save to file** writes a
+JSON record that can be reloaded or handed on, and it also carries a plain-text summary
+inside it for anyone who just wants to read the verdicts. **Print** gives a paper copy
+with writing space.
+
+The sheet records a review. It does not change the study aid — applying the corrections
+is a separate edit.
 
 ## Contributing
 

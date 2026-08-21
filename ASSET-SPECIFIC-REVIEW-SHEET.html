@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Asset Specific Answer Review Sheet &mdash; Hebron / Hibernia LOFT</title>
+<style>
+:root{--ink:#12212e;--mut:#5b6b7a;--line:#d4dde5;--bg:#f4f7fa;--card:#fff;
+--brand:#003a66;--accent:#0056b3;--ok:#0f8e5a;--chg:#b45309;--na:#5b6b7a;--ref:#b91c1c;}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;color:var(--ink);
+background:var(--bg);line-height:1.55;-webkit-text-size-adjust:100%}
+.wrap{max-width:60rem;margin:0 auto;padding:1.25rem}
+h1{font-size:1.6rem;line-height:1.25;margin:0 0 .35rem}
+.sub{color:var(--mut);margin:0 0 1.25rem;font-size:.95rem}
+.brandbar{background:var(--brand);color:#fff;padding:1.1rem 0}
+.brandbar .wrap{padding-top:0;padding-bottom:0}
+.brandbar h1{color:#fff}
+.brandbar .sub{color:#bcd4e8;margin-bottom:0}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:8px;
+padding:1rem 1.1rem;margin:1rem 0}
+.panel h2{font-size:1.05rem;margin:0 0 .5rem}
+.panel p{margin:.5rem 0}
+.why{border-left:4px solid var(--accent)}
+.who{display:grid;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr));gap:.75rem}
+.who label{display:block;font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;
+color:var(--mut);margin-bottom:.2rem}
+.who input{width:100%;padding:.45rem .55rem;border:1px solid var(--line);border-radius:5px;
+font:inherit;color:inherit;background:#fff}
+.bar{position:sticky;top:0;z-index:20;background:rgba(244,247,250,.96);
+backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:.6rem 0}
+.bar .wrap{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;padding-top:0;padding-bottom:0}
+.counts{font-size:.9rem;color:var(--mut);margin-right:auto}
+.counts b{color:var(--ink)}
+button{font:inherit;padding:.45rem .8rem;border:1px solid var(--line);background:#fff;
+color:var(--ink);border-radius:5px;cursor:pointer}
+button:hover{background:#eef3f8}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+button.primary:hover{background:#00458f}
+:focus-visible{outline:3px solid #ff9800;outline-offset:2px}
+.item{background:var(--card);border:1px solid var(--line);border-radius:8px;
+padding:1rem 1.1rem;margin:.9rem 0;break-inside:avoid;scroll-margin-top:5rem}
+.item.done{border-left:4px solid var(--ok)}
+.item.done-change{border-left:4px solid var(--chg)}
+.item.done-na{border-left:4px solid var(--na)}
+.item.done-refer{border-left:4px solid var(--ref)}
+.ih{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;font-size:.78rem;
+text-transform:uppercase;letter-spacing:.04em;color:var(--mut);margin-bottom:.5rem}
+.num{background:var(--brand);color:#fff;border-radius:4px;padding:.1rem .45rem;
+font-weight:700;letter-spacing:0}
+.ref{background:#e6eef6;color:var(--brand);border-radius:4px;padding:.1rem .45rem;font-weight:600}
+.sec{margin-left:auto;text-align:right}
+.q{font-size:1.02rem;margin:.2rem 0 .6rem;line-height:1.4}
+.srcq{margin:.4rem 0;font-size:.9rem}
+.srcq summary{cursor:pointer;color:var(--accent)}
+.srcq p{margin:.4rem 0 0;padding:.5rem .7rem;background:#f7fafc;border-left:3px solid var(--line)}
+.itemnote{margin:.4rem 0;padding:.55rem .7rem;background:#fff8e8;border-left:3px solid var(--chg);
+font-size:.92rem}
+.curr{margin:.7rem 0}
+.lbl{display:block;font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;
+color:var(--mut);margin-bottom:.3rem}
+.ans{background:#f7fafc;border:1px solid var(--line);border-radius:6px;padding:.6rem .8rem;
+margin-bottom:.4rem;font-size:.94rem;overflow-x:auto}
+.ans.none{color:var(--ref);font-style:italic}
+.ans ul{margin:.4rem 0;padding-left:1.2rem}
+.ans p{margin:.4rem 0}
+.verdict{display:flex;flex-wrap:wrap;gap:.4rem;margin:.7rem 0 .5rem}
+.verdict label{display:inline-flex;align-items:center;gap:.35rem;border:1px solid var(--line);
+border-radius:20px;padding:.3rem .75rem;cursor:pointer;font-size:.9rem;background:#fff}
+.verdict label:hover{background:#eef3f8}
+.verdict input{margin:0}
+.verdict input:checked+span{font-weight:700}
+.verdict label:has(input:checked){background:#e6eef6;border-color:var(--accent)}
+.nl{display:block;font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;
+color:var(--mut);margin-bottom:.25rem}
+textarea{width:100%;font:inherit;padding:.5rem .6rem;border:1px solid var(--line);
+border-radius:5px;resize:vertical;background:#fff;color:inherit}
+.routelist{margin:.5rem 0 0;padding-left:1.1rem;font-size:.93rem}
+.routelist li{margin:.35rem 0}
+.rsec{display:inline-block;background:#e6eef6;color:var(--brand);border-radius:4px;
+padding:0 .35rem;font-size:.78rem;margin-right:.35rem}
+footer{color:var(--mut);font-size:.85rem;margin:2rem 0 1rem;text-align:center}
+@media (max-width:640px){
+ .wrap{padding:.85rem}.sec{margin-left:0;text-align:left;width:100%}
+ .verdict label{flex:1 1 auto;justify-content:center}
+ .counts{width:100%;margin-bottom:.25rem}
+}
+@media print{
+ body{background:#fff;font-size:10.5pt}
+ .bar,.noprint{display:none!important}
+ .brandbar{background:#fff;color:var(--ink);border-bottom:2px solid var(--brand);padding:0}
+ .brandbar h1{color:var(--ink)}.brandbar .sub{color:var(--mut)}
+ .item{border:1px solid #999;page-break-inside:avoid;margin:.5rem 0}
+ .who input{border:0;border-bottom:1px solid #333;border-radius:0;padding:.15rem 0}
+ .who{grid-template-columns:repeat(4,1fr)}
+ .srcq[open] p,.srcq p{display:block}
+ details{display:block}details summary{display:none}
+ textarea{min-height:3.2rem;border:1px solid #999}
+ .ans{background:#fff;border:1px solid #ccc}
+ a[href]:after{content:""}
+}
+</style>
+</head>
+<body>
+<div class="brandbar"><div class="wrap">
+<h1>Asset Specific Answer Review Sheet</h1>
+<p class="sub">Hebron / Hibernia &mdash; LOFT Process Safety study aid &middot; 38 items</p>
+</div></div>
+<div class="bar noprint"><div class="wrap">
+ <span class="counts"><b id="cDone">0</b> of <b id="cTot">38</b> reviewed &middot;
+ <span id="cBreak">&mdash;</span></span>
+ <button type="button" id="bNext">Next unreviewed</button>
+ <button type="button" id="bImport">Load a saved review</button>
+ <button type="button" id="bPrint">Print</button>
+ <button type="button" class="primary" id="bExport">Save to file</button>
+ <input type="file" id="fImport" accept=".json" hidden>
+</div></div>
+<main class="wrap">
+
+<section class="panel why">
+<h2>Why these 38 items need a person, and the rest do not</h2>
+<p>Every other answer in the study aid can be checked against a document in this
+repository. These cannot. <strong>UPBP-410 Rev 3.2 is a question template</strong> &mdash;
+it sets the questions and leaves the answers to the Business Unit. There is no source
+here that states the right answer for Hebron or Hibernia, so nothing in the review of
+the study aid could confirm them.</p>
+<p>The answers below were carried forward from the existing Hebron/Hibernia material.
+They may be correct and current. They may also be years out of date. Nobody can tell
+from the file alone, which is the whole reason for this sheet.</p>
+<p><strong>What you are being asked to do:</strong> read each answer and say whether it
+is still right. If it is not, write what it should say and where that comes from. If an
+item is outside what you know, mark it <em>Refer</em> rather than guessing &mdash; a wrong
+answer that looks confident is worse than an open question.</p>
+</section>
+
+<section class="panel">
+<h2>Reviewer</h2>
+<div class="who">
+ <div><label for="rName">Name</label><input id="rName" autocomplete="name"></div>
+ <div><label for="rRole">Position</label><input id="rRole"></div>
+ <div><label for="rAsset">Asset</label><input id="rAsset" placeholder="Hebron / Hibernia"></div>
+ <div><label for="rDate">Date</label><input id="rDate" type="date"></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>How this sheet is organised</h2>
+<p><strong>Items 1&ndash;34</strong> are the questions from the Asset Specific Task Book,
+in source order, each tagged with its UPBP-410 number so you can check it against the
+controlled document.</p>
+<p><strong>Items 35&ndash;38</strong> are asset-local content that is not itself a Task
+Book question: three critical-safeguard lists and one global question that carries a
+Hebron/Hibernia answer alongside the global one. They are included because they carry
+the same risk &mdash; local content, no source to check it against.</p>
+<p>Work is saved in this browser as you type. <strong>Use <em>Save to file</em> before
+you close the tab</strong> if the review matters, and to hand it to somebody else.
+<em>Print</em> gives a clean paper copy with writing space.</p>
+</section>
+
+<article class="item" id="i1" data-id="1">
+ <header class="ih"><span class="num">1</span><span class="ref">UPBP-410 &nbsp;Q1</span><span class="sec">2.1 Risk Management</span></header>
+ <h3 class="q">Describe an understanding of all Higher Consequence Potential Scenarios in your asset. Describe the critical safeguards in place to prevent/mitigate the risks associated with each of those scenarios</h3>
+ <details class="srcq"><summary>Wording in UPBP-410 Rev 3.2</summary><p>Demonstrate an understanding of all Higher Consequence Potential Scenarios in your asset. Describe the critical safeguards in place to prevent/mitigate the risks associated with each of those scenarios?</p></details>
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans"><p>Current high consequence process safety scenarios are listed below. Contact the Process Safety Team to obtain Bowties for each of these scenarios to understand relationship between hazards, safeguards and consequences.</p> <p></p> <p> <a href="https://ishareteam1.na.xom.com/sites/EMPC0883/process_safety/HEB/_layouts/15/start.aspx#/" target="_blank" rel="noopener noreferrer" style="color: #DAA520; font-weight: bold;"><strong>Hebron Process Safety Bowties Link </strong></a><strong> </strong></p><strong> <p></p> <p> <a href="https://ishareteam1.na.xom.com/sites/EMPC0883/process_safety/HIB/_layouts/15/start.aspx#/" target="_blank" rel="noopener noreferrer" style="color: #DAA520; font-weight: bold;"><strong>Hibernia Process Safety Bowties Link </strong></a><strong> </strong></p><strong> <ul> <p>(1) Lift - Gas Injection LOPC in Wellbay </p><p>(2) Production Flowline LOPC in Wellbay </p><p>(3a) Well Integrity Production LOPC </p><p>(3b) Well Integrity (Wellwork) LOPC </p><p>(4) (Not Used) </p><p>(5) Drilling LOPC </p><p>(6) Escalation LOPC </p><p>(7) AIRCRAFT ACCIDENT </p></ul> </strong></strong></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 1">
+  <label><input type="radio" name="v1" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v1" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v1" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v1" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n1">Correction or comment</label>
+ <textarea id="n1" data-n="1" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i2" data-id="2">
+ <header class="ih"><span class="num">2</span><span class="ref">UPBP-410 &nbsp;Q2</span><span class="sec">2.1 Risk Management</span></header>
+ <h3 class="q">Identify any action items that are related to your higher consequence potential scenarios? Who is responsible for those action items and are there any overdue? If they are not overdue are they on track to be completed by the due date?</h3>
+ 
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans"><p>Contact the Process Safety Team to obtain a copy of the latest KPI Scorecard and identify any actions associated with critical safeguards for each scenario.</p> <p>Below is an overview of the monthly process safety scenario management KPI stewardship process.</p> <ul> <li>Each scenario is assigned an Owner (Operations Manager or Drilling Operations Superintendent). Within each scenario, each critical safeguard has an assigned owner. Each safeguard in turn has key verification measures associated with it that are tracked monthly as KPIs to ensure critical safeguard health. Verification measures for a critical safeguard may be assigned to a role or extracted automatically from a database (e.g. SAP, ICSS, DCDA, WebCAT, etc.). KPIs are reviewed by Facility Integrity Management System (FIMS) / Safety Critical Element (SCE) owners and process safety SMEs before they are published.</li> <li>KPIs not meeting the performance standard are noted on the KPI report and is presented monthly to the Asset Team onshore and offshore, and quarterly to the Operations Integrity Committee (OIC).</li> <li>Findings and corrective actions for a KPI in a given month are noted on the KPI Scorecard, along with a target closure date.</li> <li>Contact the Hibernia / Hebron SSHE Technician and / or Risk &amp; Certification Engineer for a listing of current actions related to HC1 and HC2 risks.</li> </ul></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 2">
+  <label><input type="radio" name="v2" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v2" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v2" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v2" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n2">Correction or comment</label>
+ <textarea id="n2" data-n="2" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i3" data-id="3">
+ <header class="ih"><span class="num">3</span><span class="ref">UPBP-410 &nbsp;Q3</span><span class="sec">2.1 Risk Management</span></header>
+ <h3 class="q">Are there any major wellbore integrity related incident scenarios for your asset? Explain the details of those scenarios and both the preventative and mitigative safeguards in place related to those scenarios</h3>
+ <details class="srcq"><summary>Wording in UPBP-410 Rev 3.2</summary><p>Are there any major wellbore integrity or marine related incident scenarios for your asset? Explain the details of those scenarios and both the preventative and mitigative safeguards in place related to those scenarios</p></details>
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans">This scenario is wellbore related event while in a Production operating state resulting in a multiphase hydrocarbon release to the platform, and fire and explosion. The scenario has potential to escalate beyond the immediate area and result in abandonment of the platform</div><div class="ans"><strong>Scenario 3a)Preventative Safeguards</strong> - Drilling Fixed Lifting Equipment Integrity, Drilling Loose Lifting Gear Integrity, Wellwork Loose Lifting Gear Integrity, Wellbay SIMOPS (Lifting Plan), Critical Lifting Practices (Field Verification), Fixed/Loose Lifting Gear Integrity, Annulus Pressure Management, Lift Gas Dewpoint Analyzer, Reservoir Pressure Management, H2S Sampling Program &amp; Alarm Set point, Reservoir Pressure Management (H2S), Mixed Wellstream H2S Analyzer, Press/Temp Control Curves in DCS with Automated S/D<p></p> <p>Scenario 3a) Mitigate Safeguards -- Gas Detection Automated Shutdown, Ignition Source Control (HAEQ), Emergency Response - Extended Release, Emergency Response - Well Intervention and Kill Commitments</p></div><div class="ans">This scenario is wellbore related event while Wellwork activities is in progress and the well has been handed over from Production to Wells resulting in a multiphase hydrocarbon release to the platform, and fire and explosion. The scenario has potential to escalate beyond the immediate area and result in abandonment of the platform</div><div class="ans"><p><strong>Scenario 3b)</strong> Preventative Safeguards – Drilling Fixed Lifting Equipment Integrity, Drilling Loose Lifting Gear Integrity, Wellwork Loose Lifting Gear Integrity, Wellbay SIMOPS (Lifting Plan), Well Integrity, Primary Pressure Control Equipment Integrity, Well Control Response, Secondary Pressure Control Equipment Integrity, Secondary Pressure Control Equipment Integrity, Explosives Handling &amp; Detonation Practices, Well Isolation / Zero Energy Demonstrated, Deisolation, Leak Test and Reinstatement</p> <p>Scenario 3b) Mitigate Safeguards -- Gas detection system; manual Isolation, Ignition Source Control (HAEQ), Emergency Response - Extended Release, Emergency Well Response</p></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 3">
+  <label><input type="radio" name="v3" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v3" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v3" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v3" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n3">Correction or comment</label>
+ <textarea id="n3" data-n="3" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i4" data-id="4">
+ <header class="ih"><span class="num">4</span><span class="ref">UPBP-410 &nbsp;Q4</span><span class="sec">2.1 Risk Management</span></header>
+ <h3 class="q">Review the most recent Asset Risk Assessment Close-Out reports (at least two for your area of responsibility). Explain the process that confirms all action items have been completed.</h3>
+ 
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans"><p>• Contact the Hebron / Hibernia Risk and Certifying Authority (CA) Advisor for the most recent Asset Risk Assessment Close-Out Reports.</p> <p>• The following process confirms that all action items have been completed:</p> <ul> <li>Approved Risk Assessments are entered into IMPACT for stewardship and action tracking.</li> <li>Risk Advisor is notified via IMPACT email notification that there is an RA for their review and approval.</li> <li>Actions from the RA are extended or closed out in IMPACT by the person responsible using the appropriate approvals from the EMCE approvals matrix and DocuSign.</li> <li>SHE Analyst runs monthly reports to review actions and sends email reminders as required.</li> <li>Approved Risk Action Resolution Forms are uploaded into the IMPACT actions record.</li> <li>Risk and CA Advisor approves the closure comments and closes the action in IMPACT.</li> <li>Once all actions have been closed for each Risk Scenario, the scenario can then be closed in IMPACT.</li> </ul></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 4">
+  <label><input type="radio" name="v4" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v4" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v4" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v4" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n4">Correction or comment</label>
+ <textarea id="n4" data-n="4" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i5" data-id="5">
+ <header class="ih"><span class="num">5</span><span class="ref">UPBP-410 &nbsp;Q5</span><span class="sec">2.1 Risk Management</span></header>
+ <h3 class="q">Provide an overview of the Asset Cat 1 &amp; 2 risk items and key mitigation steps including Risk Assessment report items</h3>
+ 
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans"><p>Contact the Hibernia or Hebron Risk and CA Advisor for an overview of these risks.</p> <p><strong>Available resources include:</strong></p> <ul> <li>Risk Tracking Report available through IMPACT for Categories 1, 2 and 3</li> <li>Monthly OIMS 2-1 Scorecard</li> <li>Quarterly OIC Package</li> <p></p> <p> <a href="https://ishareteam1.na.xom.com/sites/EMPC0883/EMCESSHE/OIMS/_layouts/15/start.aspx#/OIMS%20Scorecards/Forms/AllItems.aspx" target="_blank" rel="noopener noreferrer" style="color: #DAA520; font-weight: bold;"><strong>ScoreCard Link</strong> </a> </p> </ul></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 5">
+  <label><input type="radio" name="v5" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v5" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v5" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v5" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n5">Correction or comment</label>
+ <textarea id="n5" data-n="5" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i6" data-id="6">
+ <header class="ih"><span class="num">6</span><span class="ref">UPBP-410 &nbsp;Q6</span><span class="sec">2.1 Risk Management</span></header>
+ <h3 class="q">Review list of wells with well integrity waivers (if any); confirm PWRs (Problem Well Reports) have been submitted and requirements of the waivers are being complied with. Describe your role in approving these waivers.</h3>
+ 
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans"><p>Problem Well Reports are available through Information Management. Problem Well Approval MOCs are available in the MOC database (P/MeT). Contact the OIMS 6-3 SME/Owner for questions on well integrity waivers and Problem Well Reports.</p> <p>EMCE Well Integrity Manual (WIM) Chapter 2 documents the Problem Well Reporting Process. See summary below:</p> <ul> <li>Problem Well Reports are submitted by the Production Supervisor to the OIMS 6-3 SME (Well Management).</li> <li>The OIMS 6-3 SME stewards resolution, or risk screening/assessment, MOC process, and regulatory approval, as appropriate.</li> <li>Anything outside of the normal well operation is reported and, if determined to be a problem, repair plans are made.</li> <li>Email approval from the Site Manager, Operations Manager, OIMS 6-3 Owner, and Platform OIM is sufficient to reinstate well operation in the interim period while the Problem Well MOC is routing for approval.</li> <li>Well Integrity waivers are an approved deviation from the required well integrity testing/surveillance outlined in the Well Integrity Management System Manual.</li> <li>Upon completion of the MOC or temporary approval, the MOC must be closed with comments describing the issue resolution and date of completion. </li></ul></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 6">
+  <label><input type="radio" name="v6" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v6" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v6" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v6" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n6">Correction or comment</label>
+ <textarea id="n6" data-n="6" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i7" data-id="7">
+ <header class="ih"><span class="num">7</span><span class="ref">UPBP-410 &nbsp;Q7</span><span class="sec">2.2 Training</span></header>
+ <h3 class="q">Identify training competencies for personnel under your control that specifically relate to a critical safeguard Eg H2S response training, Emergency Response training, Specific facility training</h3>
+ 
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans"><ul> <p>Consider training competencies related to critical safeguards in each scenario which you and your team have the ability to influence.</p> <p>General considerations:</p> <ul> <li>"Process Safety and You" training provides awareness of Scenarios, Critical Safeguards, Verification Measures, Human Performance, and how each role interacts with Process Safety.</li> <li>Leadership for Operations Framework for Training (LOFT) plays a key role in verifying process safety competency for leadership positions.</li> <li>Role specific competency roadmaps support Precise Execution of Human Safeguards and are available through the Competency Assurance and Training Department. Examples include Integrity Critical Procedures, PIC Assessment, Well Control Training, Rigging and Lifting Certification, and Well bay SIMOPS Training.</li> </ul></ul></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 7">
+  <label><input type="radio" name="v7" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v7" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v7" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v7" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n7">Correction or comment</label>
+ <textarea id="n7" data-n="7" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i8" data-id="8">
+ <header class="ih"><span class="num">8</span><span class="ref">UPBP-410 &nbsp;Q8</span><span class="sec">2.2 Training</span></header>
+ <h3 class="q">Describe how the process to validate and track employee competency (by individual) works in your asset</h3>
+ 
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans"><ul> <li>Personal Placement Checklists (PPCs) are completed for Key Positions on an annual basis. The supervisor and employee complete these together and discuss a plan to ensure training is completed. These are also signed off by the Drilling Ops Superintendent or the Operations Manager<p></p> </li><li>The Competency Assurance and Training Department send a weekly Collective Competency Report to supervisors for their department that outlines training status, i.e. training completed, expired, expiring in next 30 days or never completed. The list is easy to review by color and if collective competency is not met, a X is in the status column.<p></p> </li><li>Supervisors will be able to view collective competency of their employees through WebCAT and should do so on a frequent basis. Supervisors have all the viewer functions, plus training planning and the supervisor work list. They use these views to plan training for their team, and to monitor execution. There is a supervisor home page, with relevant reports to monitor training status for those reporting to them. Multiple supervisors can be assigned so back-2-backs can see the individuals. Training group also provides monthly summaries by sector (and Service Partner) for transparency. Also the regulator expectation is that personnel will sustain 95% training completion.<p></p> </li></ul></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 8">
+  <label><input type="radio" name="v8" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v8" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v8" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v8" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n8">Correction or comment</label>
+ <textarea id="n8" data-n="8" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i9" data-id="9">
+ <header class="ih"><span class="num">9</span><span class="ref">UPBP-410 &nbsp;Q9</span><span class="sec">2.2 Training</span></header>
+ <h3 class="q">Demonstrate an understanding of the Operator Knowledge Verification process as it applies to Process Safety and Scenario Management. Discuss the methods of verifying Operator HC Scenario required competencies and the process for ensuring that the HC Scenario required competencies are kept up to date.</h3>
+ 
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans"><p>Regularly complete the Operator Knowledge Verification (PSKV) process to ensure operators are proficient in Process Safety and Scenario Management. This involves both onshore and offshore management testing. During ATL meetings, safeguard owners demonstrate their safeguards, explain how they monitor them, and describe the methods they use to maintain their health </p></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 9">
+  <label><input type="radio" name="v9" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v9" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v9" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v9" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n9">Correction or comment</label>
+ <textarea id="n9" data-n="9" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i10" data-id="10">
+ <header class="ih"><span class="num">10</span><span class="ref">UPBP-410 &nbsp;Q10</span><span class="sec">2.3 Operating Procedures</span></header>
+ <h3 class="q">Identify and explain where you have Critical Safeguards that are highly dependent on operator actions/procedures or if you have any Critical Operating Parameter's (COP's) that require a defined manual response.</h3>
+ 
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans"><ul> Scenario Management Critical Safeguards have been identified as being highly dependent on Precise Execution:<p> </p><li>Well control (Monitor Mud weight while drilling, Monitoring Trip tank levels when pulling pipe in or out, Pressure testing BOP, Monitoring gas levels when circulating bottoms up).</li> <li>Crude Shipping and Offloading System Integrity Critical Procedure</li> <li>Well bay SIMOPS Plan</li> </ul></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 10">
+  <label><input type="radio" name="v10" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v10" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v10" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v10" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n10">Correction or comment</label>
+ <textarea id="n10" data-n="10" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i11" data-id="11">
+ <header class="ih"><span class="num">11</span><span class="ref">UPBP-410 &nbsp;Q11</span><span class="sec">2.3 Operating Procedures</span></header>
+ <h3 class="q">Review the list of all procedures in your asset that are associated with your higher consequence potential scenarios. Explain any aspects or steps of those procedures where precise execution is required and understand the verification measures in place for those procedures</h3>
+ 
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans"><li>Crude Shipping and Offloading System (CAHE-EC-OOPRO-01-006-1009-000) -- Ensure testing of green line, compare quantity transferred with tanker, and monitor OLS pipeline pressure to ensure no loss of containment.</li> <li>Platform Startup (CAHE-EC-OOPRO-01-006-1123-000) -- Gas Compression System start up and monitoring of system pressure to ensure all equipment is ready for high pressure gas to ensure no loss of containment.</li> <li>Well bay SIMOPS Plan (CAHE-EC-OOREF-01-006-4007-000) -- Develop lift plan to manage lifts over wells and flowlines to ensure correct equipment is shut-in and DE pressured to ensure no loss of containment in the event of a dropped object.</li></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 11">
+  <label><input type="radio" name="v11" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v11" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v11" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v11" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n11">Correction or comment</label>
+ <textarea id="n11" data-n="11" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i12" data-id="12">
+ <header class="ih"><span class="num">12</span><span class="ref">UPBP-410 &nbsp;Q12</span><span class="sec">2.4 Critical Equipment</span></header>
+ <h3 class="q">Review the FIMS Exception report for your asset. Are there any items related to Higher Consequence Potential Scenarios or the Critical Safeguards associated with those scenarios? Clarify who in your organization is responsible for close out of those items</h3>
+ 
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans"><ul> <li>Obtain FIMS Exception Report from Senior Maintenance Supervisor. Contact the Process Safety Team to obtain the Critical Safeguard Performance Standard for each Process Safety Scenario and identify equipment tags associated with Critical Safeguards. Compare these tags against the FIMS exception report to determine if there any items related to the Process Safety Scenarios. Senior Maintenance Supervisor is responsible for close out of all items on the FIMS Exception Report.</li> <li>At the first of every month Platform Leadership along with office-based Asset support staff review the critical backlog and determines whether the risks are acceptable or have the work completed. The main focus is equipment tagged as Safety and Environment or tasks over 90 Days past due.</li> </ul></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 12">
+  <label><input type="radio" name="v12" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v12" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v12" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v12" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n12">Correction or comment</label>
+ <textarea id="n12" data-n="12" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i13" data-id="13">
+ <header class="ih"><span class="num">13</span><span class="ref">UPBP-410 &nbsp;Q13</span><span class="sec">2.4 Critical Equipment</span></header>
+ <h3 class="q">Demonstrate an understanding of the designated Critical devices (e.g. gas detectors, shutdown valves) that are associated with critical safeguards. What extra controls are put in place when these devices are bypassed (if any)?</h3>
+ 
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans"><ul> <li>Below is a short list of typical critical safeguards. In general, all Safety Critical Devices have assigned Safety Critical Element (SCE) Performance Standard Criteria which dictate performance requirements, and trigger Incident Reporting within the OIMS 9-1 process if degraded or impaired. This may also trigger Certifying Authority and Regulatory Agency notification.</li> <li>PSVs – Where redundant PSVs are installed in parallel, one of the two can be isolated. Cannot operate with both PSVs out of service (isolated or with failed EHT in winter months) without formal Risk Assessment approval.</li> <li>PSTs – Failure will cause a PSD. Cannot operate with these out of service (defeated) without formal Risk Assessment approval.</li> <li>BDVs/SDVs – Cannot operate with these out of service, or out of compliance with API 521 blowdown rates without formal Risk Assessment approval.</li> <li>Fire &amp; Gas Devices – For devices identified in the Critical Safeguard Performance Standards, no 2 devices of the same type (fire or gas) can be out of service in the same Fire Zone for more than 24 hours without a Risk Screening to continue operation.</li> <li>BOP – Requires compliance with established SCE Performance Standard Impairment Criteria. Formal Risk Assessment required if system is partially impaired but can perform the minimum critical function as defined in the standard. Otherwise drilling shutdown is required.</li> </ul></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 13">
+  <label><input type="radio" name="v13" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v13" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v13" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v13" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n13">Correction or comment</label>
+ <textarea id="n13" data-n="13" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i14" data-id="14">
+ <header class="ih"><span class="num">14</span><span class="ref">UPBP-410 &nbsp;Q14</span><span class="sec">2.5 Alarm Management</span></header>
+ <h3 class="q">What is meant by the term Critical Operating Parameter?</h3>
+ 
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans"><ul> <li>Review the asset COPs if they exist and verify how risk is mitigated for each.</li></ul></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 14">
+  <label><input type="radio" name="v14" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v14" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v14" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v14" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n14">Correction or comment</label>
+ <textarea id="n14" data-n="14" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i15" data-id="15">
+ <header class="ih"><span class="num">15</span><span class="ref">UPBP-410 &nbsp;Q15</span><span class="sec">2.5 Alarm Management</span></header>
+ <h3 class="q">Indicate the actions required if you have an excursion outside your operating limits?</h3>
+ 
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans"><ul> <li>If an Operator identifies an excursion of an operating parameter outside of its normal operating limits (between its high and low set points) through alarm indication or rounds in the Central Control Room (CCR), they should take the following actions:</li> <ul> <li>Investigate the cause of the alarm and assess its criticality</li> <li>Assess the current process value versus the safety shutdown value (HH/LL) and take appropriate action to understand and mitigate the issue</li> <li>Confirm that there are no safety critical devices (i.e. PSTs, TST) that have been defeated. If there is, remove the defeats to allow executive actions to take place as needed</li> <li>In no circumstance should the Operator defeat a safety device to prevent a process shutdown</li> <li>Communicate alarm and request field operator to investigate as needed</li> </ul></ul></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 15">
+  <label><input type="radio" name="v15" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v15" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v15" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v15" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n15">Correction or comment</label>
+ <textarea id="n15" data-n="15" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i16" data-id="16">
+ <header class="ih"><span class="num">16</span><span class="ref">UPBP-410 &nbsp;Q16</span><span class="sec">2.5 Alarm Management</span></header>
+ <h3 class="q">Demonstrate an understanding of the processes related to Alarm Management at your asset? What is your role in these processes? What is your role in approval of the inhibition of an alarm? What is your role in approval of a change in alarm set points?</h3>
+ 
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans"><p>Alarm Management is a shared responsibility between Asset Technical/Cross Asset Technical Supervisors, Production Supervisor and CCR Operator. Cross Asset engineering provides a weekly report on standing alarm activity and alarms that have high rates. Actions from these reports include:</p> <ul> <li>Production Supervisor/CCR Operator will action any alarms that need review or troubleshooting in the field</li> <li>Cross Asset Engineering will action any alarm that need MOCs to adjust set points, logic, etc. to eliminate nuisance alarms</li> </ul> <p>Key support activities for this process include:</p> <ul> <li>Ensure resources are available to support</li> <li>Review performance regularly via monthly OIMS Scorecard</li> <li>Review and approve of alarm MOCs as required</li> </ul></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 16">
+  <label><input type="radio" name="v16" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v16" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v16" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v16" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n16">Correction or comment</label>
+ <textarea id="n16" data-n="16" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i17" data-id="17">
+ <header class="ih"><span class="num">17</span><span class="ref">UPBP-410 &nbsp;Q17</span><span class="sec">2.5 Alarm Management</span></header>
+ <h3 class="q">Review the latest report on Alarm management for your Asset? How is it performing in:</h3>
+ 
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans"><ul> <li>Alarm rates</li> <li>Number of alarm floods</li> <li>Inhibited/shelved alarms</li> <li>Standing alarms</li> <li>All alarm data is updated daily and available to review in EC Report. Contact Onshore Electrical / Instrumentation Engineer for access. Monthly summaries are also provided in the OIMS Scorecard</li> </ul></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 17">
+  <label><input type="radio" name="v17" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v17" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v17" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v17" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n17">Correction or comment</label>
+ <textarea id="n17" data-n="17" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i18" data-id="18">
+ <header class="ih"><span class="num">18</span><span class="ref">UPBP-410 &nbsp;Q18</span><span class="sec">Important Documents</span></header>
+ <h3 class="q">Conduct a review of the shift handover process to determine if WMS required information is properly discussed and transitioned – detail the elements you were looking to see in that review</h3>
+ 
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans"><ul> <li>The following information must be included as part of the handover process as per Work Management System:</li> <ul> <li>Incidents</li> <li>Live and suspended work permits</li> <li>Closed permits</li> <li>Opened and closed isolations (short and long term isolations)</li> <li>Temporary defeats</li> <li>Equipment status and readiness</li> <li>New Critical Operating Parameters (COPs) introduced</li> <li>Lock-out/tag-out (LOTO) and energy isolations requiring isolation keys be exchanged at crew or shift changes through a custody transfer process</li> <li>Planned work activities</li> <li>Car Seal Register changes</li> <li>Work site controls must be re-verified prior to work commencing each shift or at each AO or PH change out.</li> <li>Review any critical lifts</li> <li>Safety concerns</li> <li>Status of the well and what was done past shift and current plan or critical path.</li> <li>Review the mitigations in place and plan for working on any Safety/Critical device.</li> </ul> </ul></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 18">
+  <label><input type="radio" name="v18" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v18" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v18" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v18" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n18">Correction or comment</label>
+ <textarea id="n18" data-n="18" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i19" data-id="19">
+ <header class="ih"><span class="num">19</span><span class="ref">UPBP-410 &nbsp;Q19</span><span class="sec">Important Documents</span></header>
+ <h3 class="q">Together with the Person In Charge, attend the Daily Work Coordination Meeting (DWCM). Describe the key elements of the DWCM you were looking to see</h3>
+ 
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans">The objective of the meeting is to review and coordinate interfacing activities and manage the risks involved with concurrent activities and simultaneous operations (SIMOPS) as per work Management System: <ul> <li>Evaluate the proposed jobs prior to endorsement</li> <li>Review new and suspended permits, as well as non-permitted work that could conflict with planned activities</li> <li>Identify high risk activities and ensure these activities have adequate oversight</li> <li>Review requested and applied temporary defeats</li> <li>Review and assign assessments as required</li> <li>Review long term isolations on a weekly basis</li> <li>Key work management stakeholders should be in attendance, specifically the PIC, AA, and functional supervisors (AAF)</li> </ul></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 19">
+  <label><input type="radio" name="v19" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v19" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v19" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v19" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n19">Correction or comment</label>
+ <textarea id="n19" data-n="19" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i20" data-id="20">
+ <header class="ih"><span class="num">20</span><span class="ref">UPBP-410 &nbsp;Q20</span><span class="sec">2.7 Management of Change</span></header>
+ <h3 class="q">Demonstrate how to review the Asset MOC register/log and identify the status of any open MOCs. Describe the status and steps to close-out one of the open MOC's.</h3>
+ 
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans"><li>Access to PMET can be granted though the OIMS 7-1 SME. If only status reports are required then individuals can be added to the weekly report by the SME.</li> <li>To review MOCs, first log into the PMET system, and then select the Workflow tab, then Reports, and then Selected Workflow Details. Note for Temporary MOCs, select Temporary Workflow. Adjust filters as required to view MOCs.</li> <li>The close a MOC, continue to progress it through the prescribed phases, i.e. Initiation, Evaluation, Endorsement, Approval to Progress, Implementation, Authorized for Use, Closeout and Approval to Close. The Implementation Manager of each MOC is responsible to close out the MOC and ensure everything is in place and attached to MOC. This is done by working with the Field Coordinator. All actions on the Pending Work page must be completed. For example, this could include updating P&amp;IDs and Cause and Effects. Before any equipment is put into service a PSSR must be signed off and attached to the MOC.</li></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 20">
+  <label><input type="radio" name="v20" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v20" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v20" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v20" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n20">Correction or comment</label>
+ <textarea id="n20" data-n="20" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i21" data-id="21">
+ <header class="ih"><span class="num">21</span><span class="ref">UPBP-410 &nbsp;Q21</span><span class="sec">2.8 Incident Investigations and Analysis</span></header>
+ <h3 class="q">Verify the incident notification information in use at the Asset is up to date and understood. Explain where to find it and demonstrate how you access it</h3>
+ 
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans"><p>Preliminary Incident Notification is sent out to the Onshore and Offshore Leadership team with high-level incident details. Notifications are sent to the (C-NLOER) as required. All requirements can be found in OIMS 9-1 Incident Management (Procedure Incident Notification, Investigation and Reporting Process or can also be referenced in the Incident Management Quick Reference Book.</p></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 21">
+  <label><input type="radio" name="v21" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v21" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v21" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v21" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n21">Correction or comment</label>
+ <textarea id="n21" data-n="21" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i22" data-id="22">
+ <header class="ih"><span class="num">22</span><span class="ref">UPBP-410 &nbsp;Q22</span><span class="sec">2.8 Incident Investigations and Analysis</span></header>
+ <h3 class="q">Review recent work site incident and near-miss reports and explain how you verify follow-up actions are complete or in progress. (Ensure specific focus is on understanding those follow-ups specific to your area of responsibility)</h3>
+ 
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans">Incident actions are stewarded through the Incident Investigation SharePoint and status of actions are stewarded weekly through the Asset Morning Call with Leadership.<p></p></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 22">
+  <label><input type="radio" name="v22" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v22" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v22" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v22" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n22">Correction or comment</label>
+ <textarea id="n22" data-n="22" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i23" data-id="23">
+ <header class="ih"><span class="num">23</span><span class="ref">UPBP-410 &nbsp;Q23</span><span class="sec">2.8 Incident Investigations and Analysis</span></header>
+ <h3 class="q">Provide a summary of any Significant Process Safety events that have occurred in the Asset/BU in the last 12 months (Tier 1, Tier 2, Tier 3 with IRAT 400+)</h3>
+ 
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans">Contact Risk and CA advisor for summary of any Significant Process Safety events that have occurred in the Asset/BU in the last 12 months (Tier 1, Tier 2, Tier 3 with IRAT 400+).<p></p></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 23">
+  <label><input type="radio" name="v23" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v23" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v23" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v23" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n23">Correction or comment</label>
+ <textarea id="n23" data-n="23" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i24" data-id="24">
+ <header class="ih"><span class="num">24</span><span class="ref">UPBP-410 &nbsp;Q24</span><span class="sec">2.8 Incident Investigations and Analysis</span></header>
+ <h3 class="q">Describe the BU Learning from Incident (LFI) process and explain what is done with UBP HiPo safety bulletins (LFI SharePoint) and High Learning Value Incidents (HLVIs)</h3>
+ 
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans">Global and local lessons learned are shared in our Monthly Process Safety and Learning from Incidents meeting, and any potential actions applicable to Hibernia / Hebron that come from lessons learned are stewarded through the Incident Investigation SharePoint. This information is also shared through safety meetings and through the platform Daily Communicator. A platform leadership message is also provided to all flights and vessels that arrive with crew. This message contains important reminders and any incidents that happened while on time off. All HLVI or HiPo safety bulletins are reviewed and analyzed for key root causes not just discussed at morning call.</div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 24">
+  <label><input type="radio" name="v24" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v24" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v24" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v24" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n24">Correction or comment</label>
+ <textarea id="n24" data-n="24" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i25" data-id="25">
+ <header class="ih"><span class="num">25</span><span class="ref">UPBP-410 &nbsp;Q25</span><span class="sec">2.9 Environmental</span></header>
+ <h3 class="q">Explain the limits and reporting requirements for gas flaring (if applicable)?</h3>
+ 
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans"><ul> <li>Gas flaring is assigned a regulatory limit each year through an approved annual flaring allowance issued from the Canada-Newfoundland and Labrador Offshore Energy Regulator (C-NLOER). This allowance can change year to year depending on production profile, maintenance requirements, and ramp-up forecasts.</li> <li>Gas flaring information is reported annually internally for Corporate Environmental Performance Indicator reporting requirements as well as externally to the C-NLOER and Environment Canada.</li> <li>Along with the annual flare limit, there is a daily limit driven by radiant heat limitations.</li> <li>CHECK – 3 monthly right now</li> </ul></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 25">
+  <label><input type="radio" name="v25" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v25" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v25" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v25" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n25">Correction or comment</label>
+ <textarea id="n25" data-n="25" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i26" data-id="26">
+ <header class="ih"><span class="num">26</span><span class="ref">UPBP-410 &nbsp;Q26</span><span class="sec">2.9 Environmental</span></header>
+ <h3 class="q">List the principal regulatory authorities, the frequency of their on-site inspections, and the protocols used for such inspections.</h3>
+ 
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans"><ul> <li>The principal regulatory authority for environmental protection is the Canada-Newfoundland and Labrador Offshore Energy Regulator (C-NLOER). Although they have no prescribed directions for the frequency of environment-specific on-site inspections, compliance officers have the ability to test, inspect, examine, audit, sample, and document compliance activities associated with offshore activities.</li> <li>The protocols for these visits could be informal platform visits or more formal documented inspections or audits.</li> <li>There is a Quarterly SSHE inspection that occurs onboard the Platform, and all SSHE-related items (environmental included) can be in scope.</li> <li>Other regulatory bodies with jurisdiction on certain offshore activities include Environment Canada, Department of Fisheries and Oceans, Canadian Environmental Assessment Agency, Transport Canada, and the Canadian Coast Guard.</li> </ul></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 26">
+  <label><input type="radio" name="v26" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v26" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v26" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v26" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n26">Correction or comment</label>
+ <textarea id="n26" data-n="26" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i27" data-id="27">
+ <header class="ih"><span class="num">27</span><span class="ref">UPBP-410 &nbsp;Q27</span><span class="sec">2.9 Environmental</span></header>
+ <h3 class="q">Explain the reporting thresholds for oil and produced water spills.</h3>
+ 
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans">Produced Water discharge overboard is analyzed for oil in water content. The overboard limits are as listed below: <ul> <li>When releases of produced water to sea are intended, the produced water treatment system will treat produced water such that oil-in-water concentrations do not exceed a 30-day volume-weighted rolling average of 30.0 mg/L and do not exceed the 24-hour rolling average of 44.0 mg/L.</li> <li>Open drains have a single sample limit of 15.0 mg/L</li> </ul> <li>These limits are prescribed in detail in both the Environmental Compliance and Monitoring Plan and the (C-NLOER) Offshore Waste Treatment Guidelines.<p></p> </li></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 27">
+  <label><input type="radio" name="v27" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v27" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v27" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v27" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n27">Correction or comment</label>
+ <textarea id="n27" data-n="27" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i28" data-id="28">
+ <header class="ih"><span class="num">28</span><span class="ref">UPBP-410 &nbsp;Q28</span><span class="sec">2.9 Environmental</span></header>
+ <h3 class="q">Describe your understanding of any particular Environmental risks of the Higher Consequence Potential Scenarios at your asset</h3>
+ 
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans"><li>The escalation branch on platform LOPCs potentially results in a HC2 Environmental release with the potential release of liquid hydrocarbons to sea in significant volumes.Environmental Releases can occur through Scenario related LOPC events.</li> <li>An additional consideration with loss of well control is the potential need to drill a relief well to mitigate the consequence. Assessment has determined HC2 Environmental consequence for this escalation event.</li></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 28">
+  <label><input type="radio" name="v28" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v28" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v28" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v28" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n28">Correction or comment</label>
+ <textarea id="n28" data-n="28" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i29" data-id="29">
+ <header class="ih"><span class="num">29</span><span class="ref">UPBP-410 &nbsp;Q29</span><span class="sec">2.9 Environmental</span></header>
+ <h3 class="q">Scenario Question: Consider a release of 10kg gas/ 2 bbl hydrocarbon liquid to land or sea as appropriate to your asset. What are your responsibilities for immediate actions and reporting? What phone numbers do you call? Which other ExxonMobil personnel do you need to notify?</h3>
+ 
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans"><li>If a spill or release is discovered the appropriate immediate action to take is to inform the Central Control Room by calling 46503, the CCR will then inform the OIM. The OIM notifies the SSHE Supervisor, Drilling Ops Superintendent, Operations Manager and may mobilize an independent investigation team. Further internal and external reporting requirements will be completed by onshore SSHE staff in conjunction with the offshore SSHE Lead.</li> <li>In the above scenario, there are multiple external agency notifications to be completed. Notifications are typically completed by the onshore SSHE Supervisor. In all instances the OIMS System 9-1 Incident Notification, Investigation and Reporting Process should be followed.</li></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 29">
+  <label><input type="radio" name="v29" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v29" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v29" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v29" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n29">Correction or comment</label>
+ <textarea id="n29" data-n="29" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i30" data-id="30">
+ <header class="ih"><span class="num">30</span><span class="ref">UPBP-410 &nbsp;Q30</span><span class="sec">3.0 Emergency Response</span></header>
+ <h3 class="q">What is the expectation for memorizing and/or knowledge of Emergency Procedures?</h3>
+ <details class="srcq"><summary>Wording in UPBP-410 Rev 3.2</summary><p>. What is the expectation for memorizing and/or knowledge of Emergency Procedures</p></details>
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans"><strong> <li>Offshore OIM (IC): There is an expectation that the OIM understands their role and where the current ER documents are located and accessible, including the ER Checklists. In addition, the OIM is responsible for ensuring that offshore personnel are familiar with their emergency response duties and effective in use of the emergency response checklists for certain scenarios (e.g. Participation in ER Exercises and ERT Team Training).</li> </strong><li><strong>Onshore Operations Manager (IMT Leader)</strong>: The IMT Leader must be familiar with IMT structure and team members roles and responsibilities. They must be familiar and effective in use and application of the IMT Guides and related checklists.</li></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 30">
+  <label><input type="radio" name="v30" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v30" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v30" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v30" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n30">Correction or comment</label>
+ <textarea id="n30" data-n="30" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i31" data-id="31">
+ <header class="ih"><span class="num">31</span><span class="ref">UPBP-410 &nbsp;Q31</span><span class="sec">3.0 Emergency Response</span></header>
+ <h3 class="q">Describe the process to muster and account for personnel in an emergency and the expected time to achieve full headcount for your facility?</h3>
+ 
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans"><li> When a General Platform Alarm (GPA) is initiated, it is immediately followed by a public address (PA) announcement from the Central Control Room (CCR). This announcement will inform all Personnel on Board (POB) of the known cause of the alarm and provide instructions on where to muster. <ul> <li><strong>Hebron:</strong> If there are no injured POB, the target time to complete a full muster is 14 minutes or less.</li> <li><strong>Hibernia:</strong> If there are no injured POB, the target time to complete a full muster is 16 minutes or less.</li> </ul> </li> <li>During the event of a H2S alarm, CCR operator is to make a PA announcement with the location and current wind direction for personnel to exit work areas upwind. The wind direction is provided daily in the communicator.</li></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 31">
+  <label><input type="radio" name="v31" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v31" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v31" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v31" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n31">Correction or comment</label>
+ <textarea id="n31" data-n="31" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i32" data-id="32">
+ <header class="ih"><span class="num">32</span><span class="ref">UPBP-410 &nbsp;Q32</span><span class="sec">3.0 Emergency Response</span></header>
+ <h3 class="q">Demonstrate an understanding of your particular role in an emergency? Explain how your response may differ depending on whether you are on-site or off-site and whether it is normal business hours</h3>
+ 
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans"><li><strong>OIM</strong>: The OIM is the on-board Incident Commander. The OIM reports to the ECC and assumes command and control. The OIM is responsible for making tactical decisions related to the emergency. They have knowledge and experience with response Procedures, ER Teams and Equipment in dealing with Emergencies. During a platform alarm the OIM is responsible for the safety of personnel onboard. Any personal movement offshore with fire teams, Medical Response Team or others must all be authorized by the OIM or designate in the ECC.</li> <li><strong>Operations Manager</strong>: Operations Manager would become the onshore Incident Management Team Lead and responsible for the oversight and direction of the Onshore IMT to ensure provision of support to an offshore Emergency. The OIM makes the call to activate IMT through the Designated Person Onshore (DPO). The DPO via MIR3 then contacts all IMT members to respond to the onshore emergency response room to support as required. If the IMT is activated, it is the Operations Manager’s decision / responsibility to activate the ESG for support.</li></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 32">
+  <label><input type="radio" name="v32" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v32" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v32" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v32" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n32">Correction or comment</label>
+ <textarea id="n32" data-n="32" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i33" data-id="33">
+ <header class="ih"><span class="num">33</span><span class="ref">UPBP-410 &nbsp;Q33</span><span class="sec">3.0 Emergency Response</span></header>
+ <h3 class="q">Explain your role in maintaining and operating emergency response equipment for your asset. How is emergency response readiness (equipment and capabilities) demonstrated to you?</h3>
+ 
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans"><li><strong>OIM</strong>: The OIM is responsible for health and readiness of all offshore ER equipment through Maintenance and FIMS programs. Every person has a responsibility to ensure the safety equipment in their work area is inspected and available. The OIM is responsible to ensure that impairments to ER Equipment and Systems are immediately addressed.</li> <li>Emergency response equipment and system readiness is demonstrated via Maintenance function testing, drills and exercises. ER equipment is also included in Process Safety Safeguards with weekly health verification reports. The workforce are tested through a number of different emergencies to ensure they are able to respond and learn from exercises if an actual event were to occur. All safety system devices and equipment are checked/tested on a regular basis depending on the criticality. The Certifying Authority completes visits to witness testing on such devices and reports any findings.</li></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 33">
+  <label><input type="radio" name="v33" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v33" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v33" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v33" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n33">Correction or comment</label>
+ <textarea id="n33" data-n="33" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i34" data-id="34">
+ <header class="ih"><span class="num">34</span><span class="ref">UPBP-410 &nbsp;Q34</span><span class="sec">Asset Specific: Basic Process Flows of Facilities</span></header>
+ <h3 class="q">Explain the basic process flows of the facilities within your asset as per the attached drawing</h3>
+ 
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans"><p> Explain the basic process flows of the facilities within your assigned asset—either Hebron or Hibernia. Work with the Production Advisor to gain an understanding. The explanation should focus on the general flow of materials and key process units, without detailing operating conditions. You only need to understand the basic process flow—pressure, temperature, and flow conditions are not required. </p></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 34">
+  <label><input type="radio" name="v34" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v34" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v34" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v34" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n34">Correction or comment</label>
+ <textarea id="n34" data-n="34" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i35" data-id="35">
+ <header class="ih"><span class="num">35</span><span class="ref">Local safeguard list</span><span class="sec">2.1 Risk Management</span></header>
+ <h3 class="q">Examples of preventative critical safeguards:</h3>
+ <p class="itemnote">Asset-local list of preventative critical safeguards. No source document in this repository states what this list should contain.</p>
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans"><li>Dropped Object During Drilling or Wellwork - Drilling Fixed Lifting Equipment Integrity, Drilling Loose Lifting Gear Integrity, Wellbay SIMOPS Plan, Wellwork Loose Lifting Gear Integrity</li> <li>Dropped Object During Maintenance &amp; Construction - Critical Lifting Practices (Field Verification)</li> <li>Work (Breaking &amp; Reinstating Containment) - Isolation and Independent Verification, Zero Energy Demonstrated, De-isolation, Leak Test and Reinstatement</li> <li>Corrosion of Pressure Containing Components - Corrosion Inspection &amp; Management</li> <li>Overpressure - Pressure Transmitters - Process Shutdown, Pressure Safety Valves (PSVs) + Heat Tracing</li> <li><strong>*H2S Induced Stress Cracking (*Hibernia Only)</strong> - Reservoir Pressure Management, H2S Sampling Program &amp; Alarm Setpoint, Annulus Pressure Management, Mixed Wellstream H2S Analyzer</li> <li><strong>*Burst Casing on Gas Injector (*Hibernia Only)</strong> - Pressure/Temperature Control Curves in DCS with Automated Shutdown</li> <li>Over Pressure of Annulus - Well Integrity</li> <li>Primary Barrier Failure - Primary Pressure Control Equipment Integrity, Well Control – Response, Secondary Pressure Control Equipment Integrity</li> <li>Perforation Misfire in Wellhead/Tree - Explosives Handling &amp; Detonation Practices</li> <li>Breaking &amp; Reinstating Containment - Well Isolation / Zero Energy Demonstrated Wellwork, De-isolation, Leak Test and Reinstatement</li> <li>Influx (Undesired Formation Fluid in Wellbore) - Influx Prevention, Fluid Barrier, Casing &amp; Formation Testing, Barrier Verification, Identification, Monitor and Response, Well Control Equipment</li> <li>Initial Release, Fire, or Explosion - Large Inventory SDVs, Firewater Supply, Temporary Refuge</li></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 35">
+  <label><input type="radio" name="v35" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v35" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v35" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v35" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n35">Correction or comment</label>
+ <textarea id="n35" data-n="35" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i36" data-id="36">
+ <header class="ih"><span class="num">36</span><span class="ref">Local safeguard list</span><span class="sec">2.1 Risk Management</span></header>
+ <h3 class="q">Examples of Mitigate critical safeguards:</h3>
+ <p class="itemnote">Asset-local list of mitigative critical safeguards. No source document in this repository states what this list should contain.</p>
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans"><ul> <li>Ignition Source Control (HAEQ)</li> <li>Gas Detection System</li> <li>Isolation</li> <li>Emergency Response Extended Release</li> <li>Emergency Well Response</li> <li>Gas detection System Manual Isolation</li> <li>Fire Detection</li> <li>Fire Detection + Automated Shutdown (STD)</li> <li>Escape &amp; Evacuation (Muster)</li> <li>Lifeboats &amp; Launching Systems, SBV (Rescue+ Fire Fighting)</li> <li>Emergency Response / OIM Competency / Drills</li> </ul></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 36">
+  <label><input type="radio" name="v36" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v36" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v36" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v36" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n36">Correction or comment</label>
+ <textarea id="n36" data-n="36" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i37" data-id="37">
+ <header class="ih"><span class="num">37</span><span class="ref">Local safeguard list</span><span class="sec">2.1 Risk Management</span></header>
+ <h3 class="q">Examples of preventative critical safeguards:</h3>
+ <p class="itemnote"><strong>Possible duplication.</strong> This block repeats the preventative list from item 35 and part of the mitigative list from item 36. Confirm whether it is intentional or should be removed.</p>
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans"><ul> <li>Dropped Object During Drilling or Wellwork - Drilling Fixed Lifting Equipment Integrity, Drilling Loose Lifting Gear Integrity, Wellbay SIMOPS Plan, Wellwork Loose Lifting Gear Integrity</li> <li>Dropped Object During Maintenance &amp; Construction - Critical Lifting Practices (Field Verification)</li> <li>Work (Breaking &amp; Reinstating Containment) - Isolation and Independent Verification, Zero Energy Demonstrated, De-isolation, Leak Test and Reinstatement</li> <li>Corrosion of Pressure Containing Components - Corrosion Inspection &amp; Management</li> <li>Overpressure - Pressure Transmitters - Process Shutdown, Pressure Safety Valves (PSVs) + Heat Tracing</li> <li><strong>*H2S Induced Stress Cracking (*Hibernia Only)</strong> - Reservoir Pressure Management, H2S Sampling Program &amp; Alarm Setpoint, Annulus Pressure Management, Mixed Wellstream H2S Analyzer</li> <li><strong>*Burst Casing on Gas Injector (*Hibernia Only)</strong> - Pressure/Temperature Control Curves in DCS with Automated Shutdown</li> <li>Over Pressure of Annulus - Well Integrity</li> <li>Primary Barrier Failure - Primary Pressure Control Equipment Integrity, Well Control – Response, Secondary Pressure Control Equipment Integrity</li> <li>Perforation Misfire in Wellhead/Tree - Explosives Handling &amp; Detonation Practices</li> <li>Breaking &amp; Reinstating Containment - Well Isolation / Zero Energy Demonstrated Wellwork, De-isolation, Leak Test and Reinstatement</li> <li>Influx (Undesired Formation Fluid in Wellbore) - Influx Prevention, Fluid Barrier, Casing &amp; Formation Testing, Barrier Verification, Identification, Monitor and Response, Well Control Equipment</li> <li>Initial Release, Fire, or Explosion - Large Inventory SDVs, Firewater Supply, Temporary Refuge</li> </ul></div><div class="ans"><li>Ignition Source Control (HAEQ</li> <li>Gas Detection System</li> <li>Isolation</li> <li>Emergency Response Extended Release</li> <li>Emergency Well Response</li> <li>Gas detection System Manual Isolation</li> <li>Fire Detection</li> <li>Fire Detection + Automated Shutdown (STD)</li> <li>Escape &amp; Evacuation (Muster)</li> <li>Lifeboats &amp; Launching Systems, SBV (Rescue+ Fire Fighting)</li> <li>Emergency Response / OIM Competency / Drills</li></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 37">
+  <label><input type="radio" name="v37" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v37" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v37" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v37" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n37">Correction or comment</label>
+ <textarea id="n37" data-n="37" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<article class="item" id="i38" data-id="38">
+ <header class="ih"><span class="num">38</span><span class="ref">Local answer inside a global question</span><span class="sec">Important Documents</span></header>
+ <h3 class="q">Scenario Question: Breaking containment work is required to remove a faulty valve in hydrocarbon service. There is only a single valve isolation available to isolate and remove this valve. Describe the process approvals required to allow this work to progress.</h3>
+ <p class="itemnote">This question carries <strong>two</strong> answers: the Global Module answer (verifiable, from the Assessor Guide) and a Hebron/Hibernia answer (not verifiable here). Only the asset-local half needs checking.</p>
+ <div class="curr"><span class="lbl">Answer as it currently stands in the study aid</span><div class="ans"><p><strong>Global Module (Assessor Guide Rev 3.0):</strong></p> <ul> <li>Isolation valve leak and integrity test must be performed.</li> <li>Isolation plan and use of an SVI for isolation must be approved by both the <strong>Production AA</strong> and the <strong>PIC</strong>.</li> <li>If the flange class of the system is <strong>equal to or &gt;300</strong>, the <strong>Operations AA</strong> or competent delegate (independent verifier to the AO) must be at the site to witness the demonstration of zero energy.</li> <li>If the flange class is <strong>&lt;300</strong>, the <strong>Operations AO</strong> must be at the site to witness the demonstration of zero energy — it cannot be delegated to the permit holder.</li> </ul> <p><strong>Asset specific — Hebron/Hibernia:</strong></p> <li>If the single valve is listed in the Appendix A WMS Addendum approval list, the job can proceed. If the valve is not listed, a risk screening must be conducted. If approved, a third-party engineer's stamp is required, and the valve will be added to Appendix A or uploaded to SharePoint. Guidance from the Addendum approval list must be followed.</li> <li>An isolation valve leak and integrity test must be performed.</li> <li>The isolation plan must be approved by both the Production AA and the Person in Charge (PIC). Permit Vision includes a function that requires the OIM to sign the permit if a single valve is used.</li> <li>The AA must be present during the first break when using a single valve.</li></div></div>
+ <div class="verdict" role="group" aria-label="Verdict for item 38">
+  <label><input type="radio" name="v38" value="ok"><span>Correct as written</span></label>
+  <label><input type="radio" name="v38" value="change"><span>Needs change</span></label>
+  <label><input type="radio" name="v38" value="na"><span>Not applicable to this asset</span></label>
+  <label><input type="radio" name="v38" value="refer"><span>Refer &mdash; outside my knowledge</span></label>
+ </div>
+ <label class="nl" for="n38">Correction or comment</label>
+ <textarea id="n38" data-n="38" rows="3" placeholder="If this needs to change, write what it should say and where that comes from (procedure number, register, owner)."></textarea>
+</article>
+<section class="panel">
+<h2>Separate question: is the CVPE route still right?</h2>
+<p>These eight questions are <em>not</em> asset-local answers &mdash; their content comes
+from the global Training and Competency UBP. But which variant applies depends on one
+asset fact: the Assessor Guide gates them on whether the work area has completed CVPE or
+is still on the CAS standard. The asset confirmed in August 2026 that Hebron/Hibernia has
+completed CVPE, so the CVPE answers are marked applicable and the CAS ones are retained
+for reference only.</p>
+<p><strong>If that is ever no longer true, all eight flip at once.</strong> Worth a glance
+while you have the file open.</p>
+<ol class="routelist">
+<li><span class="rsec">2.2 Training</span> Describe the objective of the Training and Competency UBP. Competency expectations are required to be maintained per key position — how are key positions defined?</li><li><span class="rsec">2.2 Training</span> Describe the different roles that the below positions take in assuring competency for a given activity.</li><li><span class="rsec">2.3 Operating Procedures</span> Define ‘Integrity Critical Procedure’, and what are the expectation of individuals executing the procedure?</li><li><span class="rsec">2.3 Operating Procedures</span> What is the timeframe for procedure revalidation?</li><li><span class="rsec">2.3 Operating Procedures</span> List examples of globally recommended IC procedures.</li><li><span class="rsec">2.3 Operating Procedures</span> During normal operations, who can approve a deviation from the different categories of approved procedures?</li><li><span class="rsec">2.3 Operating Procedures</span> What level of review and approval is required for either a new or revalidated ‘Integrity Critical’ Procedure?</li><li><span class="rsec">2.3 Operating Procedures</span> Scenario Question: An FLS contacts you in the middle of the night and communicates they are unable to restart a plant/process within your facility because the integrity critical procedure has an error</li>
+</ol>
+</section>
+
+<footer>
+Generated from LOFT-Process-Safety.html &middot; answers shown are the current contents of
+the study aid &middot; this sheet records a review, it does not change the study aid.
+</footer>
+</main>
+<script>
+(function(){
+ "use strict";
+ var KEY='loft-asset-review-v1';
+ var items=[].slice.call(document.querySelectorAll('.item'));
+ var TOT=items.length;
+ document.getElementById('cTot').textContent=TOT;
+ var meta=['rName','rRole','rAsset','rDate'];
+
+ function state(){
+  var d={meta:{},v:{},n:{}};
+  meta.forEach(function(k){var e=document.getElementById(k); if(e&&e.value)d.meta[k]=e.value;});
+  items.forEach(function(it){
+   var id=it.dataset.id;
+   var c=it.querySelector('input[type=radio]:checked'); if(c)d.v[id]=c.value;
+   var t=it.querySelector('textarea'); if(t&&t.value.trim())d.n[id]=t.value;
+  });
+  return d;
+ }
+ function paint(){
+  var done=0,c={ok:0,change:0,na:0,refer:0};
+  items.forEach(function(it){
+   var r=it.querySelector('input[type=radio]:checked');
+   it.className='item';
+   if(r){done++;c[r.value]++;
+    it.classList.add(r.value==='ok'?'done':'done-'+r.value);}
+  });
+  document.getElementById('cDone').textContent=done;
+  var parts=[];
+  if(c.ok)parts.push(c.ok+' correct');
+  if(c.change)parts.push(c.change+' need change');
+  if(c.na)parts.push(c.na+' n/a');
+  if(c.refer)parts.push(c.refer+' referred');
+  document.getElementById('cBreak').textContent=parts.length?parts.join(', '):'none yet';
+ }
+ function save(){
+  try{localStorage.setItem(KEY,JSON.stringify(state()));}catch(e){}
+ }
+ function load(d){
+  if(!d)return;
+  meta.forEach(function(k){var e=document.getElementById(k); if(e&&d.meta&&d.meta[k])e.value=d.meta[k];});
+  Object.keys(d.v||{}).forEach(function(id){
+   var r=document.querySelector('input[name="v'+id+'"][value="'+d.v[id]+'"]'); if(r)r.checked=true;});
+  Object.keys(d.n||{}).forEach(function(id){
+   var t=document.getElementById('n'+id); if(t)t.value=d.n[id];});
+  paint();
+ }
+ try{var raw=localStorage.getItem(KEY); if(raw)load(JSON.parse(raw));}catch(e){}
+
+ document.addEventListener('change',function(e){
+  if(e.target.matches('input[type=radio],input,textarea')){paint();save();}});
+ document.addEventListener('input',function(e){
+  if(e.target.matches('textarea,input')){save();}});
+
+ document.getElementById('bNext').addEventListener('click',function(){
+  for(var i=0;i<items.length;i++){
+   if(!items[i].querySelector('input[type=radio]:checked')){
+    items[i].scrollIntoView({behavior:'smooth',block:'center'});
+    var t=items[i].querySelector('input[type=radio]'); if(t)t.focus();
+    return;}}
+  alert('Every item has a verdict. Use Save to file to keep the review.');
+ });
+ document.getElementById('bPrint').addEventListener('click',function(){window.print();});
+
+ document.getElementById('bExport').addEventListener('click',function(){
+  var d=state();
+  d.generated='LOFT asset specific answer review';
+  var lines=['LOFT ASSET SPECIFIC ANSWER REVIEW',''];
+  meta.forEach(function(k){if(d.meta[k])lines.push(k.replace('r','')+': '+d.meta[k]);});
+  lines.push('','--- verdicts ---');
+  items.forEach(function(it){
+   var id=it.dataset.id;
+   var q=it.querySelector('.q').textContent.trim();
+   var ref=it.querySelector('.ref').textContent.trim();
+   lines.push('');
+   lines.push('['+id+'] '+ref+' :: '+(d.v[id]||'NOT REVIEWED').toUpperCase());
+   lines.push('    Q: '+q);
+   if(d.n[id])lines.push('    Note: '+d.n[id].replace(/\n/g,'\n          '));
+  });
+  d.readable=lines.join('\n');
+  var name='asset-review';
+  if(d.meta.rName)name+='-'+d.meta.rName.replace(/[^A-Za-z0-9]+/g,'-').toLowerCase();
+  if(d.meta.rDate)name+='-'+d.meta.rDate;
+  var blob=new Blob([JSON.stringify(d,null,1)],{type:'application/json'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download=name+'.json';
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){URL.revokeObjectURL(a.href); a.remove();},1000);
+ });
+
+ var f=document.getElementById('fImport');
+ document.getElementById('bImport').addEventListener('click',function(){f.click();});
+ f.addEventListener('change',function(){
+  var file=f.files&&f.files[0]; if(!file)return;
+  var rd=new FileReader();
+  rd.onload=function(){
+   try{load(JSON.parse(rd.result)); save();}
+   catch(e){alert('That file could not be read as a saved review.');}
+   f.value='';
+  };
+  rd.readAsText(file);
+ });
+ paint();
+})();
+</script>
+</body>
+</html>
