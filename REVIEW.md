@@ -1068,3 +1068,33 @@ script blocks, no content touched. 100 questions, 106 answers, 100 assessor pane
 100 study panels correctly placed, no console errors, no overflow from 360px to 1280px,
 search still precise, all three modes and the full assessor flow (session, modules,
 summary, save, reload, handover to a fresh browser) working, and 57 of 57 topics present.
+
+### 14.1 Follow-up: you could not tell which mode you were in
+
+The first version signalled assessor mode with a button label alone. From the middle of a
+long page that is invisible, and the honest report was *"nothing changes"*. Three real
+defects sat behind it.
+
+**The state was not visible.** Now the mode bar turns green, a banner sits under it for as
+long as the mode lasts — *"Assessor mode — the assessment record is visible and is being
+saved"*, with a **Lock** button — and on first unlock the session bar is scrolled to and
+flashed. The banner is a `role="status"` region, so it is announced rather than only seen.
+
+**On a phone the button was off the screen entirely.** `#modeBar` scrolled sideways, so at
+390px wide **Assessor access** sat at x=679 and **My notes** at x=373 — both past the right
+edge, with nothing to suggest they existed. The bar now wraps onto a second row on narrow
+screens instead of scrolling, `#modeHint` is dropped there, and the content offset moves
+with it. All three buttons measured on screen at 390px, no horizontal scroll.
+
+**The session bar hid its own first row.** `#assessSession` is `position: sticky` at
+`top: 44px`, which was correct under the mode bar alone and wrong once the banner took the
+next 34px — the Candidate and Position fields stuck *behind* it. The fix that matters is
+not the number: every piece of fixed or sticky chrome (`#toc`, `#glossarySidebar`,
+`#glossaryToggle`, `#assessSession`) now shifts in **one** `body.assessor-on` block, so a
+future banner change cannot leave one of them behind. A first attempt set the offset on
+the base rule and lost to a later rule of equal specificity, which is why it is stated
+once, in the block that already owns the chrome offsets.
+
+Verified: rendered content still byte-identical at 106,350 characters, coverage 57 of 57,
+no console errors, no overflow from 360px to 1280px, and the gate, separation, banner,
+password-change and full assessor flow all pass.

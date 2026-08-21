@@ -67,6 +67,12 @@ is `admin`. **Password** (visible once unlocked) changes it for that machine.
 > apart on a shared machine. Do not put anything behind it that would matter if it were
 > read. If an assessment record needs real protection, protect the saved `.json` file.
 
+**You can tell at a glance which mode you are in.** In assessor mode the top bar turns
+green and a banner sits under it — *"Assessor mode — the assessment record is visible and
+is being saved"* — with a **Lock** button on the right. The banner stays for as long as
+the mode does. When the record first appears the session bar is scrolled to and flashed,
+so the change is visible even from the middle of a long page.
+
 Unlocking lasts for the browser tab, not the machine — closing the browser re-locks,
 which is the safer default on a shared computer. Click **Assessor mode on** to lock again
 straight away.
