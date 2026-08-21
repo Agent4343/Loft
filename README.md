@@ -11,15 +11,17 @@ source documents both are derived from.
 ## The study aid
 
 **`LOFT-Process-Safety.html`** — open it in any browser. No install, no server, works
-offline. One file, three modes, switched from the bar at the top:
+offline. One file, four modes, switched from the bar at the top:
 
 | Mode | What it does | For |
 |---|---|---|
 | **Guide** | Every question with its model answer, by section, with the glossary and source links | Reading through; running an assessment |
 | **Test** | Answers hidden, revealed one at a time, with search across questions and answers | Self-testing before the interview |
 | **Cards** | One question at a time — flip to the answer, mark *Got it* or *Needs review*, shuffle, filter by category | Practising recall |
+| **Practice** | 133 multiple-choice questions, scored, with the reason for each answer | Drilling the facts |
 
-All three modes read the **same** questions and answers. Correcting an answer fixes it
+Guide, Test and Cards read the **same** questions and answers, and Practice is built from
+them. Correcting an answer fixes it
 everywhere at once — there is no second copy to drift out of step.
 
 Search works in Guide and Test modes, so a question can be found mid-interview without
@@ -32,15 +34,15 @@ Management of Change, Incident Investigation, Environmental, and Emergency Respo
 Keyboard shortcuts in Cards mode: **Space** flips, **←/→** move, **G** marks got it,
 **R** marks needs review, **S** shuffles.
 
-> **This file replaces `Loft.html` and `LOFT Training Flip Card.v1.html`,** which were
-> removed. They held overlapping copies of the same material, and every content
+> **This file replaces `Loft.html`, `LOFT Training Flip Card.v1.html` and
+> `LOFT-Practice-Questions.html`,** which were removed. They held overlapping copies of the same material, and every content
 > correction had to be made in two or three places — five of seven content fixes in
 > August 2026 touched more than one file. Both remain in git history if needed.
 
 ## Practice questions
 
-`LOFT-Practice-Questions.html` is a multiple-choice drilling tool &mdash; 133 questions
-across all eleven topics, every answer traced to the study aid.
+**Practice** is the fourth mode in `LOFT-Process-Safety.html` &mdash; 133 multiple-choice
+questions across all eleven topics, every answer traced to an answer in the same file.
 
 > **The assessment is a face-to-face interview.** You will be asked to *demonstrate* and
 > *describe*, out loud, to an assessment team. Multiple choice cannot test that, and
@@ -48,7 +50,7 @@ across all eleven topics, every answer traced to the study aid.
 > approval levels, thresholds, timeframes, who signs what. Get those solid here, then
 > practise saying the full answers aloud from the study guide.
 
-- **Practice mode** marks each answer as you go, with the reason and the study guide
+- **Practice** marks each answer as you go, with the reason and the study guide
   question it came from. **Test mode** holds the score until the end.
 - Pick a topic or take the lot; 10, 20, 40 or all 133. Questions and options are shuffled.
 - The result breaks the score down by topic and lists everything missed, with the

@@ -1335,3 +1335,52 @@ buried mid-sentence &mdash; the right distinction to test, but easy to misread o
 Reworded so the distinguishing term appears early and the two are 84% similar. Numeric
 options that differ only in the number were left alone: for a threshold question that is
 the whole point.
+
+---
+
+## 18. Practice folded into the study aid
+
+Shipping the practice questions as their own file contradicted the decision in section 11,
+and the owner spotted it. The consolidation there existed because every content fix had to
+be made in two or three places and the files drifted. A fourth file recreated exactly that.
+
+**The concrete exposure.** The question bank restates facts from **87 different study aid
+answers**. Once the review of the 38 asset answers lands and a threshold or an approval
+level changes, the study aid would be corrected and the practice questions would go on
+teaching the old value with nothing to flag it.
+
+Practice is now the **fourth mode** &mdash; Guide, Test, Cards, Practice &mdash; using the
+same overlay pattern as Cards: a fixed layer below the mode bar, shown by a body class.
+`LOFT-Practice-Questions.html` was removed; it remains in git history.
+
+The duplication has not disappeared, only become findable. `CONTRIBUTING.md` now says so
+plainly: when an answer changes, grep `loft-practice-bank` for the old value and fix it in
+the same commit. One file makes that possible, not automatic.
+
+### Details worth keeping
+
+- The layer clears the assessor banner as well as the mode bar
+  (`body.assessor-on #practiceLayer { inset: 78px 0 0 0 }`, 118px on mobile), so it takes
+  the same offsets as every other piece of fixed chrome.
+- Switching to Guide mid-run and back keeps your place. `setMode` calls
+  `window.__loftPractice()`, which rebuilds the setup screen only when no attempt is
+  running.
+- The bank went in before the **last** `</body>`, not the first: the summary script holds
+  the literal string `'</body></html>'` inside the standalone report it generates.
+
+### One defect found in testing
+
+The resume button offered *"Resume (0 of 133 done)"* &mdash; the guard tested
+`pos < length` but not `pos > 0`, so a run where nothing had been answered counted as
+resumable. Now requires at least one answer.
+
+### Verification
+
+Guide content **byte-identical** at 106,941 characters &mdash; this is CSS and two script
+blocks, no content touched. Answering everything correctly scores 100% and everything wrong
+scores 0%. All four modes switch cleanly with the right layer visible in each. No console
+errors, no overflow from 360px to 1280px on either the setup screen or a question. Study
+notes, the assessor gate and banner, the module and summary sheets, save and reload, the
+dry run and search all still pass, and coverage is 57 of 57.
+
+File size 244 KB &rarr; 356 KB. It still opens instantly from disk and still works offline.

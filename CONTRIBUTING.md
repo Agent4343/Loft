@@ -43,10 +43,17 @@ documents is not confused.
 
 ## Changing the HTML
 
-- There is **one** study aid file now, `LOFT-Process-Safety.html`. Guide, Test and
-  Cards are three views of the same questions — do not fork it into separate files
+- There is **one** study aid file, `LOFT-Process-Safety.html`. Guide, Test, Cards and
+  Practice are four views of the same material — do not fork it into separate files
   again. The reason it was consolidated is that every content fix previously had to
-  be repeated in two or three places, and they drifted.
+  be repeated in two or three places, and they drifted. This happened a second time:
+  the practice questions shipped as their own file, restating facts from 87 study aid
+  answers, and were folded back in for the same reason.
+- **The practice bank restates facts that live in the answers above it.** When you
+  correct an answer, grep `loft-practice-bank` for anything that repeats the old value
+  — a threshold, an approval level, a timeframe — and fix it in the same commit. That
+  duplication is the price of having a question bank at all; being in one file only
+  makes it findable, not automatic.
 - **The `.question` divs are now well-formed — keep them that way.** 48 of them used to
   swallow the content that followed, because they were left unclosed in the source and the
   browser nested whatever came next inside them. They were repaired one at a time (see
