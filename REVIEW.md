@@ -1144,3 +1144,74 @@ The sheet was regenerated so item 3 shows the corrected Q3. Item numbering is de
 source order and did not move, and saved work is keyed by item number &mdash; verified by
 seeding a part-finished review, rebuilding, and confirming every verdict, note and the
 reviewer's name came back intact.
+
+---
+
+## 16. Source-fidelity sweep of every question
+
+Section 15 found a question that had lost two words. That raised an obvious worry: if one
+question's *wording* had drifted, others might have too, and every earlier check had asked
+whether an **answer** was right, never whether the **question** still matched the source.
+So every question was diffed against the controlling document, word by word.
+
+### Asset Specific module (34 questions, UPBP-410 Rev 3.2)
+
+**Two real defects, both fixed.**
+
+| | Source | Study aid had |
+|---|---|---|
+| Q1 | *"**Demonstrate** an understanding of all Higher Consequence Potential Scenarios..."* | *"**Describe** an understanding..."* |
+| Q34 | *"Explain the basic process flows of the facilities within your asset **as per the attached drawing**"* | `Question:` &mdash; a bare label |
+
+Q34 was the worse of the two. The question text was not in the question at all: the div
+held the word `Question:` and the real wording sat inside the answer. In Cards mode the
+card front read "Question:" and the question itself was on the back. The source wording is
+now in the question, and the two asset Process Diagram links sit directly above it.
+
+**Four apparent mismatches were not defects.** Q7 and Q16 looked truncated because the
+*extract* used for comparison had been cut at a sentence boundary, not the study aid. Q24
+and Q33 looked short because the next section heading (`ENVIRONMENT`, `OVERALL`) ran on
+into the question text and the heading filter did not catch a bare uppercase word. Q14 and
+Q17 carry their trailing instructions in the answer rather than the question, which is a
+reasonable placement.
+
+**All 34 now match the source word for word.**
+
+### Global module (62 questions, Assessor Guide Rev 3.0)
+
+Splitting the Assessor Guide on `Question:` gives question-and-answer blobs, not questions,
+so the first attempt produced 16 "differences" that were mostly the parser's fault. The
+check that worked asks a narrower question with a reliable answer: **does each question in
+the study aid appear verbatim in the source?**
+
+**Two real defects, both fixed.**
+
+| Source | Study aid had |
+|---|---|
+| *"**Demonstrate** an understanding of approval process for Long Term Temporary Defeat..."* | *"**Describe** an understanding..."* |
+| *"...what are the **expectations** of individuals executing the procedure?"* | *"...the **expectation** of..."* |
+
+The `Demonstrate` &rarr; `Describe` substitution appearing in both modules is worth noting:
+it reads as a habit of whoever transcribed the questions rather than two coincidences.
+Demonstrating and describing are not the same instruction in a competency assessment.
+
+**One thing found but deliberately not changed.** The Work Management worked example
+&mdash; *"Repair, Inspect and Test Crude Oil Transfer Pump Tag PBE-12345"* and the six
+questions hanging off it &mdash; appears in **no source document**. Neither `PBE-12345` nor
+`Crude Oil Transfer` occurs anywhere in the Assessor Guide, either Task Book, or UPBP-410.
+Every concept it drills (permit type, Life Saving Actions, Isolation Control Certificate,
+Zero Energy Demonstration) *is* in the Assessor Guide, so this looks like a locally written
+practice scenario built around real requirements. That is legitimate and useful, but it is
+**not** a question an assessor will ask from the guide, and it is not currently labelled as
+local. Worth a decision by the owner; not a defect to fix unilaterally.
+
+Punctuation-only differences were left alone &mdash; `LTI's` &rarr; `LTIs`, a full stop
+changed to a question mark on a question. The aid is cleaner and no meaning moves.
+
+### Verification
+
+Each fix applied and checked on its own by re-rendering and diffing the extracted text: the
+Q1/Q36 edits show as `scrib` &rarr; `monstrat`, the expectations edit as a single inserted
+`s`, and the Q34 edit as `Question:` &rarr; the source wording. Nothing else moved. 100
+questions, 107 answers, coverage 57 of 57, no console errors, and all 38 review-sheet items
+still matching the study aid.

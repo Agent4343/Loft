@@ -139,6 +139,10 @@ source governs.**
 | `Training CriticalE and Expectations .pdf` | Critical Expectations `[CriticalE]` and Expectations `[E]` that govern the program |
 | `Leadership for Operations _ Framework for Training _LOFT_.pdf` | LOFT framework overview |
 
+Every question has been diffed against its source document word by word, not just its
+answer checked &mdash; see `REVIEW.md` section 16. Four wording defects were found and
+fixed, including one question whose text was missing entirely.
+
 Two wording issues in Assessor Guide Rev 3.0 are written up in
 `SOURCE-DOCUMENT-QUERIES.md`, ready to send to the document owner: it says ten Process
 Safety categories and then lists eleven, and it has both the SLS and the TLS informing
