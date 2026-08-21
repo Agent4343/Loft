@@ -997,3 +997,74 @@ turned up a likely explanation for the first: the eleventh category is **Compete
 Assurance Standard**, which the guide elsewhere retires once a work area completes CVPE
 — so "ten" is plausibly the count after CAS goes, written into an edition that still
 carries it.
+
+---
+
+## 14. Study notes, and putting the assessment record behind a gate
+
+Two changes, asked for together because they are the same idea: the file serves two
+different people, and until now it only had furniture for one of them.
+
+### The candidate had nowhere to write
+
+Every question carried an **Assessor notes** box and nothing else. A candidate studying
+had no place to record what tripped them up, so the only note-taking surface in the file
+was the one meant for the assessment record — which is exactly the wrong place for it.
+
+Every question now carries a **My study notes** box as well, above the assessor panel and
+visually distinct (purple rather than blue). It saves as you type. **My notes** in the top
+bar collects everything written, grouped by section, and prints.
+
+**The two are kept completely apart**, which matters more than it sounds:
+
+| | Study notes | Assessor notes |
+|---|---|---|
+| Storage key | `loft-study-notes-v1` | `loft-assessor-notes-v1` |
+| File format | `loft-study-notes` | `loft-assessor-notes` |
+| Panel | `.study-panel` | `[data-note-panel]` |
+| Visible when locked | yes | no |
+
+Each loader rejects the other's file by name, and loading an assessment record into the
+study loader says so in those words rather than failing obscurely. Verified by writing
+both kinds of note in one browser, exporting both, and checking each file for the other's
+text and for the candidate's name: no leakage in either direction.
+
+### The assessment record is now behind a password
+
+The session bar, the per-question assessor panels, the module sheet and the summary are
+hidden until unlocked with **Assessor access**. Default password `admin`; **Password**
+changes it for that machine.
+
+**It is a gate, not security, and the code and the README both say so in those words.**
+The whole file is delivered to the browser — anyone who opens View Source can find the
+check and bypass it. What it actually buys is that a candidate revising on a shared
+machine does not wander into the assessment record, and that the two roles stay visibly
+apart. Anything needing real protection belongs in the saved `.json`, not behind this.
+
+Two deliberate choices:
+
+- **Unlock lives in `sessionStorage`, not `localStorage`**, so closing the browser
+  re-locks. On a shared offshore computer, a gate that stays open forever is not a gate.
+- **Printing follows the mode.** Locked prints the candidate's study notes; unlocked
+  prints the assessment record *without* them, because study material has no place in a
+  competency record.
+
+### Three defects found while building it
+
+- **Search matched the new panels.** Both `ownText` helpers strip injected UI so it never
+  reaches the index; `.study-panel` had to be added to both, and to `applyFilter`, or
+  typing a word from your own note returned that question.
+- **The notes view rendered under the mode bar and behind the glossary button.** Both are
+  `position: fixed`. `#summaryLayer` already solved this with `inset: 44px 0 0 0` and
+  `z-index: 1150`; `#studyLayer` now matches it. Written up in `CONTRIBUTING.md` so the
+  next full-screen layer starts from the right numbers.
+- **Four regression scripts broke**, all of them reaching for `#sess_candidate`, which is
+  now gated. That was the change working. They unlock first now.
+
+### Verification
+
+Rendered content **byte-identical** at 106,350 characters — the change is CSS and two
+script blocks, no content touched. 100 questions, 106 answers, 100 assessor panels and
+100 study panels correctly placed, no console errors, no overflow from 360px to 1280px,
+search still precise, all three modes and the full assessor flow (session, modules,
+summary, save, reload, handover to a fresh browser) working, and 57 of 57 topics present.

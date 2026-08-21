@@ -58,6 +58,22 @@ documents is not confused.
   whole file, comparing the extracted text character for character against a baseline, and
   reverting that one change if anything differed. Use the same loop for any structural
   edit: one change, verify, keep or revert.
+- **Two note systems, deliberately separate.** Study notes (`loft-study-notes-v1`,
+  `.study-panel`) belong to the candidate; assessor notes (`loft-assessor-notes-v1`,
+  `[data-note-panel]`) are the assessment record. Different keys, different file
+  formats, and each loader rejects the other's file. Do not merge them or route one
+  through the other's storage — the separation is the point.
+- **The assessor password is a gate, not security**, and the code says so. It keeps a
+  candidate out of the record by accident; it does not withstand View Source. Do not
+  describe it as protection, and do not put anything behind it that would matter if it
+  were read.
+- **New panels must be excluded from `ownText`.** Both `ownText` helpers strip
+  `.question, .answer, .note-panel, .study-panel, .reveal-btn` so injected UI never
+  reaches the search index or a saved record. Any new panel class has to be added to
+  both, and to `applyFilter`, or search starts matching your own furniture.
+- **Full-screen layers need `inset: 44px 0 0 0` and `z-index: 1150`.** The mode bar and
+  the glossary toggle are both `position: fixed`; a layer that ignores this renders
+  underneath them. `#summaryLayer` and `#studyLayer` both do it this way.
 - **Careful inserting new `<script>` blocks.** The summary script contains the literal
   string `'</body></html>'` inside the standalone report it generates, so a naive
   "insert before `</body>`" lands inside that string literal and breaks two scripts.

@@ -2232,6 +2232,95 @@ Explain your role in maintaining and operating emergency response equipment for 
   .outcome-btn[data-outcome="gap"][aria-pressed="true"]     { background: var(--gap); }
   .note-panel.has-note { border-left-color: #0f8e5a; background: #f2fbf7; }
 
+  /* ---- study notes: the candidate's own, always available ---- */
+  .study-panel {
+    border-left: 4px solid #7a5cc4;
+    background: #faf8ff; border-radius: 0 6px 6px 0;
+    padding: 10px 12px; margin: 12px 0 4px;
+  }
+  .study-panel > .sp-head {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 6px;
+  }
+  .study-panel .sp-label {
+    font-size: 11px; font-weight: 700; letter-spacing: .05em;
+    text-transform: uppercase; color: #6b4bb8;
+  }
+  .study-panel .sp-hint { font-size: 11px; color: #8a7fa8; }
+  .study-panel textarea {
+    width: 100%; box-sizing: border-box; font: inherit; font-size: 14px;
+    padding: 8px; border: 1px solid #d6cced; border-radius: 5px;
+    resize: vertical; min-height: 58px; background: #fff;
+  }
+  .study-panel textarea:focus { outline: 2px solid #7a5cc4; outline-offset: -1px; }
+  .study-panel.has-note { border-left-color: #5b3ba8; background: #f4efff; }
+
+  /* ---- assessor section stays out of sight until unlocked ---- */
+  body:not(.assessor-on) #assessSession,
+  body:not(.assessor-on) [data-note-panel] { display: none !important; }
+
+  #adminBtn.unlocked { background: #0f8e5a; border-color: #0f8e5a; color: #fff; }
+
+  #adminVeil {
+    position: fixed; inset: 0; background: rgba(4, 18, 32, .55);
+    display: flex; align-items: center; justify-content: center; z-index: 300; padding: 16px;
+  }
+  #adminBox {
+    background: #fff; border-radius: 10px; padding: 20px 22px; width: 100%; max-width: 26rem;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, .35); font-size: 14px; color: #13212f;
+  }
+  #adminBox h3 { margin: 0 0 6px; font-size: 17px; }
+  #adminBox p { margin: 0 0 12px; color: #55677d; line-height: 1.5; }
+  #adminBox label { display: block; font-size: 11px; text-transform: uppercase;
+    letter-spacing: .05em; color: #7b8a9c; margin-bottom: 4px; }
+  #adminBox input {
+    width: 100%; box-sizing: border-box; font: inherit; padding: 8px 10px;
+    border: 1px solid #c9d6e5; border-radius: 5px; margin-bottom: 12px;
+  }
+  #adminBox .row { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
+  #adminBox button {
+    font: inherit; font-size: 14px; padding: 7px 14px; border-radius: 5px; cursor: pointer;
+    border: 1px solid #c9d6e5; background: #fff; color: #13212f;
+  }
+  #adminBox button.primary { background: var(--note-accent); border-color: var(--note-accent); color: #fff; }
+  #adminBox .err { color: #b91c1c; font-weight: 600; margin: -6px 0 10px; min-height: 1.2em; }
+
+  /* ---- collected study notes view ---- */
+  /* inset clears the fixed mode bar; z-index clears the glossary toggle, which is
+     also fixed. Same values as the summary layer, for the same two reasons. */
+  #studyLayer {
+    position: fixed; inset: 44px 0 0 0; background: rgba(15,23,32,.55); z-index: 1150;
+    overflow-y: auto; padding: 24px 16px 60px; display: none;
+  }
+  #studyLayer.open { display: block; }
+  #studySheet {
+    background: #fff; max-width: 52rem; margin: 0 auto; padding: 28px 30px;
+    border-radius: 8px; box-shadow: 0 10px 40px rgba(0, 0, 0, .12);
+  }
+  #studySheet h2 { margin: 0 0 4px; font-size: 20px; }
+  #studySheet .sub { color: #55677d; font-size: 13px; margin: 0 0 18px; }
+  #studySheet h3 {
+    font-size: 12px; text-transform: uppercase; letter-spacing: .05em;
+    color: #6b4bb8; margin: 22px 0 8px; border-bottom: 1px solid #e6e0f5; padding-bottom: 4px;
+  }
+  .st-item { padding: 9px 0; border-bottom: 1px solid #f0f3f7; }
+  .st-q { font-weight: 600; font-size: 14px; }
+  .st-note { font-size: 14px; margin-top: 5px; white-space: pre-wrap; }
+  .st-none { color: #55677d; font-size: 14px; }
+  .study-tools { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+
+  @media print {
+    .study-panel { break-inside: avoid; }
+    .study-panel textarea { border: 1px solid #999; min-height: 0; height: auto; }
+    /* An assessment record is not the place for the candidate's study notes. */
+    body.assessor-on .study-panel { display: none !important; }
+    #studyLayer { position: static; inset: auto; background: #fff; padding: 0; overflow: visible; }
+    #studySheet { box-shadow: none; max-width: none; padding: 0; }
+    .study-tools { display: none !important; }
+    body.study-open #toc, body.study-open header, body.study-open main,
+    body.study-open #glossarySidebar, body.study-open #glossaryToggle,
+    body.study-open #modeBar, body.study-open #cardLayer { display: none !important; }
+  }
+
   @media print {
     #toc, #glossarySidebar, #glossaryToggle, #overlay { display: none !important; }
     /* Keep candidate / assessor / date on the printed record - drop only the controls. */
@@ -2312,7 +2401,7 @@ Explain your role in maintaining and operating emergency response equipment for 
      records and labels are not polluted by nested content. */
   function ownText(el) {
     var c = el.cloneNode(true);
-    var junk = c.querySelectorAll('.question, .answer, .note-panel, .reveal-btn');
+    var junk = c.querySelectorAll('.question, .answer, .note-panel, .study-panel, .reveal-btn');
     for (var i = 0; i < junk.length; i++) { junk[i].parentNode.removeChild(junk[i]); }
     return (c.textContent || '').replace(/\s+/g, ' ').trim();
   }
@@ -2862,7 +2951,7 @@ Explain your role in maintaining and operating emergency response equipment for 
      records and labels are not polluted by nested content. */
   function ownText(el) {
     var c = el.cloneNode(true);
-    var junk = c.querySelectorAll('.question, .answer, .note-panel, .reveal-btn');
+    var junk = c.querySelectorAll('.question, .answer, .note-panel, .study-panel, .reveal-btn');
     for (var i = 0; i < junk.length; i++) { junk[i].parentNode.removeChild(junk[i]); }
     return (c.textContent || '').replace(/\s+/g, ' ').trim();
   }
@@ -3030,6 +3119,8 @@ Explain your role in maintaining and operating emergency response equipment for 
       var parts = [it.el].concat(it.answers);
       var panel = document.querySelector('[data-note-panel="' + it.id + '"]');
       if (panel) { parts.push(panel); }
+      var study = document.querySelector('[data-study-panel="' + it.id + '"]');
+      if (study) { parts.push(study); }
       parts.forEach(function (el) { el.classList.toggle('q-hidden', !hit); });
       if (hit) { shown++; keep = keep.concat(parts); }
     });
@@ -3643,5 +3734,400 @@ Explain your role in maintaining and operating emergency response equipment for 
 })();
 </script>
 
+<script id="loft-study-notes-js">
+/* Study notes: the candidate's own notes, kept completely apart from the
+   assessment record. Different storage key, different file format, different
+   panel. A candidate studying on a shared machine never writes into an
+   assessment, and an assessor's record never picks up study material. */
+(function () {
+  'use strict';
+
+  var KEY = 'loft-study-notes-v1';
+  var notes = {};
+  var saveTimer = null;
+
+  function hash(str) {
+    var h = 5381, i;
+    for (i = 0; i < str.length; i++) { h = ((h << 5) + h + str.charCodeAt(i)) >>> 0; }
+    return h.toString(36);
+  }
+
+  /* Same id scheme as the assessor panels and the search index, so a note stays
+     with its question even if the question moves in the document. */
+  function ownText(el) {
+    var c = el.cloneNode(true);
+    var junk = c.querySelectorAll('.question, .answer, .note-panel, .study-panel, .reveal-btn');
+    for (var i = 0; i < junk.length; i++) { junk[i].parentNode.removeChild(junk[i]); }
+    return (c.textContent || '').replace(/\s+/g, ' ').trim();
+  }
+
+  function questions() {
+    var nodes = document.querySelectorAll('main section, .question, .answer');
+    var out = [], cur = null, seen = {}, sectionName = '';
+    [].forEach.call(nodes, function (n) {
+      if (n.tagName === 'SECTION') {
+        var h2 = n.querySelector(':scope > h2') || n.querySelector('h2');
+        sectionName = h2 ? h2.textContent.replace(/\s+/g, ' ').trim() : (n.id || sectionName);
+        return;
+      }
+      if (n.classList.contains('question')) {
+        var t = ownText(n);
+        if (t.length < 8) { cur = null; return; }
+        var base = 'q' + hash(t.slice(0, 220));
+        seen[base] = (seen[base] || 0) + 1;
+        cur = { el: n, id: seen[base] === 1 ? base : base + '_' + seen[base],
+                text: t, answers: [], section: sectionName };
+        out.push(cur);
+      } else if (cur) { cur.answers.push(n); }
+    });
+    return out;
+  }
+
+  function load() {
+    try { notes = JSON.parse(localStorage.getItem(KEY)) || {}; }
+    catch (e) { notes = {}; }
+  }
+  function persist() {
+    try { localStorage.setItem(KEY, JSON.stringify(notes)); } catch (e) { /* ignore */ }
+  }
+  function queueSave() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function () { persist(); updateCount(); }, 400);
+  }
+
+  function setNote(item, text) {
+    if (text.trim()) {
+      notes[item.id] = { q: item.text.slice(0, 300), section: item.section, text: text };
+    } else { delete notes[item.id]; }
+    var panel = document.querySelector('[data-study-panel="' + item.id + '"]');
+    if (panel) { panel.classList.toggle('has-note', !!notes[item.id]); }
+    queueSave();
+  }
+
+  function buildPanel(item) {
+    var panel = document.createElement('div');
+    panel.className = 'study-panel';
+    panel.setAttribute('data-study-panel', item.id);
+
+    var head = document.createElement('div');
+    head.className = 'sp-head';
+    var lbl = document.createElement('span');
+    lbl.className = 'sp-label'; lbl.textContent = 'My study notes';
+    var hint = document.createElement('span');
+    hint.className = 'sp-hint'; hint.textContent = 'Only you see these';
+    head.appendChild(lbl); head.appendChild(hint);
+    panel.appendChild(head);
+
+    var ta = document.createElement('textarea');
+    ta.rows = 2;
+    ta.placeholder = 'What tripped you up, how you remember it, where to read more...';
+    ta.value = (notes[item.id] || {}).text || '';
+    ta.setAttribute('aria-label', 'My study notes for: ' + item.text.slice(0, 90));
+    ta.addEventListener('input', function () { setNote(item, ta.value); });
+    panel.appendChild(ta);
+
+    if (notes[item.id]) { panel.classList.add('has-note'); }
+    return panel;
+  }
+
+  /* Placed after the question's last answer, above the assessor panel, for the
+     same reason the assessor panel is: the .qa wrappers nest, and one of them
+     holds 51 questions. */
+  function place(item, panel) {
+    var anchor = item.answers.length ? item.answers[item.answers.length - 1] : item.el;
+    anchor.parentNode.insertBefore(panel, anchor.nextSibling);
+  }
+
+  /* ---------- collected view ---------- */
+
+  function esc(t) {
+    return String(t == null ? '' : t)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function render() {
+    var ids = Object.keys(notes);
+    var h = '<h2>My study notes</h2>';
+    h += '<p class="sub">' + ids.length + ' note' + (ids.length === 1 ? '' : 's') +
+         ' &middot; your own, not part of any assessment record.</p>';
+    h += '<div class="study-tools">' +
+         '<button type="button" class="tool-btn keep" id="stClose">Back to guide</button>' +
+         '<button type="button" class="tool-btn keep" id="stPrint">Print</button>' +
+         '<button type="button" class="tool-btn keep" id="stSave">Save to file</button>' +
+         '<button type="button" class="tool-btn keep" id="stLoad">Load from file</button>' +
+         '<button type="button" class="tool-btn keep" id="stClear">Clear my notes</button>' +
+         '</div>';
+    if (!ids.length) {
+      h += '<p class="st-none">No notes yet. Type in the <strong>My study notes</strong> box ' +
+           'under any question and it is saved as you go.</p>';
+      return h;
+    }
+    var bySec = {}, order = [];
+    ids.forEach(function (id) {
+      var sec = notes[id].section || 'Other';
+      if (!bySec[sec]) { bySec[sec] = []; order.push(sec); }
+      bySec[sec].push(notes[id]);
+    });
+    order.forEach(function (sec) {
+      h += '<h3>' + esc(sec) + '</h3>';
+      bySec[sec].forEach(function (n) {
+        h += '<div class="st-item"><div class="st-q">' + esc(n.q) + '</div>' +
+             '<div class="st-note">' + esc(n.text) + '</div></div>';
+      });
+    });
+    return h;
+  }
+
+  function open() {
+    var layer = document.getElementById('studyLayer');
+    layer.querySelector('#studySheet').innerHTML = render();
+    layer.classList.add('open');
+    document.body.classList.add('study-open');
+    layer.querySelector('#stClose').addEventListener('click', close);
+    layer.querySelector('#stPrint').addEventListener('click', function () { window.print(); });
+    layer.querySelector('#stSave').addEventListener('click', saveFile);
+    layer.querySelector('#stLoad').addEventListener('click', loadFile);
+    layer.querySelector('#stClear').addEventListener('click', clearAll);
+    layer.scrollTop = 0;
+  }
+  function close() {
+    document.getElementById('studyLayer').classList.remove('open');
+    document.body.classList.remove('study-open');
+  }
+
+  function saveFile() {
+    persist();
+    var blob = new Blob([JSON.stringify(
+      { format: 'loft-study-notes', version: 1, saved: new Date().toISOString(), notes: notes },
+      null, 2)], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = 'LOFT-my-study-notes.json';
+    document.body.appendChild(a); a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 0);
+  }
+
+  function loadFile() {
+    var inp = document.createElement('input');
+    inp.type = 'file'; inp.accept = '.json,application/json';
+    inp.addEventListener('change', function () {
+      var f = inp.files && inp.files[0];
+      if (!f) { return; }
+      var r = new FileReader();
+      r.onload = function () {
+        try {
+          var d = JSON.parse(r.result);
+          if (d.format === 'loft-assessor-notes') {
+            throw new Error('that is an assessment record, not study notes');
+          }
+          if (d.format !== 'loft-study-notes') { throw new Error('not a LOFT study notes file'); }
+          if (Object.keys(notes).length &&
+              !window.confirm('Replace your current study notes with the file contents?')) { return; }
+          notes = d.notes || {};
+          persist();
+          window.location.reload();
+        } catch (e) { window.alert('Could not read that file: ' + e.message); }
+      };
+      r.readAsText(f);
+    });
+    inp.click();
+  }
+
+  function clearAll() {
+    if (!window.confirm('Clear all your study notes? Save to a file first if you need them.')) { return; }
+    notes = {}; persist(); window.location.reload();
+  }
+
+  function updateCount() {
+    var b = document.getElementById('studyBtn');
+    if (b) {
+      var n = Object.keys(notes).length;
+      b.textContent = n ? 'My notes (' + n + ')' : 'My notes';
+    }
+  }
+
+  function init() {
+    load();
+    questions().forEach(function (item) { place(item, buildPanel(item)); });
+
+    var layer = document.createElement('div');
+    layer.id = 'studyLayer';
+    layer.innerHTML = '<div id="studySheet"></div>';
+    document.body.appendChild(layer);
+
+    var bar = document.getElementById('modeBar');
+    if (bar) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.id = 'studyBtn'; b.textContent = 'My notes';
+      b.title = 'Everything you have written, in one place';
+      b.addEventListener('click', open);
+      var grow = bar.querySelector('.grow');
+      bar.insertBefore(b, grow || null);
+    }
+    updateCount();
+    window.addEventListener('beforeunload', persist);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && document.body.classList.contains('study-open')) { close(); }
+    });
+  }
+
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); }
+  else { init(); }
+})();
+</script>
+<script id="loft-admin-js">
+/* Assessor access gate.
+   ---------------------------------------------------------------------------
+   THIS IS A GATE, NOT SECURITY. The whole file is delivered to the browser, so
+   anyone who opens View Source can find the check and bypass it. It exists to
+   stop a candidate wandering into the assessment record by accident, and to
+   keep the two roles visibly apart on a shared machine. Do not rely on it to
+   protect anything that would matter if it were read.
+
+   Default password: admin
+   To change it for everyone, replace DEFAULT_HASH below with the hash of the new
+   password - unlock, use "Change password", and the new hash is stored in this
+   browser only. To reset a forgotten password, clear the site data for this file,
+   which restores the default.
+   --------------------------------------------------------------------------- */
+(function () {
+  'use strict';
+
+  var PW_KEY = 'loft-assessor-pw-v1';
+  var UNLOCK_KEY = 'loft-assessor-unlocked';
+
+  function hash(str) {
+    var h = 5381, i;
+    for (i = 0; i < str.length; i++) { h = ((h << 5) + h + str.charCodeAt(i)) >>> 0; }
+    return h.toString(36);
+  }
+
+  var DEFAULT_HASH = hash('admin');
+
+  function expected() {
+    try { return localStorage.getItem(PW_KEY) || DEFAULT_HASH; }
+    catch (e) { return DEFAULT_HASH; }
+  }
+
+  /* Unlock is remembered for the tab, not the machine. Closing the browser
+     re-locks, which is the safer default where a computer is shared. */
+  function isUnlocked() {
+    try { return sessionStorage.getItem(UNLOCK_KEY) === '1'; } catch (e) { return false; }
+  }
+  function remember(on) {
+    try {
+      if (on) { sessionStorage.setItem(UNLOCK_KEY, '1'); }
+      else { sessionStorage.removeItem(UNLOCK_KEY); }
+    } catch (e) { /* ignore */ }
+  }
+
+  function setLocked(locked) {
+    document.body.classList.toggle('assessor-on', !locked);
+    var b = document.getElementById('adminBtn');
+    if (b) {
+      b.textContent = locked ? 'Assessor access' : 'Assessor mode on';
+      b.classList.toggle('unlocked', !locked);
+      b.setAttribute('aria-pressed', locked ? 'false' : 'true');
+    }
+  }
+
+  function dialog(opts) {
+    var veil = document.createElement('div');
+    veil.id = 'adminVeil';
+    veil.innerHTML =
+      '<div id="adminBox" role="dialog" aria-modal="true" aria-labelledby="adminTitle">' +
+      '<h3 id="adminTitle">' + opts.title + '</h3>' +
+      '<p>' + opts.body + '</p>' +
+      '<label for="adminPw">' + opts.label + '</label>' +
+      '<input id="adminPw" type="password" autocomplete="current-password">' +
+      '<div class="err" id="adminErr"></div>' +
+      '<div class="row"><button type="button" id="adminCancel">Cancel</button>' +
+      '<button type="button" class="primary" id="adminOk">' + opts.ok + '</button></div></div>';
+    document.body.appendChild(veil);
+    var pw = veil.querySelector('#adminPw');
+    var err = veil.querySelector('#adminErr');
+    pw.focus();
+
+    function shut() {
+      veil.remove();
+      var b = document.getElementById('adminBtn');
+      if (b) { b.focus(); }
+    }
+    function submit() {
+      var msg = opts.onSubmit(pw.value);
+      if (msg) { err.textContent = msg; pw.select(); }
+      else { shut(); }
+    }
+    veil.querySelector('#adminOk').addEventListener('click', submit);
+    veil.querySelector('#adminCancel').addEventListener('click', shut);
+    pw.addEventListener('keydown', function (e) { if (e.key === 'Enter') { submit(); } });
+    veil.addEventListener('keydown', function (e) { if (e.key === 'Escape') { shut(); } });
+    veil.addEventListener('mousedown', function (e) { if (e.target === veil) { shut(); } });
+  }
+
+  function askUnlock() {
+    dialog({
+      title: 'Assessor access',
+      body: 'The assessment record - notes, outcomes, modules and the summary - is ' +
+            'kept behind this. Your own study notes are not, and stay where they are.',
+      label: 'Password', ok: 'Unlock',
+      onSubmit: function (v) {
+        if (hash(v) !== expected()) { return 'That password is not right.'; }
+        remember(true); setLocked(false); return '';
+      }
+    });
+  }
+
+  function askChange() {
+    dialog({
+      title: 'Change the assessor password',
+      body: 'This is stored in this browser only, so it applies on this machine. ' +
+            'Clearing the site data resets it to the default.',
+      label: 'New password', ok: 'Save',
+      onSubmit: function (v) {
+        if (v.length < 3) { return 'Use at least three characters.'; }
+        try { localStorage.setItem(PW_KEY, hash(v)); }
+        catch (e) { return 'This browser will not store the change.'; }
+        return '';
+      }
+    });
+  }
+
+  function init() {
+    var bar = document.getElementById('modeBar');
+    if (!bar) { return; }
+
+    var b = document.createElement('button');
+    b.type = 'button'; b.id = 'adminBtn';
+    b.title = 'Assessment record - notes, outcomes, modules, summary';
+    b.addEventListener('click', function () {
+      if (document.body.classList.contains('assessor-on')) {
+        remember(false); setLocked(true);
+      } else { askUnlock(); }
+    });
+    bar.appendChild(b);
+
+    var c = document.createElement('button');
+    c.type = 'button'; c.id = 'adminPwBtn'; c.textContent = 'Password';
+    c.title = 'Change the assessor password on this machine';
+    c.addEventListener('click', askChange);
+    bar.appendChild(c);
+
+    setLocked(!isUnlocked());
+
+    /* The Password button only makes sense once you are in. */
+    var sync = function () {
+      c.style.display = document.body.classList.contains('assessor-on') ? '' : 'none';
+    };
+    sync();
+    b.addEventListener('click', function () { setTimeout(sync, 0); });
+    document.addEventListener('click', function (e) {
+      if (e.target && e.target.id === 'adminOk') { setTimeout(sync, 0); }
+    });
+  }
+
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); }
+  else { init(); }
+})();
+</script>
 </body>
 </html>

@@ -37,6 +37,47 @@ Keyboard shortcuts in Cards mode: **Space** flips, **←/→** move, **G** marks
 > correction had to be made in two or three places — five of seven content fixes in
 > August 2026 touched more than one file. Both remain in git history if needed.
 
+## Two kinds of notes
+
+The file carries **two separate note systems**, and they never mix.
+
+| | Who | Where | Saved as |
+|---|---|---|---|
+| **My study notes** | the candidate, while studying | under every question, always visible | `LOFT-my-study-notes.json` |
+| **Assessor notes** | the assessment team, during the interview | under every question, behind the assessor gate | `LOFT-<candidate>-<date>.json` |
+
+They use different storage, different file formats, and each loader refuses the
+other's file. A candidate studying on a shared machine cannot write into an
+assessment record, and an assessment record never picks up study material.
+
+**Study notes.** Type in the *My study notes* box under any question — what tripped you
+up, how you remember it, where to read more. It saves as you type. **My notes** in the
+top bar collects everything you have written, grouped by section, and prints. The button
+shows a running count.
+
+## Assessor access
+
+The assessment record — notes, outcomes, modules, the session bar and the summary — is
+hidden until you unlock it with **Assessor access** in the top bar. The default password
+is `admin`. **Password** (visible once unlocked) changes it for that machine.
+
+> **This is a gate, not security.** The whole file is delivered to the browser, so anyone
+> who opens View Source can find the check and bypass it. It exists so a candidate does
+> not wander into the assessment record by accident, and so the two roles stay visibly
+> apart on a shared machine. Do not put anything behind it that would matter if it were
+> read. If an assessment record needs real protection, protect the saved `.json` file.
+
+Unlocking lasts for the browser tab, not the machine — closing the browser re-locks,
+which is the safer default on a shared computer. Click **Assessor mode on** to lock again
+straight away.
+
+Printing follows the mode: **locked** prints the study notes, **unlocked** prints the
+assessment record without them.
+
+A forgotten password is reset by clearing the site data for the file, which restores
+`admin`. To change the default for everyone rather than one machine, edit `DEFAULT_HASH`
+in the `loft-admin-js` script block.
+
 ## Recording an assessment
 
 The study guide carries a notes panel under every question, for the assessor or the
