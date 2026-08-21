@@ -1279,3 +1279,59 @@ Two defects found and fixed during testing: the topic `<select>` was wider than 
 screen and pushed the page sideways, and the generic `button:disabled` rule dimmed
 answered options to 50% opacity &mdash; making the revealed correct answer the least
 readable thing on the page.
+
+### 17.1 Content verification of the question bank
+
+Testing the mechanics is not the same as testing the answers. The mechanics were covered;
+the answers had only been checked by the author who wrote them. That gap was closed with
+four content checks against the study aid.
+
+**Every citation resolves.** All 133 items name a study aid question, and each was matched
+back to a real question in the file. Seven flagged low only because the citation is an
+abbreviation of a longer question; one is a scope note rather than a question, by design.
+
+**Correct answers use the source's own vocabulary.** 131 of 133 correct answers draw
+&ge;70% of their content words from the cited answer. The two exceptions are both correct:
+one is a deliberate *"which is NOT"* item whose answer is meant to be absent from the
+source, and the other differs only in phrasing (*"greater than 60 per hour"* against the
+source's *">60"*).
+
+**Every number was checked in context, not just for presence.** 27 numeric claims appear
+in correct answers; all 27 exist in the study aid, and each critical threshold was then
+read in its surrounding sentence to confirm it means what the question says it means:
+
+| Claim | Verified against |
+|---|---|
+| 36 months | procedure revalidation, CVPE route |
+| >60 per hour | Best Practice alarm overload |
+| Tier 3 with IRAT 400+ | significant process safety events |
+| 30.0 / 44.0 / 15.0 mg/L | produced water 30-day, 24-hour, open drains |
+| 46503 | CCR number for a spill or release |
+| 14 / 16 minutes | Hebron / Hibernia muster targets |
+| 7 days, no extension | maximum work permit validity |
+| 6-month interval | LTI reporting to the Operations Manager |
+| every 5 years | Cat 2 residual risk review |
+
+One of these initially passed for the wrong reason: the bare probe `400` matched a
+document number, `CAHE-EC-OOREF-01-006-4007-000`, rather than the IRAT threshold. Re-run
+against `IRAT 400` it verifies properly. A presence check that does not read the context
+can confirm a number that is not the number you meant.
+
+The temporary defeat ladder (PIC / Operations Manager / Site Manager at 7, 30 and 60 days),
+the flange class 300 split, the *cannot be delegated to the Permit Holder* rule, the
+AM&nbsp;=&nbsp;Operations&nbsp;Manager and PM&nbsp;=&nbsp;Site&nbsp;Manager glosses, the
+SIMOPS deviation levels and the four COP conditions were each confirmed the same way.
+
+**No question has two defensible answers.** 51 distractors share as much vocabulary with
+the source as the correct answer does &mdash; which is the intended design, since good
+distractors are built from real adjacent facts. The highest-risk of these were read
+individually: ICC generation versus verification (AO generates, AA verifies), flange class
+above and below 300, SIMOPS deviation levels 1 to 3, and IRAT score versus Hurt Severity
+Level. In every case the question names the condition that disambiguates it.
+
+**One readability defect found and fixed.** In the FIMS criticality item the correct answer
+and its first distractor were 97% identical, differing only by *SHE* against *Business*
+buried mid-sentence &mdash; the right distinction to test, but easy to misread on a phone.
+Reworded so the distinguishing term appears early and the two are 84% similar. Numeric
+options that differ only in the number were left alone: for a threshold question that is
+the whole point.
