@@ -1098,3 +1098,49 @@ once, in the block that already owns the chrome offsets.
 Verified: rendered content still byte-identical at 106,350 characters, coverage 57 of 57,
 no console errors, no overflow from 360px to 1280px, and the gate, separation, banner,
 password-change and full assessor flow all pass.
+
+---
+
+## 15. UPBP-410 Q3 had lost two words, and half its answer
+
+Found while tracing which source question review-sheet item 37 belongs to. It belongs to
+**Q3**, and Q3 itself was wrong.
+
+**The question had been narrowed.** UPBP-410 Rev 3.2 asks:
+
+> Are there any major wellbore integrity **or marine** related incident scenarios for your
+> asset? Explain the details of those scenarios and both the preventative and mitigative
+> safeguards in place related to those scenarios
+
+The study aid had *"wellbore integrity related incident scenarios"* &mdash; `or marine`
+deleted. Two words, and not cosmetic: it silently dropped half of an assessed question. A
+candidate preparing from the study aid would meet a question in the interview that the
+study aid never asked them.
+
+**The answer covered only the wellbore half.** Two wellbore scenarios (3a Production LOPC,
+3b Wellwork LOPC) with their safeguards, and nothing about marine.
+
+**The asset confirmed (August 2026) that Hebron and Hibernia have no marine related
+incident scenario** in the higher consequence set. That makes *"none"* the correct answer
+&mdash; but it still has to be **said**. "Are there any A or B?" answered with only A reads
+as though B was missed. The answer now states both halves and says so explicitly.
+
+Source wording restored, marine answer added, recorded in `README.md` alongside the
+floating-vessel and CVPE determinations. Verified by diffing the rendered text: exactly two
+insertions, `or marine` and the new answer block, nothing removed or reordered; answers
+106 &rarr; 107.
+
+### Review sheet item 37, resolved
+
+Item 37 is the asset-wide **Q1** safeguard list pasted under **Q3**. Three things settle it:
+the first block is byte-for-byte identical to item 35 (1,600 characters); the second is item
+36 differing by a single character, a missing bracket after `HAEQ`; and Q3 already carries
+its own scenario-specific 3a and 3b safeguards above it. The sheet now says so and
+recommends deletion, but the call stays with the asset.
+
+### On the sheet being rebuilt mid-review
+
+The sheet was regenerated so item 3 shows the corrected Q3. Item numbering is derived from
+source order and did not move, and saved work is keyed by item number &mdash; verified by
+seeding a part-finished review, rebuilding, and confirming every verdict, note and the
+reviewer's name came back intact.

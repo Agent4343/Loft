@@ -182,6 +182,13 @@ material.
   Three questions exist only on the CAS route — the Integrity Critical Procedure
   definition, the global IC examples list, and the night-time IC error scenario. They
   are retained for reference and marked as not assessed under the current UBP.
+- **No marine scenario.** UPBP-410 Q3 asks about *"wellbore integrity **or marine** related
+  incident scenarios"*. **Hebron and Hibernia have no marine related incident scenario** in
+  the higher consequence set (confirmed by the asset, August 2026). The study aid carries
+  the source's full wording and answers both halves &mdash; the two wellbore scenarios, and
+  that there is no marine one. The words had been dropped from the question, which quietly
+  narrowed an assessed question and would have left a candidate with nothing to say to the
+  marine half.
 - **Flag / Class** questions in the Assessor Guide apply only to Business Units with
   floating vessels (FPSO, FSO). **Hebron and Hibernia are not floating vessels**
   (confirmed by the asset, August 2026), so these four questions are out of scope and
