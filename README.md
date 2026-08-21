@@ -37,6 +37,32 @@ Keyboard shortcuts in Cards mode: **Space** flips, **←/→** move, **G** marks
 > correction had to be made in two or three places — five of seven content fixes in
 > August 2026 touched more than one file. Both remain in git history if needed.
 
+## Practice questions
+
+`LOFT-Practice-Questions.html` is a multiple-choice drilling tool &mdash; 133 questions
+across all eleven topics, every answer traced to the study aid.
+
+> **The assessment is a face-to-face interview.** You will be asked to *demonstrate* and
+> *describe*, out loud, to an assessment team. Multiple choice cannot test that, and
+> passing this does not mean you are ready. What it is good for is the factual half:
+> approval levels, thresholds, timeframes, who signs what. Get those solid here, then
+> practise saying the full answers aloud from the study guide.
+
+- **Practice mode** marks each answer as you go, with the reason and the study guide
+  question it came from. **Test mode** holds the score until the end.
+- Pick a topic or take the lot; 10, 20, 40 or all 133. Questions and options are shuffled.
+- The result breaks the score down by topic and lists everything missed, with the
+  explanation, so it doubles as a revision list. Best score per topic is kept in the
+  browser so weak areas stay visible.
+- Keys **1&ndash;4** answer, **Enter** moves on. An unfinished attempt can be resumed.
+- Questions marked **asset** come from Hebron/Hibernia local material that no source
+  document can confirm &mdash; the same 38 answers under review. Treat them as current
+  practice rather than verified fact.
+
+Distractors were deliberately written to match the correct answer in length and
+specificity. An earlier draft had the correct option longest in 79% of questions, which
+would have let someone score well by picking the longest answer without knowing anything.
+
 ## Two kinds of notes
 
 The file carries **two separate note systems**, and they never mix.

@@ -1215,3 +1215,67 @@ Q1/Q36 edits show as `scrib` &rarr; `monstrat`, the expectations edit as a singl
 `s`, and the Q34 edit as `Question:` &rarr; the source wording. Nothing else moved. 100
 questions, 107 answers, coverage 57 of 57, no console errors, and all 38 review-sheet items
 still matching the study aid.
+
+---
+
+## 17. Practice questions
+
+`LOFT-Practice-Questions.html` &mdash; 133 multiple-choice questions across all eleven
+topics, every correct answer traced to a specific answer in the study aid, every item
+carrying the study guide question it came from.
+
+### The honest caveat, stated on the page itself
+
+The LOFT assessment is a **face-to-face interview**: the candidate demonstrates and
+describes, aloud, to an assessment team. Multiple choice tests recognition, not recall,
+and cannot test the thing being assessed. The page says so in its opening panel rather
+than burying it, and says what the tool *is* good for &mdash; the factual half, where
+marks are actually lost: approval ladders, thresholds, timeframes, who signs what.
+
+### The defect that nearly shipped
+
+The first complete draft was gameable. **The correct option was the longest in 79% of
+questions** &mdash; someone who knew nothing could score well by always picking the
+longest answer, which would have taught them nothing while telling them they were ready.
+
+Fixed by rewriting the distractors on 93 of the 133 items so they match the correct
+answer in length and in specificity. Result:
+
+| | Before | After |
+|---|---|---|
+| Correct option is longest | 79% | 45% |
+| Median length ratio to distractors | &mdash; | **1.05** |
+| Items where correct is >1.35&times; the mean distractor | 93 | 5 |
+
+45% still reads high, but at a median ratio of 1.05 most of those are longest by a few
+characters, which is not a usable tell. Verified empirically as well: clicking the same
+slot every time scored 10% on a 20-question run, against 25% chance.
+
+Distractors are drawn from real adjacent material wherever possible, which makes them
+teach something when chosen. The superseded CAS answers are the distractors for the CVPE
+questions; the Site Manager and PIC are the distractors on the Operations Manager rung of
+the temporary defeat ladder; TMEE211 is the distractor for TMEE330.
+
+### What it does
+
+Practice mode marks each answer immediately with the reason and the source question; test
+mode holds the score to the end. Topic filter, 10/20/40/all lengths, Fisher-Yates shuffle
+on both questions and options, keyboard 1&ndash;4 and Enter, resumable part-finished
+attempts, per-topic best scores kept in the browser, and a result page that breaks the
+score down by topic and lists every miss with its explanation as a revision list.
+
+The 41 items drawn from asset-local answers are labelled **asset** on the question and in
+the feedback, so a candidate knows which facts are the unverified ones.
+
+### Verification
+
+Answering every question correctly scores **100%**; answering every one wrong scores
+**0%** &mdash; the check that matters, since options are shuffled and a scoring bug would
+otherwise be invisible. Practice mode reveals feedback and test mode does not; the topic
+filter returns only that topic; resume restores the exact position; best scores persist
+and clear. No console errors, no horizontal overflow from 360px to 1280px.
+
+Two defects found and fixed during testing: the topic `<select>` was wider than a 360px
+screen and pushed the page sideways, and the generic `button:disabled` rule dimmed
+answered options to 50% opacity &mdash; making the revealed correct answer the least
+readable thing on the page.
