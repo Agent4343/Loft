@@ -817,10 +817,13 @@ nested `<section>` structure:
 - Category chips were ordered by first question rather than section position, so 2.1
   preceded 2.0.
 
-**Verification.** 101 questions, 106 answers, 100 note panels, 44 glossary terms, 19 TOC
+**Verification.** 100 questions, 106 answers, 100 note panels, 44 glossary terms, 19 TOC
 entries with no dead links, no console errors, no horizontal overflow; all three modes
 render; assessor save-to-file and reload round-trip confirmed; and
 `tools-coverage-check.py` reports **57 of 57 Assessor Guide topics present**.
+
+> The question count read 101 until section 13, because one of the divs was an empty
+> shell holding another question's answer. Removing it did not remove a question.
 
 The coverage tool was rewritten to be self-contained &mdash; it reads the HTML directly
 and exits non-zero if a topic goes missing, so it can be run after any edit.
@@ -911,3 +914,86 @@ where the bulk rules did not: the four earlier attempts could only be evaluated 
 
 The markup can now be hand-edited: a question div starts and ends where the question
 starts and ends.
+
+---
+
+## 13. Second audit pass (after the markup repair)
+
+With the markup well-formed, a fresh audit could see structure the recovered tree had
+been hiding. Four defects, all fixed; each change verified by re-rendering and comparing
+the extracted text character for character against a baseline, as in section 12.
+**Rendered text unchanged throughout.**
+
+### One question had lost its answer
+
+`Apply PEAR to the information in this briefing…` in Emergency Response had **no
+answer**, and the next `.question` div was **empty** and held that answer:
+
+```html
+<div class="qa">
+  <div class="question">Apply PEAR to the information in this briefing…</div>
+</div>                          <!-- question ends here, with nothing -->
+<div class="qa"><strong>
+  <div class="question"></div>  <!-- empty shell -->
+  <div class="answer">People … Environment … Asset … Reputation</div>
+```
+
+On screen it looked fine, because the answer rendered directly underneath. It was not
+fine anywhere that walks the structure: the question carried no answer to reveal in Test
+mode, no card back in Cards mode, and the empty div counted as a 101st question.
+
+Merged into one block. The count is now **100 questions, 100 with answers, no empty
+divs** — the file had 100 real questions all along.
+
+### Two elements shared one `id`
+
+`summaryTools` was emitted by both the summary panel and the module panel, so
+`getElementById` could only ever reach the first. It was a CSS hook with no script
+lookups, so it became a class, `.summary-tools`, in both emitters and both rules.
+
+### A link had swallowed its own `target` attribute
+
+One Aconex link was written with an unterminated `href`:
+
+```html
+href="…%3D0#/file target=" _blank"="" rel="noopener noreferrerr"
+```
+
+The browser recovered by ending the URL after `#/file target=` and inventing an
+attribute called `_blank"`. The link pointed at a URL that cannot resolve. Repaired to
+`href="…#/file" target="_blank" rel="noopener noreferrer"`, which also cleared the
+`noreferrerr` typo in that link and one other.
+
+### Everything else came back clean
+
+No dead internal anchors, no unlabelled inputs, no missing `alt`, no heading-level
+jumps, no console errors, and no typographic defects in the content — the only
+doubled-word hit was two adjacent list items, and the `--` sequences are the source's
+own style.
+
+**One duplicate is deliberately left alone.** The preventative critical-safeguard list
+appears twice under Risk Management, and the second copy also repeats part of the
+mitigative list. It is asset-local content, so it is item 37 on
+`ASSET-SPECIFIC-REVIEW-SHEET.html` for the asset to rule on, rather than something to
+delete here.
+
+### TMEE211 vs TMEE330 &mdash; narrowed
+
+Previously carried as "confirm which is current". It can now be narrowed without the
+controlled library: **TMEE211 appears in no source document in this repository.** It
+existed only in the original uploaded HTML, and git history confirms it was never
+introduced by a source. The Assessor Guide Rev 3.0 cites TMEE330 and nothing else, so
+the study aid follows it.
+
+What remains is not a conflict between two sources but a single question for the
+library: whether the original author's TMEE211 citation was simply wrong, or referred to
+a document since superseded. Either way the study aid is already correct.
+
+### Source-document queries written up
+
+The two Assessor Guide defects are now drafted as `SOURCE-DOCUMENT-QUERIES.md`, ready to
+send to the document owner, with exact quotations and suggested wording. Working on it
+turned up a likely explanation for the first: the eleventh category is **Competency
+Assurance Standard**, which the guide elsewhere retires once a work area completes CVPE
+— so "ten" is plausibly the count after CAS goes, written into an edition that still
+carries it.

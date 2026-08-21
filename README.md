@@ -92,6 +92,12 @@ source governs.**
 | `Training CriticalE and Expectations .pdf` | Critical Expectations `[CriticalE]` and Expectations `[E]` that govern the program |
 | `Leadership for Operations _ Framework for Training _LOFT_.pdf` | LOFT framework overview |
 
+Two wording issues in Assessor Guide Rev 3.0 are written up in
+`SOURCE-DOCUMENT-QUERIES.md`, ready to send to the document owner: it says ten Process
+Safety categories and then lists eleven, and it has both the SLS and the TLS informing
+the Site Manager directly. The study aid follows the guide as written in both cases —
+a candidate is assessed against what the assessor is reading.
+
 ## Two things to know before studying
 
 **The assessment window is 90 days.** `[E] Section 12` requires personnel assigned
