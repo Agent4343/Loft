@@ -3073,6 +3073,208 @@ Explain your role in maintaining and operating emergency response equipment for 
     .pr-nav .pr-btn { flex: 1 1 auto; }
   }
 
+
+  /* ==========================================================================
+     Design pass. Everything below overrides the older rules above rather than
+     rewriting them, so the original cascade stays readable in a diff.
+     One type scale, one spacing rhythm, one palette.
+     ========================================================================== */
+  :root {
+    --ink:        #16212c;   /* body text */
+    --ink-soft:   #5a6b7c;   /* secondary text */
+    --ink-faint:  #8496a6;   /* labels, meta */
+    --navy:       #0b2f52;   /* headings */
+    --rule:       #e3e9ef;   /* hairlines */
+    --rule-soft:  #eef2f6;
+    --surface:    #ffffff;
+    --canvas:     #f2f5f8;
+    --tint:       #f6f9fc;   /* answer background */
+    --accent:     #0b63ce;
+    --accent-ink: #094ea3;
+    --shadow-sm:  0 1px 2px rgba(16,32,48,.06), 0 1px 3px rgba(16,32,48,.04);
+    --shadow-md:  0 2px 4px rgba(16,32,48,.05), 0 8px 20px rgba(16,32,48,.06);
+    --r:          10px;
+    --font:       system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+
+  body {
+    font-family: var(--font);
+    background: var(--canvas);
+    color: var(--ink);
+    font-size: 15.5px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* ---- contents rail ---- */
+  #toc {
+    background: #fbfcfd;
+    border-right: 1px solid var(--rule);
+    border-left: 0;
+    padding: 1.1rem .85rem 2rem;
+  }
+  #toc h2, #toc > strong, #toc .toc-title {
+    font-size: .7rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
+    color: var(--ink-faint); border: 0; padding: 0 .4rem .7rem; margin: 0;
+  }
+  #toc ul { list-style: none; margin: 0; padding: 0; }
+  #toc li {
+    margin: 1px 0; padding: 0; border-radius: 6px;
+    font-size: .875rem; line-height: 1.35; color: var(--ink-soft);
+    transition: background .12s ease, color .12s ease;
+  }
+  #toc li > a, #toc li { display: block; }
+  #toc li a, #toc li { text-decoration: none; }
+  #toc li { padding: .38rem .55rem; }
+  #toc li:hover { background: #eef3f8; color: var(--navy); }
+  /* The chapter openers (1.0, 2.0, 3.0) start a group; the rest sit under them. */
+  #toc li.toc-group { margin-top: .8rem; font-weight: 700; color: var(--navy); font-size: .84rem;
+    letter-spacing: .01em; }
+  #toc li.toc-here {
+    background: #e7f0fa; color: var(--navy); font-weight: 600;
+    box-shadow: inset 2px 0 0 var(--accent);
+  }
+
+  /* ---- section cards ---- */
+  section {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: var(--r);
+    box-shadow: var(--shadow-sm);
+    padding: 1.4rem 1.6rem;
+    margin-bottom: 1.1rem;
+  }
+  section section { box-shadow: none; border: 0; padding: 0; margin-bottom: 0; background: none; }
+
+  h2 {
+    font-size: 1.24rem; font-weight: 650; letter-spacing: -.01em;
+    color: var(--navy); border: 0; padding: 0 0 .55rem;
+    margin: 0 0 1.05rem; position: relative;
+  }
+  /* A short accent rule reads as a heading; a full-width double rule reads as 1998. */
+  h2::after {
+    content: ""; position: absolute; left: 0; bottom: 0;
+    width: 2.4rem; height: 3px; border-radius: 2px; background: var(--accent);
+  }
+  h3 { font-size: 1.02rem; font-weight: 650; color: var(--navy); margin: 1.4rem 0 .5rem; }
+
+  /* ---- question and answer ---- */
+  .question {
+    font-weight: 650; font-size: 1.005rem; line-height: 1.45;
+    color: var(--navy); border: 0;
+    margin: 1.7rem 0 .55rem; padding: 0;
+  }
+  .question:first-child { margin-top: 0; }
+  .answer {
+    background: var(--tint);
+    border: 1px solid var(--rule);
+    border-left: 3px solid #b9d0ea;
+    border-radius: 0 8px 8px 0;
+    padding: .8rem 1rem .85rem;
+    margin: 0 0 1.1rem;
+    color: var(--ink);
+    line-height: 1.6;
+  }
+  .answer > :first-child { margin-top: 0; }
+  .answer > :last-child { margin-bottom: 0; }
+  .answer ul, .answer ol { padding-left: 1.25rem; margin: .45rem 0; }
+  .answer li { margin: .22rem 0; }
+  .answer p { margin: .45rem 0; }
+  section ol, section > ul { padding-left: 1.35rem; }
+  section li { margin: .3rem 0; }
+
+  /* Links inside content: the gold-on-white was hard to read. */
+  section a[href^="http"] { color: var(--accent) !important; font-weight: 600; }
+  section a[href^="http"]:hover { text-decoration: underline; }
+
+  /* ---- mode bar ---- */
+  #modeBar {
+    background: linear-gradient(180deg, #0d3a63 0%, #092a49 100%);
+    box-shadow: 0 1px 0 rgba(255,255,255,.06), 0 2px 10px rgba(9,32,56,.28);
+    gap: 4px; padding: 0 12px;
+  }
+  #modeBar .brand { font-size: 13.5px; letter-spacing: .01em; margin-right: 14px; }
+  .mode-btn {
+    border-radius: 7px; font-size: 13px; padding: 5px 12px; font-weight: 550;
+    border: 1px solid transparent; background: transparent; color: #c6d8ea;
+    transition: background .13s ease, color .13s ease;
+  }
+  .mode-btn:hover { background: rgba(255,255,255,.09); color: #fff; }
+  .mode-btn[aria-pressed="true"] {
+    background: #1f7ae0; color: #fff; font-weight: 650;
+    box-shadow: 0 1px 3px rgba(0,0,0,.28);
+  }
+  #modeBar > button:not(.mode-btn) {
+    border-radius: 7px; font-size: 12.5px; padding: 5px 11px;
+    background: rgba(255,255,255,.09); color: #dbe7f2; border: 1px solid rgba(255,255,255,.16);
+  }
+  #modeBar > button:not(.mode-btn):hover { background: rgba(255,255,255,.17); color: #fff; }
+  #modeHint { font-size: 12px; color: #93b0cc; }
+
+  /* The glossary toggle used to be a fixed slab at left:335px that sat on top of
+     the first line of text. It belongs in the bar with the other controls. */
+  #glossaryToggle {
+    position: static !important; top: auto !important; left: auto !important;
+    border-radius: 7px !important; font-size: 12.5px !important; font-weight: 550 !important;
+    padding: 5px 11px !important; box-shadow: none !important;
+    background: rgba(255,255,255,.09) !important; color: #dbe7f2 !important;
+    border: 1px solid rgba(255,255,255,.16) !important; margin: 0 !important;
+  }
+  #glossaryToggle:hover { background: rgba(255,255,255,.17) !important; color: #fff !important; }
+
+  /* ---- notes panels: quieter, so the content leads ---- */
+  .note-panel, .study-panel { border-radius: 8px; padding: .7rem .85rem; }
+  .note-panel { border-left-width: 3px; background: #f5f9fd; border: 1px solid var(--rule);
+    border-left: 3px solid var(--note-accent); }
+  .study-panel { border-left-width: 3px; background: #faf9fe; border: 1px solid #e8e3f3;
+    border-left: 3px solid #7a5cc4; }
+  .note-panel textarea, .study-panel textarea { border-radius: 6px; font-size: 14px; }
+
+  /* ---- page header: was a 1.8rem centred navy slab taking a third of the
+     first screen. The mode bar already carries the branding, so this becomes a
+     title, not a billboard. ---- */
+  header {
+    background: transparent; color: var(--navy); text-align: left;
+    padding: 1.5rem 1.6rem .25rem; font-size: 1rem; font-weight: 400;
+  }
+  header h1 {
+    font-size: 1.55rem; font-weight: 680; letter-spacing: -.015em;
+    margin: 0; color: var(--navy); line-height: 1.2;
+  }
+
+  /* ---- assessment record bar: a distinct zone, but the same design language ---- */
+  #assessSession {
+    background: linear-gradient(180deg, #123f6b 0%, #0d3055 100%);
+    border-radius: 10px; box-shadow: var(--shadow-md);
+    padding: .85rem 1.1rem; gap: .7rem 1rem;
+  }
+  #assessSession label { font-size: 10.5px; letter-spacing: .07em; color: #a9c6e2; }
+  #assessSession input {
+    border-radius: 6px; border: 1px solid rgba(255,255,255,.18);
+    background: rgba(255,255,255,.96); padding: .35rem .5rem; font-size: 13.5px;
+  }
+  #assessSession button {
+    border-radius: 7px; font-size: 12.5px; padding: .38rem .8rem; font-weight: 550;
+    background: rgba(255,255,255,.12); color: #e4eefa; border: 1px solid rgba(255,255,255,.2);
+  }
+  #assessSession button:hover { background: rgba(255,255,255,.2); }
+  #assessSession button.primary { background: #0f8e5a; border-color: #0f8e5a; color: #fff; }
+  #assessSession button.primary:hover { background: #0c7a4d; }
+  #assessProgress { font-size: 12.5px; color: #a9c6e2; }
+
+  @media (max-width: 700px) {
+    body { font-size: 15px; }
+    section { padding: 1rem 1.05rem; border-radius: 8px; }
+    h2 { font-size: 1.14rem; }
+    .question { font-size: .98rem; }
+  }
+  @media print {
+    section { box-shadow: none; border: 1px solid #ccc; }
+    h2::after { display: none; }
+    .answer { background: #fff; border: 1px solid #ddd; }
+  }
+
   @media print { #modeBar, #cardLayer, #practiceLayer, #testTools, .reveal-btn, #assessorBanner { display: none !important; }
     body, body.assessor-on { padding-top: 0; } #assessSession { position: static; } }
 </style>
@@ -3376,9 +3578,17 @@ Explain your role in maintaining and operating emergency response equipment for 
     document.getElementById('cGot').addEventListener('click', function () { mark('done'); });
     document.getElementById('cRev').addEventListener('click', function () { mark('review'); });
     document.getElementById('cShuf').addEventListener('click', shuffle);
+    /* A candidate on Cards used to get a box labelled "Assessor notes" that wrote
+       straight into the assessment record, with the gate locked. The box now follows
+       the gate: their own study notes when locked, the assessment record when not. */
     document.getElementById('cardNoteBox').addEventListener('input', function () {
       var d = deck()[pos];
-      if (d && window.__loftSetNote) { window.__loftSetNote(d.id, d.q, d.section, this.value); }
+      if (!d) { return; }
+      if (document.body.classList.contains('assessor-on')) {
+        if (window.__loftSetNote) { window.__loftSetNote(d.id, d.q, d.section, this.value); }
+      } else if (window.__loftSetStudyNote) {
+        window.__loftSetStudyNote(d.id, d.q, d.section, this.value);
+      }
     });
     renderCats();
   }
@@ -3415,7 +3625,20 @@ Explain your role in maintaining and operating emergency response equipment for 
     document.getElementById('cPrev').disabled = pos === 0;
     document.getElementById('cNext').disabled = pos === list.length - 1;
     var nb = document.getElementById('cardNoteBox');
-    if (nb && window.__loftGetNote) { nb.value = window.__loftGetNote(it.id) || ''; }
+    var lb = document.querySelector('#cardNote label');
+    var assessor = document.body.classList.contains('assessor-on');
+    if (nb) {
+      nb.value = (assessor
+        ? (window.__loftGetNote ? window.__loftGetNote(it.id) : '')
+        : (window.__loftGetStudyNote ? window.__loftGetStudyNote(it.id) : '')) || '';
+      nb.placeholder = assessor
+        ? 'Notes typed here also appear in Guide mode'
+        : 'What tripped you up, how you remember it - only you see these';
+    }
+    if (lb) { lb.textContent = assessor ? 'Assessor notes for this question' : 'My study notes'; }
+    if (document.getElementById('cardNote')) {
+      document.getElementById('cardNote').classList.toggle('is-assessor', assessor);
+    }
     renderStats(list);
   }
 
@@ -4101,6 +4324,22 @@ Explain your role in maintaining and operating emergency response equipment for 
     }
   }
 
+  /* Read and written by Cards mode, which shows this box to a candidate and the
+     assessor box only once unlocked. */
+  window.__loftGetStudyNote = function (id) { return (notes[id] || {}).text || ''; };
+  window.__loftSetStudyNote = function (id, q, section, text) {
+    if (text && text.trim()) {
+      notes[id] = { q: (q || '').slice(0, 300), section: section || (notes[id] || {}).section || '', text: text };
+    } else { delete notes[id]; }
+    var panel = document.querySelector('[data-study-panel="' + id + '"]');
+    if (panel) {
+      var ta = panel.querySelector('textarea');
+      if (ta && ta.value !== text) { ta.value = text; }
+      panel.classList.toggle('has-note', !!notes[id]);
+    }
+    queueSave(); updateCount();
+  };
+
   function init() {
     load();
     questions().forEach(function (item) { place(item, buildPanel(item)); });
@@ -4531,6 +4770,56 @@ var PRACTICE=[{"sec":"2.1 Risk Management","q":"What is the intent of the Risk A
   }
   if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}
   else{init();}
+})();
+</script>
+<script id="loft-ui-js">
+/* Two structural touches the CSS cannot do on its own. */
+(function () {
+  'use strict';
+  function init() {
+    var bar = document.getElementById('modeBar');
+
+    /* 1. Move the glossary toggle into the mode bar. It was position:fixed at
+          left:335px, which put it on top of the first line of the content. */
+    var gt = document.getElementById('glossaryToggle');
+    if (bar && gt) {
+      var grow = bar.querySelector('.grow');
+      bar.insertBefore(gt, grow || null);
+    }
+
+    /* 2. Tell the reader where they are. The contents rail listed 19 entries with
+          nothing marking the current one, so on a long scroll you lost your place. */
+    var items = [].slice.call(document.querySelectorAll('#toc li[data-section]'));
+    if (!items.length) { return; }
+    var targets = items.map(function (li) {
+      return { li: li, el: document.getElementById(li.getAttribute('data-section')) };
+    }).filter(function (t) { return t.el; });
+    if (!targets.length) { return; }
+
+    /* Chapter openers start a group; everything else sits under one. */
+    items.forEach(function (li) {
+      if (/^\s*\d+\.0\b/.test(li.textContent)) { li.classList.add('toc-group'); }
+    });
+
+    var ticking = false;
+    function mark() {
+      ticking = false;
+      var best = null, bestTop = -Infinity, probe = 120;
+      targets.forEach(function (t) {
+        var top = t.el.getBoundingClientRect().top;
+        if (top <= probe && top > bestTop) { bestTop = top; best = t; }
+      });
+      if (!best) { best = targets[0]; }
+      targets.forEach(function (t) { t.li.classList.toggle('toc-here', t === best); });
+    }
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; window.requestAnimationFrame(mark); }
+    }, { passive: true });
+    window.addEventListener('resize', mark, { passive: true });
+    mark();
+  }
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); }
+  else { init(); }
 })();
 </script>
 </body>

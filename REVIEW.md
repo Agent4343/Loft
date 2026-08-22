@@ -1384,3 +1384,67 @@ notes, the assessor gate and banner, the module and summary sheets, save and rel
 dry run and search all still pass, and coverage is 57 of 57.
 
 File size 244 KB &rarr; 356 KB. It still opens instantly from disk and still works offline.
+
+---
+
+## 19. A hole in the assessor gate, and a design pass
+
+### The gate did not cover Cards mode
+
+Found while screenshotting the interface, not by a test. In Cards mode, with the gate
+**locked**, every card carried a box labelled *"Assessor notes for this question"* &mdash;
+and typing in it wrote straight into the assessment record. Verified: type one word while
+locked, and `__loftAssessmentData()` reports one assessor note recorded.
+
+A candidate revising on cards could write into the assessment record without ever seeing
+the password. That is exactly what the gate exists to prevent, and it had been true since
+the gate was added.
+
+The box now follows the gate rather than ignoring it:
+
+| | Locked | Unlocked |
+|---|---|---|
+| Label | My study notes | Assessor notes for this question |
+| Writes to | `loft-study-notes-v1` | `loft-assessor-notes-v1` |
+
+Rather than hiding the box, the candidate gets their own note box on the card &mdash; and a
+note typed there appears in the Guide's study panel for the same question. Verified in both
+directions: locked writes 0 assessor notes and 1 study note; unlocked writes to the record
+and leaves study notes untouched. This needed a study-note API
+(`__loftGetStudyNote` / `__loftSetStudyNote`) mirroring the assessor one.
+
+### Design pass
+
+The interface had grown by accretion &mdash; three fonts, several unrelated blues, headings
+underlined with a full-width double rule, and content boxes with hard grey borders. One set
+of tokens now drives type, colour, spacing, radius and shadow, applied as overrides beneath
+the original rules so the history stays readable in a diff.
+
+**One genuine defect fixed, not just cosmetics.** `#glossaryToggle` was
+`position: fixed; left: 335px` &mdash; a floating slab sitting **on top of the first line of
+body text** at every scroll position. It is now a normal button in the mode bar with the
+other controls.
+
+**One real usability gain.** The contents rail listed 19 entries with nothing marking the
+current one, so on a long scroll you lost your place. The current section now highlights as
+you scroll, and the three chapter openers (1.0, 2.0, 3.0) read as group headings.
+
+The rest is craft: a single system font stack, 15.5px/1.62 body text, headings with a short
+accent rule instead of a full-width double border, section cards with a hairline and a soft
+shadow, quieter note panels so the content leads, and readable link colour in place of gold
+on white. The page header was a 1.8rem centred navy slab taking a third of the first screen;
+the mode bar already carries the branding, so it is now a title rather than a billboard.
+
+A CSS-generated subtitle was drafted and then removed: `content:` text is not selectable and
+not searchable, which is the wrong mechanism for information anyone might need to read.
+
+### Verification
+
+Rendered content differs from before the pass by exactly one string: `" Show Glossary"`,
+which moved out of the document flow and into the mode bar. Nothing else changed &mdash; 100
+questions, 107 answers, 19 sections, coverage 57 of 57.
+
+All four modes, the gate and banner, study notes, card notes in both states, the module and
+summary sheets, save and reload, the dry run, search and the review sheet all pass. No
+console errors. No horizontal overflow at 360, 390, 414, 768, 820 or 1280 px, checked in
+every mode.
