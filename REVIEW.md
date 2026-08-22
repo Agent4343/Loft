@@ -1599,3 +1599,81 @@ original option index rather than reading it, but fixed for consistency.
 **All 144 were then answered correctly in one run and the page scored 100%**, with every
 question located by its text and no review cards produced. Coverage 57 of 57, and every
 other regression passes.
+
+---
+
+## 22. The WMS documents arrived, and one change was wrong
+
+`WMS Manual Rev 4.0.4 (July 2026)` and `Canada East Appendix A Rev D14` were added to the
+repository, so the seven changes in section 21 could be checked against their sources rather
+than taken on trust. **Five were confirmed verbatim. One was confirmed and explained a
+divergence. One was wrong.**
+
+### Confirmed
+
+| Change | Source |
+|---|---|
+| AAF = Area Authority Functional | WMS §4.4.1.3 &mdash; *"AREA AUTHORITY FUNCTIONAL (AAF)"*. "Approving" occurs **zero** times |
+| LTI reviewed monthly | WMS DWCM agenda &mdash; *"Review Long Term Isolation (Monthly)"* |
+| Quarterly field assessment | WMS &mdash; *"quarterly field assessment to physically check the integrity of all isolation points"* |
+| Permit not Live until AO and PH sign | WMS §5.1.6.3, **[CriticalE]**. "Wet ink" occurs **zero** times |
+| Signatures each shift | WMS **[CriticalE]** &mdash; *"issued for up to seven days, but the permit must be progressed with the appropriate signatures each shift"* |
+
+### The divergence in section 21 is explained, not a defect
+
+The WMS carries **both** DWCM attendance wordings, in two places. The agenda says
+*"Attendees: PIC, AA, AAF (EM and Contract), others as necessary"*; §5.1.4.2 says
+*"the PIC, AA, and functional supervisors"*. The Global Module answer matches §5.1.4.2, so it
+was never stale, and leaving it alone was correct.
+
+### The single valve isolation wording was wrong
+
+The applied text made the **Risk Screening trigger** *"the SVI is not covered by the approved
+Appendix A list"*. The documents put it somewhere else entirely, and *"Risk Screening"* does
+not appear in Appendix A at all. Three things were wrong: the trigger, the purpose, and what
+the Professional Engineer approval covers.
+
+What the documents actually say, now carried in the study aid:
+
+- **Appendix A §14.4** holds the **Professional Engineer approved list** of single valve
+  isolations, developed to meet **section 144(3)** of the Canada&ndash;NL Offshore Area OHS
+  Regulations. The approval covers the **methods, standards, practices and the list itself**
+  &mdash; not a step raised per job.
+- Each listed isolation carries its own limits: fluid, pressure range, temperature range,
+  size range, acceptable valve type and **zero energy proving method**. Being on the list is
+  not blanket permission. **Single seated butterfly valves do not qualify** (NOTE 6).
+- **WMS §7.4.1.9 [CriticalE]** &mdash; any SVI valve must provide a reliable seal and
+  **integrity must be confirmed before commencing work**.
+- **[CriticalE]** SVI is **not permitted** where the valve is **Unable To Isolate**, or zero
+  energy cannot be demonstrated close to the isolation free of obstruction. Then a **Risk
+  Assessment** is required and an acceptable means of isolation identified, documented and
+  approved before breaking containment.
+- **[CriticalE]** Hazards not sufficiently controlled and zero energy not achieved &rarr;
+  **stop, make safe, Risk Screening**.
+- **WMS §7.4.1.10 [CriticalE]** &mdash; where a compliant isolation cannot be achieved at all,
+  consult a **Risk Screener** to establish the type of Risk Assessment, and **a deviation is
+  required in addition**.
+
+The original instinct was right and only the trigger was mislabelled: a Risk Screening does
+lead to a Risk Assessment &mdash; on the **non-compliant isolation** route, not the
+not-on-the-list route.
+
+### Practice questions
+
+Five SVI questions were rewritten against the documents and three added, taking the bank from
+144 to **147**. The wrong trigger and the per-job Professional Engineer step are gone from
+the bank entirely. New coverage: what the P.&nbsp;Eng approval actually covers, that the
+Appendix A row is the requirement, when SVI is not permitted, the non-compliant route with its
+deviation, the excluded valve type, and why Appendix A exists.
+
+One had a length tell &mdash; *"Single seated butterfly"* against *"Ball"* and *"Plug"*, a
+ratio of 3.0. Reworded so all four options are comparable; the bank is back to a median of
+1.05 and a maximum of 1.44.
+
+### Verification
+
+Thirteen claims checked directly against the two PDFs; **all thirteen supported, none
+unsupported**. The old wording confirmed absent from the bank. 147 items, no duplicates or
+malformed options. **All 147 answered correctly in one run scored 100%.** Review sheet
+rebuilt, 38 of 38 matching, a part-finished review confirmed to survive. Coverage 57 of 57,
+and every other regression passes.
