@@ -1512,3 +1512,55 @@ lead rule flips correctly with position; asset reaches both subject and body; te
 fire below three and above five; copy works and reports it; Escape closes; entries survive a
 reload; no overflow at 360, 414 or 768 px. Coverage 57 of 57, and every other regression
 still passes.
+
+---
+
+## 21. Asset-specific content update, August 2026
+
+The asset returned its review. Seven changes to Hebron/Hibernia content, sourced to
+**WMS Manual Rev 4.0.4 (July 2026)** and **Canada East Appendix A**, with an explicit
+instruction that Global Module questions and model answers stay untouched.
+
+| # | Change | Where |
+|---|---|---|
+| 1, 2 | LTI review at the DWCM: weekly &rarr; **monthly**, plus the **quarterly field assessment** that physically verifies every isolation point | UPBP-410 Q19 (asset DWCM answer) |
+| 3, 4 | Single valve isolation rewritten: approved **Appendix A** list, or **Risk Screening** with **Professional Engineer review and stamp** where not listed; reliable seal confirmed by leak test or approved flange-breaking method; **zero energy before breaking containment**, stop and reassess if it cannot be demonstrated. The third-party-engineer-stamp-and-add-to-SharePoint wording is gone | asset half of the breaking-containment scenario |
+| 5 | Wet-ink signatures removed. A permit is **not Live until signed by the Area Operator and Permit Holder**, valid up to seven days, signatures required **each shift** after verifications, briefings and zero-energy demonstration | asset permit-steps answer |
+| 6 | **AAF = Area Authority Functional** added to the glossary | glossary, now 45 terms |
+| 7 | DWCM attendance: **PIC, AA and AAF, with others attending as necessary** | asset DWCM answer |
+
+### Global content confirmed untouched
+
+Instruction 8 listed six areas to leave alone. Each was checked by probe after the edits and
+is byte-identical: the temporary defeat ladder including the *not solely time based*
+escalation note, the global SVI flange-class split and the cannot-delegate rule, global ZED,
+the SIMOPS deviation levels, the seven-day permit validity, and the JSA answer. The global
+LTI answer and the global DWCM answer were also left as they are.
+
+Verified by diffing the rendered text before and after: **every change is one of the seven,
+and nothing else moved.**
+
+### Two things the change list did not settle
+
+**AAF expands two different ways.** The study aid said *Approving* Authority Functional; the
+change list says *Area* Authority Functional, citing the current WMS. The asset-specific
+instance was changed to match the WMS and the glossary entry uses it. Worth confirming, since
+the same abbreviation now has one expansion here and possibly another in older material.
+
+**DWCM attendance now differs between global and asset.** Change 7 gives the WMS wording, and
+instruction 8 says only asset content changes &mdash; so the asset answer now reads *"PIC, AA
+and AAF, with others attending as necessary"* while the Global Module answer still reads
+*"PIC, AA, and functional supervisors (AAF)"*. Both were left as instructed. If the Global
+Module should follow, that is an Assessor Guide change rather than a repository one, and
+belongs in `SOURCE-DOCUMENT-QUERIES.md`.
+
+### Downstream
+
+Per `CONTRIBUTING.md`, the practice bank was grepped for every changed value. No question
+restated the old SVI wording, wet ink, or the old AAF expansion. One explanation cited the
+Assessor Guide for the monthly LTI review; it now cites WMS Manual Rev 4.0.4 and mentions the
+quarterly field assessment. The review sheet was rebuilt: all 38 items still match the study
+aid, item numbering is unchanged, and a part-finished review was confirmed to survive.
+
+Coverage 57 of 57. Every regression passes: four modes, the gate and banner, study and card
+notes, the email builder, modules, summary, save and reload, the dry run and search.

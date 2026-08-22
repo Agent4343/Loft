@@ -240,6 +240,15 @@ material.
   Three questions exist only on the CAS route — the Integrity Critical Procedure
   definition, the global IC examples list, and the night-time IC error scenario. They
   are retained for reference and marked as not assessed under the current UBP.
+- **Asset-specific content updated August 2026** against WMS Manual Rev 4.0.4 (July 2026) and
+  Canada East Appendix A. Global Module questions and model answers were left unchanged.
+  Long Term Isolations are reviewed **monthly** at the DWCM with a **quarterly field
+  assessment** verifying every isolation point; single valve isolation follows the approved
+  **Appendix A** list, or a **Risk Screening** with **Professional Engineer review and stamp**
+  where it is not listed; wet-ink signatures are gone &mdash; a permit is not Live until signed
+  by the Area Operator and Permit Holder, with signatures required **each shift**; DWCM
+  attendance is **PIC, AA and AAF**, others as necessary; and **AAF = Area Authority
+  Functional** is in the glossary.
 - **No marine scenario.** UPBP-410 Q3 asks about *"wellbore integrity **or marine** related
   incident scenarios"*. **Hebron and Hibernia have no marine related incident scenario** in
   the higher consequence set (confirmed by the asset, August 2026). The study aid carries
