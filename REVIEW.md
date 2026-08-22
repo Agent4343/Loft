@@ -1564,3 +1564,38 @@ aid, item numbering is unchanged, and a part-finished review was confirmed to su
 
 Coverage 57 of 57. Every regression passes: four modes, the gate and banner, study and card
 notes, the email builder, modules, summary, save and reload, the dry run and search.
+
+### 21.1 Practice questions for the updated asset content
+
+Eleven questions added to cover the August 2026 changes, taking the bank from 133 to 144.
+None of the new material had been drillable before.
+
+| Covers | Questions |
+|---|---|
+| Single valve isolation | On the approved Appendix A list vs not; Risk Screening first and what it determines; Professional Engineer review and stamp; integrity confirmed by leak test or approved flange-breaking method; **work stops if zero energy cannot be demonstrated**; OIM signature via Permit Vision |
+| Permit signatures | A permit is **not Live** until signed by the Area Operator and Permit Holder; signatures required **each shift** despite seven-day validity |
+| AAF | What it stands for; what it does in the permit sequence |
+| Long Term Isolations | What the **quarterly field assessment** is for, as distinct from the monthly review |
+
+**The superseded values became the distractors.** *Third-party engineer's stamp* and
+*Approving Authority Functional* now appear only as wrong answers, so anyone who learned the
+old wording is caught and corrected rather than left with it. Two of the items exist purely
+to separate things that are easily merged: Risk Screening before Risk Assessment, not the
+reverse; and the monthly review confirming status against the quarterly assessment
+physically verifying integrity.
+
+Written with matched-length distractors from the start, rather than repeating the mistake in
+section 17: median length ratio **0.96**, maximum 1.09, and the correct option is longest in
+2 of 11 &mdash; below the 25% that random chance would give.
+
+### Verification
+
+Every one of the eleven correct answers was checked against the study aid text; all eleven
+are supported. The whole bank was then re-validated &mdash; 144 items, no duplicates, no
+malformed options, every item carrying its section, source and asset flag. Eleven items were
+missing the `a` key the others carry; harmless at runtime, since the engine tracks the
+original option index rather than reading it, but fixed for consistency.
+
+**All 144 were then answered correctly in one run and the page scored 100%**, with every
+question located by its text and no review cards produced. Coverage 57 of 57, and every
+other regression passes.
