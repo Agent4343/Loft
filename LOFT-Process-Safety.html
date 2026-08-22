@@ -2317,9 +2317,14 @@ Explain your role in maintaining and operating emergency response equipment for 
   }
   .loft-flash { animation: loftFlash 1.1s ease-out 2; }
 
+  /* A modal has to sit above everything, including the mode bar and the
+     full-screen mode layers. At z-index 300 the dialog rendered underneath
+     #cardLayer, #practiceLayer and #homeLayer (all 1100+), so it was visible
+     but could not be clicked - assessor access could only be unlocked from
+     Guide. */
   #adminVeil {
     position: fixed; inset: 0; background: rgba(4, 18, 32, .55);
-    display: flex; align-items: center; justify-content: center; z-index: 300; padding: 16px;
+    display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 16px;
   }
   #adminBox {
     background: #fff; border-radius: 10px; padding: 20px 22px; width: 100%; max-width: 26rem;
@@ -2376,7 +2381,7 @@ Explain your role in maintaining and operating emergency response equipment for 
     body.study-open #toc, body.study-open header, body.study-open main,
     body.study-open #glossarySidebar, body.study-open #glossaryToggle,
     body.study-open #modeBar, body.study-open #cardLayer,
-    body.study-open #practiceLayer { display: none !important; }
+    body.study-open #practiceLayer, body.study-open #homeLayer { display: none !important; }
   }
 
   @media print {
@@ -2999,7 +3004,7 @@ Explain your role in maintaining and operating emergency response equipment for 
     body.summary-open #toc, body.summary-open header, body.summary-open main,
     body.summary-open #glossarySidebar, body.summary-open #glossaryToggle,
     body.summary-open #modeBar, body.summary-open #cardLayer,
-    body.summary-open #practiceLayer { display: none !important; }
+    body.summary-open #practiceLayer, body.summary-open #homeLayer { display: none !important; }
   }
 
   /* ---------- practice mode (multiple choice) ---------- */
@@ -3344,6 +3349,78 @@ Explain your role in maintaining and operating emergency response equipment for 
     body.email-open #cardLayer, body.email-open #practiceLayer { display: none !important; }
   }
 
+
+  /* ---------- home ---------- */
+  #homeLayer {
+    position: fixed; inset: 44px 0 0 0; z-index: 1100; display: none;
+    background: var(--canvas); overflow-y: auto; padding: 26px 16px 60px;
+  }
+  body.mode-home #homeLayer { display: block; }
+  body.mode-home { overflow: hidden; }
+  body.assessor-on #homeLayer { inset: 78px 0 0 0; }
+  #homeSheet { max-width: 60rem; margin: 0 auto; }
+  .hm-hero { margin: 0 0 1.4rem; }
+  .hm-hero h2 {
+    font-size: 1.7rem; font-weight: 680; letter-spacing: -.02em; color: var(--navy);
+    margin: 0 0 .3rem; border: 0; padding: 0;
+  }
+  .hm-hero h2::after { display: none; }
+  .hm-hero p { margin: 0; color: var(--ink-soft); font-size: 1rem; max-width: 46rem; }
+  .hm-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr)); gap: 1rem; margin: 0 0 1.4rem; }
+  .hm-card {
+    background: var(--surface); border: 1px solid var(--rule); border-radius: var(--r);
+    box-shadow: var(--shadow-sm); padding: 1.15rem 1.25rem; display: flex; flex-direction: column;
+  }
+  .hm-card h3 {
+    font-size: .72rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
+    color: var(--ink-faint); margin: 0 0 .5rem;
+  }
+  .hm-card .lead { font-size: 1.05rem; font-weight: 650; color: var(--navy); margin: 0 0 .5rem; line-height: 1.35; }
+  .hm-card p { margin: 0 0 .8rem; font-size: .93rem; color: var(--ink-soft); }
+  .hm-steps { margin: 0 0 .9rem; padding-left: 1.15rem; font-size: .93rem; }
+  .hm-steps li { margin: .3rem 0; }
+  .hm-go { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: auto; }
+  .hm-go button {
+    font: inherit; font-size: .9rem; font-weight: 550; padding: .45rem .9rem;
+    border-radius: 7px; border: 1px solid var(--rule); background: #fff; color: var(--ink); cursor: pointer;
+  }
+  .hm-go button:hover { background: #eef3f8; }
+  .hm-go button.go { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .hm-go button.go:hover { background: #094ea3; }
+  .hm-req {
+    background: var(--surface); border: 1px solid var(--rule); border-left: 4px solid var(--accent);
+    border-radius: 0 var(--r) var(--r) 0; box-shadow: var(--shadow-sm);
+    padding: 1.15rem 1.35rem; margin: 0 0 1.2rem;
+  }
+  .hm-req h3 { font-size: 1.05rem; color: var(--navy); margin: 0 0 .2rem; }
+  .hm-req .note { font-size: .85rem; color: var(--ink-faint); margin: 0 0 .9rem; }
+  .hm-req dl { margin: 0; display: grid; grid-template-columns: minmax(9rem, 12rem) 1fr; gap: .55rem 1.1rem; }
+  .hm-req dt { font-weight: 650; color: var(--navy); font-size: .93rem; }
+  .hm-req dd { margin: 0; font-size: .93rem; color: var(--ink); }
+  .hm-req dd .ref { color: var(--ink-faint); font-size: .82rem; }
+  .hm-scope {
+    background: #fff8ec; border: 1px solid #f0e2c8; border-radius: var(--r);
+    padding: 1rem 1.2rem; margin: 0 0 1.2rem; font-size: .92rem;
+  }
+  .hm-scope h3 { font-size: .95rem; color: #8a5a10; margin: 0 0 .5rem; }
+  .hm-scope ul { margin: 0; padding-left: 1.15rem; }
+  .hm-scope li { margin: .28rem 0; }
+  .hm-state {
+    display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; padding: .75rem 1.1rem; margin: 0 0 1.2rem;
+    background: #eef4fb; border: 1px solid #d5e4f4; border-radius: var(--r); font-size: .9rem; color: var(--navy);
+  }
+  .hm-state b { font-weight: 700; }
+  .hm-foot { color: var(--ink-faint); font-size: .85rem; margin: 1.4rem 0 0; }
+  @media (max-width: 700px) {
+    #homeLayer { inset: 84px 0 0 0; padding: 14px 10px 50px; }
+    body.assessor-on #homeLayer { inset: 118px 0 0 0; }
+    .hm-hero h2 { font-size: 1.35rem; }
+    .hm-req dl { grid-template-columns: 1fr; gap: .15rem; }
+    .hm-req dt { margin-top: .55rem; }
+    .hm-go button { flex: 1 1 auto; }
+  }
+  @media print { #homeLayer { display: none !important; } }
+
   @media print { #modeBar, #cardLayer, #practiceLayer, #testTools, .reveal-btn, #assessorBanner { display: none !important; }
     body, body.assessor-on { padding-top: 0; } #assessSession { position: static; } }
 </style>
@@ -3420,6 +3497,7 @@ Explain your role in maintaining and operating emergency response equipment for 
   /* ---------------- mode bar ---------------- */
 
   var MODES = [
+    { id: 'home',  label: 'Home',   hint: 'Where to start, and what the manual requires' },
     { id: 'guide', label: 'Guide',  hint: 'Read the questions with model answers' },
     { id: 'test',  label: 'Test',   hint: 'Answers hidden - reveal one at a time' },
     { id: 'cards', label: 'Cards',  hint: 'One question at a time - Space flips, G / R mark, S shuffles' },
@@ -3459,7 +3537,7 @@ Explain your role in maintaining and operating emergency response equipment for 
 
   function setMode(next) {
     mode = next;
-    document.body.classList.remove('mode-guide', 'mode-test', 'mode-cards', 'mode-practice');
+    document.body.classList.remove('mode-home', 'mode-guide', 'mode-test', 'mode-cards', 'mode-practice');
     document.body.classList.add('mode-' + next);
     [].forEach.call(document.querySelectorAll('.mode-btn'), function (b) {
       b.setAttribute('aria-pressed', b.dataset.mode === next ? 'true' : 'false');
@@ -3473,9 +3551,13 @@ Explain your role in maintaining and operating emergency response equipment for 
     // so looking something up does not reset on a mode change.
     if (next === 'cards') { renderCard(); }
     if (next === 'practice' && window.__loftPractice) { window.__loftPractice(); }
+    if (next === 'home' && window.__loftHome) { window.__loftHome(); }
     try { localStorage.setItem(MODE_KEY, next); } catch (e) { /* ignore */ }
     window.scrollTo(0, 0);
   }
+
+  /* Used by the Home cards to move the reader into a mode. */
+  window.__loftSetMode = setMode;
 
   /* ---------------- test mode ---------------- */
 
@@ -3771,9 +3853,12 @@ Explain your role in maintaining and operating emergency response equipment for 
     addRevealButtons();
     buildTestTools();
     buildCardLayer();
-    var saved = 'guide';
-    try { saved = localStorage.getItem(MODE_KEY) || 'guide'; } catch (e) { /* ignore */ }
-    setMode(['guide', 'test', 'cards'].indexOf(saved) === -1 ? 'guide' : saved);
+    var saved = '';
+    try { saved = localStorage.getItem(MODE_KEY) || ''; } catch (e) { /* ignore */ }
+    /* Every mode has to be listed here. 'practice' was missing, so a reader who
+       left the page in Practice was silently returned to Guide. */
+    var known = ['home', 'guide', 'test', 'cards', 'practice'];
+    setMode(known.indexOf(saved) === -1 ? 'home' : saved);
   }
 
   if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); }
@@ -5235,6 +5320,148 @@ var PRACTICE=[{"sec":"2.1 Risk Management","q":"What is the intent of the Risk A
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && document.body.classList.contains('email-open')) { close(); }
     });
+  }
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); }
+  else { init(); }
+})();
+</script>
+<script id="loft-home-js">
+/* Home. Two jobs: point people at the right tool, and put the requirements
+   somewhere they cannot be scrolled past. Everything in the requirements panel
+   is in the guide already - sections 1.3 to 1.6 - but it was buried in front
+   matter that people scroll through on the way to the questions. */
+(function () {
+  'use strict';
+  function esc(t) { return String(t == null ? '' : t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+  function state() {
+    var out = { study: 0, cards: 0, notes: 0, practice: null, candidate: '' };
+    try { out.study = Object.keys(JSON.parse(localStorage.getItem('loft-study-notes-v1')) || {}).length; } catch (e) {}
+    try {
+      var pr = JSON.parse(localStorage.getItem('loft-mode-progress-v1') || localStorage.getItem('loft-cards-v1') || 'null');
+      if (pr) { out.cards = Object.keys(pr).length; }
+    } catch (e) {}
+    try {
+      var best = JSON.parse(localStorage.getItem('loft-practice-v1-best')) || {};
+      var ks = Object.keys(best);
+      if (ks.length) {
+        var sum = 0; ks.forEach(function (k) { sum += best[k]; });
+        out.practice = { topics: ks.length, avg: Math.round(sum / ks.length) };
+      }
+    } catch (e) {}
+    var api = window.__loftAssessmentData ? window.__loftAssessmentData() : null;
+    if (api) {
+      out.notes = Object.keys(api.notes || {}).length;
+      out.candidate = (api.session && api.session.candidate) || '';
+    }
+    return out;
+  }
+
+  function stateStrip() {
+    var s = state(), bits = [];
+    if (s.study) { bits.push('<span><b>' + s.study + '</b> study note' + (s.study === 1 ? '' : 's') + '</span>'); }
+    if (s.practice) { bits.push('<span>Practice: <b>' + s.practice.avg + '%</b> average across ' + s.practice.topics + ' topic' + (s.practice.topics === 1 ? '' : 's') + '</span>'); }
+    if (s.notes) { bits.push('<span><b>' + s.notes + '</b> question' + (s.notes === 1 ? '' : 's') + ' recorded in the assessment' + (s.candidate ? ' for ' + esc(s.candidate) : '') + '</span>'); }
+    return bits.length ? '<div class="hm-state">' + bits.join('') + '</div>' : '';
+  }
+
+  var REQS = [
+    ['Within 90 days', 'The verification target is within <b>90 days</b> of assuming the position. ' +
+      '<span class="ref">Section 1.3 &middot; [E] Section 12</span>'],
+    ['Risk Approval Authority', 'Delegated until competency is demonstrated, and a continued delegation stays ' +
+      'in place while any gap is open. <span class="ref">Sections 1.3 and 1.5</span>'],
+    ['Assessment team', 'At least <b>three</b>, no more than <b>five</b>. The Assessment Lead is set by the ' +
+      'candidate&rsquo;s level &mdash; an Operations Manager or equivalent to assess an SLS, a Site Manager or ' +
+      'equivalent to assess a TLS. <span class="ref">Section 1.6</span>'],
+    ['How it runs', 'Open-ended questions. The candidate elaborates, gives examples and speaks fluidly about the ' +
+      'principles. <b>It is not a question-and-answer test</b>, and reciting a model answer does not demonstrate ' +
+      'competency. <span class="ref">Section 1.5</span>'],
+    ['If there are gaps', 'A <b>gap closure plan</b> is put in place. Every gap is re-assessed per module before ' +
+      'overall competency is demonstrated, and anything needing revisiting is raised at the session. ' +
+      '<span class="ref">Section 1.5</span>'],
+    ['Before the interview', 'The supervisor reviews the Assessor Guide and expectations with the candidate and ' +
+      'agrees the target. The candidate works the modules, keeps the supervisor posted, marks Career Connect, and ' +
+      'liaises when ready. <span class="ref">Sections 1.3 and 1.4</span>']
+  ];
+
+  function render() {
+    var h = '<div class="hm-hero"><h2>LOFT Process Safety</h2>' +
+      '<p>Everything for the Process Safety competency assessment at Hebron and Hibernia &mdash; the questions and ' +
+      'model answers, drilling tools, and the assessment record. Pick where you are starting.</p></div>';
+
+    h += stateStrip();
+
+    h += '<div class="hm-cards">' +
+      '<div class="hm-card"><h3>Being assessed</h3>' +
+      '<p class="lead">Work through the modules, then practise saying the answers out loud.</p>' +
+      '<ol class="hm-steps">' +
+      '<li><b>Guide</b> &mdash; read each question with its model answer. Add your own notes as you go.</li>' +
+      '<li><b>Practice</b> &mdash; drill the facts: thresholds, approval levels, who signs what.</li>' +
+      '<li><b>Cards</b> &mdash; one question at a time, answer aloud, then flip.</li>' +
+      '<li><b>Test</b> &mdash; answers hidden, reveal one at a time.</li>' +
+      '</ol>' +
+      '<p>The interview asks you to <em>describe</em> and <em>demonstrate</em>. Multiple choice and flashcards ' +
+      'get the facts solid; saying the full answer aloud is the part that gets marked.</p>' +
+      '<div class="hm-go"><button type="button" class="go" data-go="guide">Open Guide</button>' +
+      '<button type="button" data-go="practice">Practice</button>' +
+      '<button type="button" data-go="cards">Cards</button></div></div>' +
+
+      '<div class="hm-card"><h3>Running an assessment</h3>' +
+      '<p class="lead">Record the interview, mark each module, produce the gap closure plan.</p>' +
+      '<ol class="hm-steps">' +
+      '<li>Unlock <b>Assessor access</b> in the top bar.</li>' +
+      '<li>Fill in the candidate, position, date assumed and the team &mdash; the 90-day target is worked out for you.</li>' +
+      '<li>Use <b>Guide</b> and record notes and an outcome against each question.</li>' +
+      '<li><b>Modules</b> to mark competency per module; <b>Summary</b> for the record and gap closure plan.</li>' +
+      '<li><b>Save file</b> to keep it. The browser copy is working state, not a record.</li>' +
+      '</ol>' +
+      '<p><b>Email</b> in the assessment bar drafts the note to the candidate &mdash; expectations and target date, ' +
+      'or the interview booking.</p>' +
+      '<div class="hm-go"><button type="button" class="go" data-go="assessor">Unlock assessor access</button>' +
+      '<button type="button" data-go="guide">Open Guide</button></div></div></div>';
+
+    h += '<div class="hm-req"><h3>What the manual requires</h3>' +
+      '<p class="note">From the Assessor Guide, sections 1.3 to 1.6. Full text is in the Guide.</p><dl>';
+    REQS.forEach(function (r) { h += '<dt>' + r[0] + '</dt><dd>' + r[1] + '</dd>'; });
+    h += '</dl></div>';
+
+    h += '<div class="hm-scope"><h3>Scope at this asset &mdash; worth knowing before you study</h3><ul>' +
+      '<li><b>CVPE route applies.</b> Hebron/Hibernia has completed CVPE, so the Training and Competency UBP ' +
+      'answers apply. Superseded CAS answers are shown and labelled &mdash; do not learn those.</li>' +
+      '<li><b>No floating vessel.</b> Flag / Class questions apply only to BUs with FPSOs or FSOs, so they are ' +
+      'out of scope here.</li>' +
+      '<li><b>No marine scenario.</b> The wellbore integrity question asks about wellbore <em>or marine</em> ' +
+      'scenarios &mdash; say both halves: the two wellbore scenarios, and that there is no marine one.</li>' +
+      '<li><b>Asset answers are under review.</b> Answers drawn from Hebron/Hibernia local material are marked ' +
+      '<b>asset</b> in Practice. Treat them as current practice rather than verified fact.</li>' +
+      '</ul></div>';
+
+    h += '<p class="hm-foot">Standalone file &mdash; no install, works offline. Notes and progress are saved in ' +
+      'this browser; use <b>Save file</b> for anything that has to be kept.</p>';
+
+    document.getElementById('homeSheet').innerHTML = h;
+    [].forEach.call(document.querySelectorAll('#homeSheet [data-go]'), function (b) {
+      b.addEventListener('click', function () {
+        var t = b.dataset.go;
+        if (t === 'assessor') {
+          var ab = document.getElementById('adminBtn');
+          if (ab && !document.body.classList.contains('assessor-on')) { ab.click(); }
+          else if (window.__loftSetMode) { window.__loftSetMode('guide'); }
+          return;
+        }
+        if (window.__loftSetMode) { window.__loftSetMode(t); }
+      });
+    });
+  }
+
+  function init() {
+    var layer = document.createElement('div');
+    layer.id = 'homeLayer';
+    layer.innerHTML = '<div id="homeSheet"></div>';
+    document.body.appendChild(layer);
+    /* Re-rendered on entry so the progress strip reflects what has happened since. */
+    window.__loftHome = render;
+    if (document.body.classList.contains('mode-home')) { render(); }
   }
   if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); }
   else { init(); }

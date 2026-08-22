@@ -1677,3 +1677,57 @@ unsupported**. The old wording confirmed absent from the bank. 147 items, no dup
 malformed options. **All 147 answered correctly in one run scored 100%.** Review sheet
 rebuilt, 38 of 38 matching, a part-finished review confirmed to survive. Coverage 57 of 57,
 and every other regression passes.
+
+---
+
+## 23. Home, and two bugs it exposed
+
+The file opened straight into the Guide, part-way down the front matter, with no orientation
+&mdash; and the requirements that govern the whole process sat in sections 1.3 to 1.6, which
+readers scroll through on the way to the questions.
+
+**Home** is now the first mode and the landing page. It does two things: points people at the
+right tool for what they are doing, and puts the requirements somewhere they cannot be
+scrolled past &mdash; the 90-day target, Risk Approval Authority delegated until competency is
+demonstrated, the three-to-five team with the Lead set by the candidate's level, the interview
+being open-ended rather than question-and-answer, and what happens when there is a gap. Every
+line cites its section. Nothing was moved out of the Guide; the full text is still there.
+
+It also shows work in progress &mdash; study notes written, practice average by topic,
+questions recorded against an assessment &mdash; so someone returning can see where they were.
+
+### The modal was unreachable from three of five modes
+
+Found because a Home test could not click the password dialog. `#adminVeil` was at
+**z-index 300** while every full-screen mode layer sits at 1100 or above, so the dialog
+rendered *underneath* them: visible, and unclickable.
+
+| Mode | Before | After |
+|---|---|---|
+| Guide | clickable | clickable |
+| Cards | **blocked by `#cardBody`** | clickable |
+| Practice | **blocked by `.pr-setup`** | clickable |
+| Home | **blocked by `.hm-card`** | clickable |
+
+This was **not introduced by Home** &mdash; it had been true for Cards and Practice since the
+gate was added. Anyone trying to unlock assessor access while on Cards or Practice simply
+could not. Raised to 2000, above the mode bar, as a modal should be.
+
+### Practice mode was never remembered
+
+`setMode` saved the mode, but the whitelist that reads it back was
+`['guide', 'test', 'cards']` &mdash; `practice` had never been added. The value was written to
+`localStorage` and then silently discarded on reload, dropping the reader back into Guide.
+Now every mode is listed, and an unrecognised or absent value lands on Home.
+
+### Verification
+
+Guide content **byte-identical** at 109,009 characters &mdash; Home is additive. Five modes,
+no console errors, no horizontal overflow in **any** mode at 360, 414, 768 or 1280 px. The
+password dialog is clickable in all five. Practice, Cards and Home all survive a reload.
+Coverage 57 of 57.
+
+Three regression scripts failed at first because they assumed the page opens in Guide. That
+was the change working, not a defect &mdash; they now set the mode explicitly before running,
+along with the rest of the suite, so a future change to the landing mode does not silently
+break them.

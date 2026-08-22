@@ -11,10 +11,11 @@ source documents both are derived from.
 ## The study aid
 
 **`LOFT-Process-Safety.html`** — open it in any browser. No install, no server, works
-offline. One file, four modes, switched from the bar at the top:
+offline. One file, five modes, switched from the bar at the top:
 
 | Mode | What it does | For |
 |---|---|---|
+| **Home** | Where to start, and what the manual requires in one place | Landing here first |
 | **Guide** | Every question with its model answer, by section, with the glossary and source links | Reading through; running an assessment |
 | **Test** | Answers hidden, revealed one at a time, with search across questions and answers | Self-testing before the interview |
 | **Cards** | One question at a time — flip to the answer, mark *Got it* or *Needs review*, shuffle, filter by category | Practising recall |
@@ -64,6 +65,28 @@ questions across all eleven topics, every answer traced to an answer in the same
 Distractors were deliberately written to match the correct answer in length and
 specificity. An earlier draft had the correct option longest in 79% of questions, which
 would have let someone score well by picking the longest answer without knowing anything.
+
+## Home
+
+The file opens on **Home**, which does two things.
+
+It points people at the right tool &mdash; one card for the candidate (Guide, Practice,
+Cards, Test, in the order that makes sense) and one for whoever is running the assessment
+(unlock, fill in the session, record outcomes, Modules, Summary, Save file).
+
+And it carries **what the manual requires**, in one place that cannot be scrolled past: the
+90-day target, Risk Approval Authority delegated until competency is demonstrated, the
+three-to-five assessment team with the Lead set by the candidate's level, that the interview
+is open-ended rather than question-and-answer, and what happens when there is a gap. Each
+line cites its section; the full text stays in the Guide.
+
+Below that are the scope notes worth knowing before studying &mdash; CVPE route applies, no
+floating vessel, no marine scenario, and asset answers are under review &mdash; and a strip
+showing work in progress: study notes written, practice average by topic, questions recorded
+against an assessment.
+
+The mode you were last in is remembered, so Home is the landing page on a first visit rather
+than a gate you pass through every time.
 
 ## Two kinds of notes
 
