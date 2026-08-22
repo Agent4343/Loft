@@ -83,6 +83,32 @@ up, how you remember it, where to read more. It saves as you type. **My notes** 
 top bar collects everything you have written, grouped by section, and prints. The button
 shows a running count.
 
+## Email to the candidate
+
+**Email** in the assessment bar (visible once unlocked) drafts the note to the person being
+assessed, ready to copy into Outlook. Two templates: *starting out* (expectations and the
+target date) and *booking the verification interview*.
+
+> **It is not a required form.** No source document in this repository asks for an email to
+> the candidate. What sections 1.3 to 1.6 require is that the supervisor goes through the
+> Assessor Guide and expectations with the candidate, agrees a verification target within 90
+> days of assuming the position, keeps Risk Approval Authority delegated until competency is
+> demonstrated, and that the candidate liaises with the supervisor and assessment team when
+> ready. The wording carries those obligations so they do not get lost in the retelling.
+
+Dropdowns for asset (Hebron / Hibernia) and for the position being assessed. The position
+does real work rather than just filling a blank &mdash; section 1.6 sets the Assessment Lead
+by the candidate's level, and the page states which applies:
+
+| Assessing a | Assessment Lead should be |
+|---|---|
+| Second-Line Supervisor | a BU-experienced third-line Supervisor (Operations Manager or equivalent) |
+| Third-Line Supervisor | a BU-experienced fourth-line Supervisor with Operations experience (Site Manager or equivalent) |
+
+It also computes the 90-day target from the date the position was assumed, and warns when
+the assessment team falls outside the three-to-five that section 1.6 requires. Candidate,
+dates and team are prefilled from the assessment record so nothing is typed twice.
+
 ## Assessor access
 
 The assessment record — notes, outcomes, modules, the session bar and the summary — is

@@ -1448,3 +1448,67 @@ All four modes, the gate and banner, study notes, card notes in both states, the
 summary sheets, save and reload, the dry run, search and the review sheet all pass. No
 console errors. No horizontal overflow at 360, 390, 414, 768, 820 or 1280 px, checked in
 every mode.
+
+---
+
+## 20. Email to the candidate
+
+Asked for as something the manual requires. **It does not.** All six source documents were
+searched &mdash; the four Word documents and both PDFs, the latter extracted for the first
+time to check. The only occurrences of "email" anywhere are an administrative reminder that
+a Superintendent should be on the right distribution lists. There is no required email, and
+no template to reproduce.
+
+What the Assessor Guide **does** require is a set of things that have to be communicated,
+and email is the usual way they are:
+
+| Section | Obligation |
+|---|---|
+| 1.3 | Review the Assessor Guide and expectations with the candidate; assess the gap from previous experience; identify a verification target **within 90 days of assuming position**; ensure Risk Approval Authority is delegated until competency is verified |
+| 1.4 | Candidate completes the modules, keeps the supervisor posted, marks completion on Career Connect, and **liaises when ready** for the interview |
+| 1.5 | Open-ended questions; the candidate elaborates and speaks fluidly rather than reciting; gaps get a **gap closure plan**, are re-assessed per module, and RAA stays delegated until then |
+| 1.6 | Assessment team of **three to five**, and the Assessment Lead is set by the candidate's level |
+
+So the builder was written, with every statement in the draft traceable to those sections.
+The caveat is on the page itself, not buried in a readme.
+
+### The dropdowns do work, not decoration
+
+Section 1.6 makes the position a rule rather than a blank to fill:
+
+| Assessing a | Assessment Lead should be |
+|---|---|
+| Second-Line Supervisor | a BU-experienced third-line Supervisor (Operations Manager or equivalent) |
+| Third-Line Supervisor | a BU-experienced fourth-line Supervisor with Operations experience (Site Manager or equivalent) |
+
+Choose the position and the page states which applies. It also computes the 90-day target
+from the date the position was assumed, and flags a team below three or above five. Asset is
+Hebron or Hibernia and flows into the subject line and the body.
+
+Two templates: *starting out* (expectations, timing, RAA, what to do next) and *booking the
+interview* (details, how it runs, what happens if there are gaps, what to bring). Candidate,
+dates and team prefill from the assessment record. It sits behind the assessor gate, since
+it is the supervisor or the assessment team who sends it.
+
+### Two defects found in testing
+
+**Rebuilding the form on every change lost what was being typed.** The `change` handler
+called `render()`, which replaced the input elements mid-edit &mdash; so Technical Assessors
+and Location silently vanished from the draft and the team count read 2 when four people were
+named. It would also have stolen focus on every dropdown change. Now one handler updates the
+derived output in place and never rebuilds the inputs.
+
+**"Hi [candidate,"** &mdash; the greeting took the first word of the fallback placeholder
+`[candidate name]`. Now `[first name]` when no name is entered.
+
+Copy uses `navigator.clipboard`, falls back to `execCommand`, and falls back again to
+selecting the text with a "Press Ctrl+C" prompt, because `navigator.clipboard` is not
+available on every `file://` origin.
+
+### Verification
+
+Rendered guide content unchanged. The button is hidden while the gate is locked; the §1.6
+lead rule flips correctly with position; asset reaches both subject and body; team warnings
+fire below three and above five; copy works and reports it; Escape closes; entries survive a
+reload; no overflow at 360, 414 or 768 px. Coverage 57 of 57, and every other regression
+still passes.

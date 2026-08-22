@@ -3275,6 +3275,66 @@ Explain your role in maintaining and operating emergency response equipment for 
     .answer { background: #fff; border: 1px solid #ddd; }
   }
 
+
+  /* ---------- email template builder ---------- */
+  #emailLayer {
+    position: fixed; inset: 44px 0 0 0; z-index: 1150; display: none;
+    background: rgba(15,23,32,.55); overflow-y: auto; padding: 24px 16px 60px;
+  }
+  #emailLayer.open { display: block; }
+  body.assessor-on #emailLayer { inset: 78px 0 0 0; }
+  #emailSheet {
+    background: #fff; max-width: 54rem; margin: 0 auto; padding: 26px 28px;
+    border-radius: 10px; box-shadow: 0 10px 40px rgba(0,0,0,.18);
+  }
+  #emailSheet h2 { font-size: 1.3rem; margin: 0 0 .3rem; color: var(--navy); border: 0; padding: 0; }
+  #emailSheet h2::after { display: none; }
+  #emailSheet .sub { color: var(--ink-soft); font-size: .9rem; margin: 0 0 1.1rem; }
+  .em-note {
+    border-left: 4px solid var(--warn, #b45309); background: #fff8ec;
+    padding: .75rem .9rem; border-radius: 0 8px 8px 0; font-size: .92rem; margin: 0 0 1.2rem;
+  }
+  .em-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr)); gap: .75rem 1rem; }
+  .em-fld { display: flex; flex-direction: column; gap: .25rem; }
+  .em-fld label { font-size: .7rem; text-transform: uppercase; letter-spacing: .07em; color: var(--ink-faint); font-weight: 700; }
+  .em-fld input, .em-fld select, .em-fld textarea {
+    font: inherit; font-size: .92rem; padding: .45rem .55rem;
+    border: 1px solid var(--rule); border-radius: 6px; background: #fff; color: var(--ink);
+    width: 100%; box-sizing: border-box; min-width: 0;
+  }
+  .em-fld textarea { resize: vertical; min-height: 3.2rem; }
+  .em-rule {
+    margin: 1.1rem 0 .9rem; padding: .6rem .8rem; border-radius: 8px;
+    background: #eef4fb; border: 1px solid #d5e4f4; font-size: .9rem; color: var(--navy);
+  }
+  .em-rule b { font-weight: 700; }
+  .em-tools { display: flex; gap: .5rem; flex-wrap: wrap; margin: 1.2rem 0 .8rem; align-items: center; }
+  .em-tools .sp { flex: 1; }
+  .em-out {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: .84rem; line-height: 1.55; white-space: pre-wrap;
+    background: #f7fafc; border: 1px solid var(--rule); border-radius: 8px;
+    padding: .9rem 1rem; width: 100%; box-sizing: border-box; min-height: 22rem; resize: vertical;
+    color: var(--ink);
+  }
+  .em-sub { font-weight: 600; font-size: .95rem; margin: .2rem 0 .8rem; color: var(--ink); }
+  .em-sub span { font-weight: 400; color: var(--ink-soft); }
+  .em-ok { color: var(--ok, #0f8e5a); font-weight: 600; font-size: .88rem; }
+  @media (max-width: 700px) {
+    #emailLayer { inset: 84px 0 0 0; padding: 14px 10px 50px; }
+    body.assessor-on #emailLayer { inset: 118px 0 0 0; }
+    #emailSheet { padding: 16px 14px; }
+    .em-tools .tool-btn, .em-tools button { flex: 1 1 auto; }
+  }
+  @media print {
+    #emailLayer { position: static; inset: auto; background: #fff; padding: 0; overflow: visible; }
+    #emailSheet { box-shadow: none; max-width: none; padding: 0; }
+    .em-tools { display: none !important; }
+    body.email-open #toc, body.email-open header, body.email-open main,
+    body.email-open #glossarySidebar, body.email-open #modeBar,
+    body.email-open #cardLayer, body.email-open #practiceLayer { display: none !important; }
+  }
+
   @media print { #modeBar, #cardLayer, #practiceLayer, #testTools, .reveal-btn, #assessorBanner { display: none !important; }
     body, body.assessor-on { padding-top: 0; } #assessSession { position: static; } }
 </style>
@@ -4817,6 +4877,355 @@ var PRACTICE=[{"sec":"2.1 Risk Management","q":"What is the intent of the Risk A
     }, { passive: true });
     window.addEventListener('resize', mark, { passive: true });
     mark();
+  }
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); }
+  else { init(); }
+})();
+</script>
+<script id="loft-email-js">
+/* Email template builder.
+   ---------------------------------------------------------------------------
+   No source document in this repository requires an email to the candidate.
+   What the Assessor Guide does require is in sections 1.3 to 1.6: the supervisor
+   reviews expectations with the candidate, agrees a verification target within
+   90 days of assuming the position, keeps Risk Approval Authority delegated
+   until competency is demonstrated, and the candidate liaises with the
+   supervisor and assessment team when ready. Email is the usual vehicle for
+   that. Every obligation below is quoted or paraphrased from those sections, so
+   the note that goes out states the process correctly.
+   --------------------------------------------------------------------------- */
+(function () {
+  'use strict';
+  var KEY = 'loft-email-v1';
+
+  /* Section 1.6 sets the Assessment Lead by the candidate's level. This is the
+     rule the position dropdown exists to apply. */
+  var POSITIONS = [
+    { id: 'sls', label: 'Second-Line Supervisor (SLS)',
+      lead: 'a BU-experienced third-line Supervisor (Operations Manager or equivalent)' },
+    { id: 'tls', label: 'Third-Line Supervisor (TLS)',
+      lead: 'a BU-experienced fourth-line Supervisor with Operations experience (Site Manager or equivalent)' }
+  ];
+  var ASSETS = ['Hebron', 'Hibernia'];
+  var KINDS = [
+    { id: 'kickoff', label: 'Starting out - expectations and target date' },
+    { id: 'invite',  label: 'Booking the verification interview' }
+  ];
+  var FIELDS = [
+    { k: 'candidate', l: 'Candidate name', t: 'text' },
+    { k: 'position',  l: 'Position being assessed', t: 'select', opts: POSITIONS.map(function (p) { return p.label; }) },
+    { k: 'asset',     l: 'Asset', t: 'select', opts: ASSETS },
+    { k: 'assumed',   l: 'Date assumed position', t: 'date' },
+    { k: 'lead',      l: 'Assessment Lead (name)', t: 'text' },
+    { k: 'leadrole',  l: 'Assessment Lead position', t: 'text' },
+    { k: 'facil',     l: 'Assessment Facilitator', t: 'text' },
+    { k: 'tech',      l: 'Technical Assessor(s)', t: 'text' },
+    { k: 'when',      l: 'Interview date', t: 'date' },
+    { k: 'time',      l: 'Interview time', t: 'text' },
+    { k: 'where',     l: 'Location / Teams link', t: 'text' },
+    { k: 'sender',    l: 'From (your name)', t: 'text' },
+    { k: 'senderrole', l: 'Your position', t: 'text' }
+  ];
+  var state = {};
+
+  function esc(t) { return String(t == null ? '' : t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function el(id) { return document.getElementById(id); }
+  function val(k) { return (state[k] || '').trim(); }
+  function or(k, fallback) { return val(k) || fallback; }
+
+  function load() { try { state = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { state = {}; } }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* ignore */ } }
+
+  function posRec() {
+    return POSITIONS.filter(function (p) { return p.label === val('position'); })[0] || POSITIONS[0];
+  }
+
+  /* Section 1.3: target should be within 90 days of assuming position. */
+  function target() {
+    var d = val('assumed');
+    if (!d) { return ''; }
+    var p = d.split('-');
+    if (p.length !== 3) { return ''; }
+    var dt = new Date(Date.UTC(+p[0], +p[1] - 1, +p[2]));
+    dt.setUTCDate(dt.getUTCDate() + 90);
+    return dt.toISOString().slice(0, 10);
+  }
+
+  function longDate(iso) {
+    if (!iso) { return ''; }
+    var p = iso.split('-');
+    if (p.length !== 3) { return iso; }
+    var M = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    return (+p[2]) + ' ' + M[+p[1] - 1] + ' ' + p[0];
+  }
+
+  function team() {
+    var rows = [];
+    if (val('lead'))  { rows.push('  Assessment Lead        ' + val('lead') + (val('leadrole') ? ' (' + val('leadrole') + ')' : '')); }
+    if (val('facil')) { rows.push('  Assessment Facilitator ' + val('facil')); }
+    if (val('tech'))  { rows.push('  Technical Assessor(s)  ' + val('tech')); }
+    return rows.join('\n');
+  }
+
+  function count() {
+    var n = 0;
+    if (val('lead')) { n++; }
+    if (val('facil')) { n++; }
+    if (val('tech')) { n += val('tech').split(/,|;| and /).filter(function (x) { return x.trim(); }).length; }
+    return n;
+  }
+
+  function subject() {
+    var kind = val('kind') || 'kickoff';
+    var who = or('candidate', '[candidate]');
+    var asset = or('asset', '[asset]');
+    return kind === 'invite'
+      ? 'LOFT Process Safety verification interview - ' + who + ' (' + asset + ')'
+      : 'LOFT Process Safety competency assessment - ' + who + ' (' + asset + ')';
+  }
+
+  function body() {
+    var kind = val('kind') || 'kickoff';
+    var who = or('candidate', '[candidate name]');
+    /* Splitting the placeholder on a space produced "Hi [candidate," in the draft. */
+    var first = val('candidate') ? (val('candidate').split(/\s+/)[0] || who) : '[first name]';
+    var asset = or('asset', '[asset]');
+    var pos = posRec();
+    var tgt = target();
+    var sign = val('sender') ? ('\n\n' + val('sender') + (val('senderrole') ? '\n' + val('senderrole') : '')) : '\n\n[your name]';
+    var t = team();
+    var L = [];
+
+    if (kind === 'kickoff') {
+      L.push('Hi ' + first + ',');
+      L.push('');
+      L.push('Now that you have taken up the ' + pos.label + ' position at ' + asset + ', this note sets out');
+      L.push('what the LOFT Process Safety competency assessment involves and what we need to agree.');
+      L.push('');
+      L.push('WHAT IT IS');
+      L.push('A face-to-face verification interview. Assessors ask open-ended questions across the');
+      L.push('Process Safety modules and you are expected to elaborate, give examples and speak fluidly');
+      L.push('about the principles behind each answer. It is not a question-and-answer test, and reciting');
+      L.push('a model answer will not demonstrate competency on its own.');
+      L.push('');
+      L.push('TIMING');
+      if (tgt) {
+        L.push('You assumed the position on ' + longDate(val('assumed')) + ', so the target for verification is');
+        L.push(longDate(tgt) + ' - 90 days from assuming position.');
+      } else {
+        L.push('The target is within 90 days of assuming the position. [confirm the date]');
+      }
+      L.push('');
+      L.push('RISK APPROVAL AUTHORITY');
+      L.push('Risk Approval Authority for the position is delegated until your competency has been');
+      L.push('verified. That delegation stays in place until the assessment is complete.');
+      L.push('');
+      L.push('WHAT TO DO BETWEEN NOW AND THEN');
+      L.push('  - Work through the Process Safety modules using the LOFT Task Book and the Assessor Guide.');
+      L.push('  - Keep me posted on how you are getting on so we can adjust the target if we need to.');
+      L.push('  - Mark completion on Career Connect.');
+      L.push('  - Tell me and the assessment team when you feel ready for the verification interview.');
+      L.push('');
+      L.push('We will sit down first and go through the Assessor Guide and the expectations together,');
+      L.push('look at your previous assignments and experience, and work out where the gaps are and what');
+      L.push('would help close them.');
+      if (t) {
+        L.push('');
+        L.push('ASSESSMENT TEAM');
+        L.push(t);
+      }
+      L.push('');
+      L.push('If any of that is unclear, come and ask.');
+      L.push(sign.replace(/^\n\n/, ''));
+      return L.join('\n').replace(/\n{3,}/g, '\n\n');
+    }
+
+    L.push('Hi ' + first + ',');
+    L.push('');
+    L.push('Your LOFT Process Safety verification interview is booked.');
+    L.push('');
+    L.push('  Position   ' + pos.label);
+    L.push('  Asset      ' + asset);
+    if (val('when')) { L.push('  Date       ' + longDate(val('when')) + (val('time') ? ', ' + val('time') : '')); }
+    if (val('where')) { L.push('  Where      ' + val('where')); }
+    if (t) {
+      L.push('');
+      L.push('ASSESSMENT TEAM');
+      L.push(t);
+    }
+    L.push('');
+    L.push('HOW IT WILL RUN');
+    L.push('Open-ended questions across the Process Safety modules. Be ready to elaborate, give examples');
+    L.push('from this asset, and talk through the principles behind your answers rather than reciting them.');
+    L.push('The Assessment Lead makes the final decision on whether competency has been demonstrated.');
+    L.push('');
+    L.push('IF THERE ARE GAPS');
+    L.push('If a module needs more work, that is a normal outcome, not a failure. A gap closure plan is put');
+    L.push('in place, every gap is re-assessed, and overall competency is confirmed once each module is');
+    L.push('demonstrated. Risk Approval Authority stays delegated until then. Anything needing revisiting');
+    L.push('will be raised at the session with the follow-up actions.');
+    L.push('');
+    L.push('WHAT TO BRING');
+    L.push('  - Your completed LOFT Task Book.');
+    L.push('  - Examples from ' + asset + ' you can talk through - scenarios, safeguards, MOCs, incidents.');
+    if (tgt) {
+      L.push('');
+      L.push('For the record, the 90-day target from assuming position is ' + longDate(tgt) + '.');
+    }
+    L.push('');
+    L.push('Any questions before the day, just ask.');
+    L.push(sign.replace(/^\n\n/, ''));
+    return L.join('\n').replace(/\n{3,}/g, '\n\n');
+  }
+
+  function render() {
+    var h = '<h2>Email to the candidate</h2>' +
+      '<p class="sub">Fill in what you know, pick the template, copy it into Outlook.</p>' +
+      '<div class="em-note"><strong>Not a required form.</strong> No source document in this repository ' +
+      'asks for an email to the candidate. What sections 1.3 to 1.6 do require is that the supervisor goes ' +
+      'through the Assessor Guide and expectations with the candidate, agrees a verification target within ' +
+      '90 days of assuming the position, keeps Risk Approval Authority delegated until competency is ' +
+      'demonstrated, and that the candidate liaises with the supervisor and assessment team when ready. ' +
+      'This wording carries those obligations so nothing gets lost in the retelling.</div>' +
+      '<div class="em-grid">' +
+      '<div class="em-fld"><label for="em_kind">Template</label><select id="em_kind" data-k="kind">';
+    KINDS.forEach(function (k) {
+      h += '<option value="' + k.id + '"' + ((val('kind') || 'kickoff') === k.id ? ' selected' : '') + '>' + esc(k.label) + '</option>';
+    });
+    h += '</select></div>';
+    FIELDS.forEach(function (f) {
+      h += '<div class="em-fld"><label for="em_' + f.k + '">' + esc(f.l) + '</label>';
+      if (f.t === 'select') {
+        h += '<select id="em_' + f.k + '" data-k="' + f.k + '"><option value=""></option>';
+        f.opts.forEach(function (o) {
+          h += '<option' + (val(f.k) === o ? ' selected' : '') + '>' + esc(o) + '</option>';
+        });
+        h += '</select>';
+      } else {
+        h += '<input id="em_' + f.k + '" data-k="' + f.k + '" type="' + f.t + '" value="' + esc(val(f.k)) + '">';
+      }
+      h += '</div>';
+    });
+    h += '</div>';
+
+    h += '<div class="em-rule">' + ruleHtml() + '</div>';
+
+    h += '<div class="em-tools">' +
+      '<button type="button" class="tool-btn keep" id="emCopy">Copy email</button>' +
+      '<button type="button" class="tool-btn keep" id="emCopySub">Copy subject</button>' +
+      '<button type="button" class="tool-btn keep" id="emPrint">Print</button>' +
+      '<span class="sp"></span><span id="emFlag" class="em-ok"></span>' +
+      '<button type="button" class="tool-btn keep" id="emClose">Back to guide</button></div>';
+    h += '<p class="em-sub"><span>Subject:</span> ' + esc(subject()) + '</p>';
+    h += '<textarea class="em-out" id="emOut" spellcheck="false" aria-label="Email text"></textarea>';
+    el('emailSheet').innerHTML = h;
+    el('emOut').value = body();
+
+    /* One handler, and it never rebuilds the inputs. Re-rendering the form on
+       change stole focus from the field being edited and, because rebuilding
+       replaced the element mid-edit, quietly dropped the value being typed. */
+    [].forEach.call(el('emailSheet').querySelectorAll('[data-k]'), function (inp) {
+      var handler = function () { state[inp.dataset.k] = inp.value; save(); refresh(); };
+      inp.addEventListener('input', handler);
+      inp.addEventListener('change', handler);
+    });
+    el('emCopy').addEventListener('click', function () { copy(el('emOut').value); });
+    el('emCopySub').addEventListener('click', function () { copy(subject()); });
+    el('emPrint').addEventListener('click', function () { window.print(); });
+    el('emClose').addEventListener('click', close);
+  }
+
+  /* Everything that derives from the fields, refreshed in place. */
+  function ruleHtml() {
+    var pos = posRec(), n = count(), tgt = target();
+    var h = '<b>Section 1.6:</b> to assess a ' + esc(pos.label) + ', the Assessment Lead should be ' +
+            esc(pos.lead) + '.';
+    if (tgt) { h += '<br><b>Section 1.3:</b> 90-day verification target is <b>' + esc(longDate(tgt)) + '</b>.'; }
+    h += '<br><b>Section 1.6:</b> the team should be at least three and no more than five people &mdash; ' +
+         (n === 0 ? 'none recorded yet.' :
+          (n < 3 ? '<b>' + n + ' recorded, which is below three.</b>' :
+           (n > 5 ? '<b>' + n + ' recorded, which is above five.</b>' : n + ' recorded, within range.')));
+    return h;
+  }
+  function refresh() {
+    var out = el('emOut'); if (out) { out.value = body(); }
+    var sub = el('emailSheet').querySelector('.em-sub');
+    if (sub) { sub.innerHTML = '<span>Subject:</span> ' + esc(subject()); }
+    var rule = el('emailSheet').querySelector('.em-rule');
+    if (rule) { rule.innerHTML = ruleHtml(); }
+  }
+
+  function flag(msg) {
+    var f = el('emFlag'); if (!f) { return; }
+    f.textContent = msg;
+    setTimeout(function () { if (f.textContent === msg) { f.textContent = ''; } }, 2600);
+  }
+
+  /* navigator.clipboard is not available on every file:// origin, so fall back
+     to execCommand, and to selecting the text if even that is blocked. */
+  function copy(text) {
+    function fallback() {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.focus(); ta.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+      ta.remove();
+      if (ok) { flag('Copied'); }
+      else { el('emOut').select(); flag('Press Ctrl+C to copy'); }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { flag('Copied'); }, fallback);
+    } else { fallback(); }
+  }
+
+  function open() {
+    /* Prefill from the assessment record so the same details are not typed twice. */
+    var api = window.__loftAssessmentData ? window.__loftAssessmentData() : null;
+    if (api && api.session) {
+      var s = api.session;
+      if (s.candidate && !val('candidate')) { state.candidate = s.candidate; }
+      if (s.assumed && !val('assumed')) { state.assumed = s.assumed; }
+      if (s.date && !val('when')) { state.when = s.date; }
+      if (s.lead && !val('lead')) { state.lead = s.lead; }
+      if (s.facilitator && !val('facil')) { state.facil = s.facilitator; }
+      if (s.technical && !val('tech')) { state.tech = s.technical; }
+      if (s.position && !val('position')) {
+        var p = /third/i.test(s.position) ? POSITIONS[1] : (/second/i.test(s.position) ? POSITIONS[0] : null);
+        if (p) { state.position = p.label; }
+      }
+      save();
+    }
+    render();
+    el('emailLayer').classList.add('open');
+    document.body.classList.add('email-open');
+    el('emailLayer').scrollTop = 0;
+  }
+  function close() {
+    el('emailLayer').classList.remove('open');
+    document.body.classList.remove('email-open');
+  }
+
+  function init() {
+    load();
+    var layer = document.createElement('div');
+    layer.id = 'emailLayer';
+    layer.innerHTML = '<div id="emailSheet"></div>';
+    document.body.appendChild(layer);
+
+    var bar = document.getElementById('assessSession');
+    if (bar) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.id = 'openEmail'; b.textContent = 'Email';
+      b.title = 'Draft the note to the candidate';
+      b.addEventListener('click', open);
+      var first = bar.querySelector('button');
+      bar.insertBefore(b, first || null);
+    }
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && document.body.classList.contains('email-open')) { close(); }
+    });
   }
   if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); }
   else { init(); }
