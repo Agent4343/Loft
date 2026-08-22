@@ -19,7 +19,7 @@ offline. One file, five modes, switched from the bar at the top:
 | **Guide** | Every question with its model answer, by section, with the glossary and source links | Reading through; running an assessment |
 | **Test** | Answers hidden, revealed one at a time, with search across questions and answers | Self-testing before the interview |
 | **Cards** | One question at a time — flip to the answer, mark *Got it* or *Needs review*, shuffle, filter by category | Practising recall |
-| **Practice** | 147 multiple-choice questions, scored, with the reason for each answer | Drilling the facts |
+| **Practice** | 158 multiple-choice questions, scored, with the reason for each answer | Drilling the facts |
 
 Guide, Test and Cards read the **same** questions and answers, and Practice is built from
 them. Correcting an answer fixes it
@@ -28,7 +28,7 @@ everywhere at once — there is no second copy to drift out of step.
 Search works in Guide and Test modes, so a question can be found mid-interview without
 scrolling. On a phone or tablet the contents list collapses into a **Contents** drawer.
 
-It covers 100 questions across the ten Process Safety categories: Risk Management,
+It covers 103 questions across the ten Process Safety categories: Risk Management,
 Training, Operating Procedures, Critical Equipment, Alarm Management, Work Management,
 Management of Change, Incident Investigation, Environmental, and Emergency Response.
 
@@ -42,7 +42,7 @@ Keyboard shortcuts in Cards mode: **Space** flips, **←/→** move, **G** marks
 
 ## Practice questions
 
-**Practice** is the fourth mode in `LOFT-Process-Safety.html` &mdash; 147 multiple-choice
+**Practice** is the fourth mode in `LOFT-Process-Safety.html` &mdash; 158 multiple-choice
 questions across all eleven topics, every answer traced to an answer in the same file.
 
 > **The assessment is a face-to-face interview.** You will be asked to *demonstrate* and
@@ -53,7 +53,7 @@ questions across all eleven topics, every answer traced to an answer in the same
 
 - **Practice** marks each answer as you go, with the reason and the study guide
   question it came from. **Test mode** holds the score until the end.
-- Pick a topic or take the lot; 10, 20, 40 or all 147. Questions and options are shuffled.
+- Pick a topic or take the lot; 10, 20, 40 or all 158. Questions and options are shuffled.
 - The result breaks the score down by topic and lists everything missed, with the
   explanation, so it doubles as a revision list. Best score per topic is kept in the
   browser so weak areas stay visible.

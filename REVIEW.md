@@ -1731,3 +1731,135 @@ Three regression scripts failed at first because they assumed the page opens in 
 was the change working, not a defect &mdash; they now set the mode explicitly before running,
 along with the rest of the suite, so a future change to the landing mode does not silently
 break them.
+
+## 24. Work Management, checked line by line against the Assessor Guide
+
+The prompt was that the work management questions should now be correct. They were not.
+Checking all twenty of them against **Assessor Guide Rev 3.0** &mdash; the document an
+assessor actually grades against &mdash; and then against **WMS Manual Rev 4.0.4** turned up
+three questions that were never transcribed at all, one answer that was simply wrong, and
+several that had lost half their content somewhere along the way.
+
+Earlier sweeps checked that every question present was faithful to its source. None of them
+checked the other direction: that every question in the source was present. That is how
+three questions went missing without anything failing.
+
+### Three questions that were never in the file
+
+| Question | Section | Source |
+|---|---|---|
+| Types of activities on the non-permitted work list, and who approves them | 2.6 Work Management | Assessor Guide Rev 3.0; WMS §6.1.6 |
+| Who endorses the ICC when the isolation standard cannot be met and SVI is required | 2.6 Work Management | Assessor Guide Rev 3.0; WMS §7.4.1.4 |
+| When does an MOC require a PSSR | 2.7 Management of Change | Assessor Guide Rev 3.0 |
+
+The non-permitted work answer is a `[CriticalE]`: **non-permitted work activities must be
+assessed and mitigating controls documented and approved by the OIMS 6-4 Owner**. The ICC
+answer is that the **PIC countersigns the isolation certificate before the permit is
+endorsed**, having consulted the Minimum Isolation Standard Table for Condition A or B.
+
+Both were candidate-facing questions with a defined answer, and neither was anywhere in the
+file. A candidate studying only this material would have walked into the interview unable to
+answer them.
+
+### Life Saving Rules and Actions had the wrong answer
+
+The file said Life Saving Actions "are key actions to prevent serious injuries during
+higher-risk activities" and "describe the most important aspects of our Work Management
+System". That is a paraphrase of something else. Both sources say the same thing, word for
+word:
+
+> Life Saving Rules and Actions (LSRA) define the most critical and life-saving actions
+> controlled by a worker. These worker actions become key safeguards in eliminating higher
+> potential consequences (i.e., life altering injuries and significant process safety
+> events).
+
+&mdash; Assessor Guide Rev 3.0, and WMS Manual Rev 4.0.4 §5.1.2.1
+
+The question title was wrong too: "Life Saving Actions", not "Life Saving Rules and Actions".
+
+### The four roles had drifted
+
+| Role | What the file said | What Rev 3.0 says |
+|---|---|---|
+| PIC | 24-hour endorsement of Temporary Defeats | **24 hr. to 7-day** endorsement; also **endorses single valve isolation plans** and holds **oversight of and compliance with the WMS** |
+| AA | Coordinates work at the facility | ...and **reviews and authorizes permits, TDs and isolation plans**, and ensures competent individuals and appropriate tools |
+| AO | Performs the review, **approval** and issue of the permit | Performs the **field review and issuance** of the permit |
+| PH | Leads pre-job safety toolbox meeting | Conducts the **Pre-Task Briefing**; ensures START work readiness, reinforces STOP Work Expectations, promotes LMRA; **leads AARs when planned or warranted** |
+
+The AO one matters most. Saying the AO *approves* the permit puts an AA responsibility on the
+AO, and the split between endorse (PIC), authorize (AA) and issue (AO) is exactly the kind of
+thing an assessor probes. A note now flags it in the answer.
+
+The AA and PH entries had each lost their entire second half. "Toolbox meeting" is WMS 3.x
+language; WMS 4.0 calls it the Pre-Task Briefing.
+
+### Content missing from three more answers
+
+- **SIMOPS restrictions.** The file said restrictions are determined using the SIMOPS Matrix
+  and stopped there. Both sources say the Matrix **must be used in conjunction with the
+  SIMOPS Restriction Tables**, which carry the hazard and mitigation guidance
+  (WMS §9.4.5.1). The Level 1 / 2 / 3 approvals were already correct and are untouched.
+- **DWCM agenda.** Two of the six Rev 3.0 bullets were absent: establishing the status of
+  ongoing activities and reviewing new permits and non-permitted work, and assessing SIMOPS
+  and endorsing permits with no conflicts.
+- **Control valve with no ZEV bleeder.** The file answered "seek a deviation from the manual,
+  and as this deviates from a Must requirement the Site Manager approves it". Rev 3.0 says
+  something different: **a Risk Assessment is required and an acceptable means of isolation
+  must be identified, documented and approved before breaking containment.** The question
+  stem had also dropped "and isolating under a single valve isolation", which changes the
+  scenario. Both corrected, with a note calling out the change from earlier revisions.
+
+### Where the Assessor Guide is behind the manual
+
+Two answers are correct against Rev 3.0 and incomplete against WMS Rev 4.0.4. Rev 3.0 is what
+you are assessed against, so the answers stand; both now carry a note giving the manual's
+position, because a candidate who cites only the guide may be asked about the gap.
+
+- **Activities the PTWS addresses.** Rev 3.0 lists five. WMS §6.1.1 lists **seven**, adding
+  Atmospheric Testing and Simultaneous Operations.
+- **Permit validity.** "7 days with no ability to extend past that time" is right as the outer
+  bound &mdash; a new permit is required after seven days. WMS §6.1.4.5 adds that inside that
+  window a permit is valid for the duration of the work or until end of shift, whichever comes
+  first, to a **maximum of 16 hours with an approved extension**, and must be re-signed each
+  shift (Authorized by the AA, Issued by the AO, Accepted by the PH).
+
+### What was checked and found correct
+
+LTI review frequency (monthly register review, quarterly field assessment, OMT reporting to
+the Operations Manager on a minimum 6-month interval &mdash; WMS §7.5.1.21&ndash;22); DWCM
+attendees (PIC, AA, AAF, others as necessary &mdash; WMS Table 2 and §6.1.4.4); SIMOPS
+deviation levels (Level 1 PIC, Level 2 Operations Manager, Level 3 Site Manager &mdash; WMS
+§9.4.4.2 and §9.4.6.3); temporary defeat purpose and Area Authority approval; the WMS objectives and OIMS
+System 6-4 wording; the global SVI scenario; the ICC and ZED steps; the shift handover
+elements; and the asset-specific DWCM answer.
+
+The frozen global answers &mdash; temporary defeat, SVI, ZED, SIMOPS approval levels, permit
+validity, JSA &mdash; were verified rather than edited. All were correct. The two exceptions
+are noted above: permit validity gained an explanatory note beneath the unchanged answer, and
+the control-valve scenario was corrected because it did not match Rev 3.0 at all.
+
+### Practice bank
+
+Eleven items added and four corrected, 147 to **158**. Item 60 had been built on the wrong
+LSRA text; item 61 carried the wrong TD endorsement period in its stem; item 70 stopped at
+the Matrix; item 59's explanation now names the WMS 4.0.4 additions.
+
+While adding them, a pre-existing weakness surfaced: **always picking the longest option
+scored 41.7%** against 25% for guessing. Shuffling defeats position-based gaming but not
+length-based gaming, and the earlier check measured only the former. Rebalancing the
+distractors on 14 Work Management and MOC items brings those two sections to **27.4%**, and
+the whole bank from 41.7% to **34.0%**. The remaining signal is in the eight sections not
+touched here.
+
+### Verification
+
+103 questions, 110 answers, 103 note panels, 19 TOC items with no dead links, 45 glossary
+terms, five modes, no console errors. All 158 practice items answered correctly score 100%
+with nothing unlocatable. Coverage 57 of 57. The word-level diff against the previous text
+was read in full: every change is one of the ones described above, and nothing else was lost.
+
+One defect was introduced and caught: the new source-citation badge carried
+`white-space: nowrap`, and a citation like "Assessor Guide Rev 3.0; WMS Manual Rev 4.0.4
+§9.4.5.1" pushed the page wider than the viewport at 360 and 414 px in four of the five
+modes. The committed version had no overflow at any width, which is how it was spotted.
+Changed to wrap; clean at 360, 414, 768 and 1280 px in all five modes.
