@@ -1863,3 +1863,66 @@ One defect was introduced and caught: the new source-citation badge carried
 §9.4.5.1" pushed the page wider than the viewport at 360 and 414 px in four of the five
 modes. The committed version had no overflow at any width, which is how it was spotted.
 Changed to wrap; clean at 360, 414, 768 and 1280 px in all five modes.
+
+## 25. "Why does Appendix A exist" &mdash; wrong scope
+
+Reported from Practice mode: the item asked *"Why does Appendix A exist in the form it
+does?"* and marked **"To meet section 144(3) of the Canada-NL Offshore Area Occupational
+Health and Safety Regulations"** correct.
+
+Section 144(3) does not explain Appendix A. It explains **section 14** of it.
+
+Canada East Appendix A Rev D14 is the site supplement to the WMS Manual and runs to fourteen
+sections &mdash; permit to work overview, PSMS key components, PTW and isolation lifecycles,
+local regulatory requirements, items requiring a permit, fire water isolation performance
+standards, safe work practices, LSRA, the work management flowchart, the approved
+non-permitted work list, personal isolation tasks, and the LTI multi-discipline review
+process. Only **§14, the WMS Addendum on Single Valve Isolations**, exists to address the
+additional isolation requirements of the Canada-NL OHS Regulations, and §14.1 says so in
+those words.
+
+So the answer was true of one section out of fourteen and was being taught as the reason for
+the whole document. A candidate who repeated it in an interview would be corrected.
+
+### What §144(3) actually gives them
+
+Worth understanding rather than memorising, because it is the reason the addendum exists at
+all. The regulation permits an energy-isolating device on a pipe carrying hazardous energy to
+be any one of:
+
+- a blank or blind together with valves or blocking seals locked out closed, or
+- a double block and bleed &mdash; two valves or seals locked out closed either side of a
+  mechanism locked open to bleed between them, or
+- **one that has been approved by a professional engineer**
+
+That third route is the one Hebron and Hibernia took. §14.4: the addendum was developed *"to
+obtain Professional Engineer approval of the Hebron and Hibernia WMS isolation methods,
+standards, and practices including a P. Engineer approved list of Isolations using Single
+Valve Isolation."* The P.Eng approval is what makes single valve isolation lawful here &mdash;
+it is not a per-job step.
+
+### Changes
+
+- Item 100 rewritten: the stem now asks why the **Single Valve Isolation addendum (Appendix A
+  section 14)** exists, and the answer gives §14.1's actual wording. The explanation states
+  the scope point explicitly, since that is the trap.
+- Item 87's stem said "the Professional Engineer approval behind Appendix A"; now "behind the
+  Single Valve Isolation addendum". Its answer was already right.
+- One item added on the §144(3) routes, so the P.Eng route is taught as a mechanism rather
+  than a fact to recall.
+- The same loose phrasing in the guide answer and in the review sheet &mdash; "Appendix A of
+  the WMS Manual holds the P.Eng approved list, developed to meet section 144(3)" &mdash; now
+  names §14 and sets out the three routes. It was defensible as written, since "developed to
+  meet 144(3)" attached to the list rather than to Appendix A, but it was the source of the
+  bad question and reads better fixed.
+
+Items 88, 90 and 99 refer to "the approved Appendix A list" and were left alone &mdash; that
+is ordinary shorthand for a list that is genuinely in Appendix A, and none of them makes a
+claim about why the document exists.
+
+### Verification
+
+103 questions, 110 answers, five modes, no console errors, no overflow at 360, 414, 768 or
+1280 px. Bank 158 to **159**, all answered correctly for 100% with nothing unlocatable.
+Work Management and MOC now sit at **25.5%** for the longest-option strategy against 25% for
+guessing; the whole bank is at 33.1%.
