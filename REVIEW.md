@@ -2341,3 +2341,67 @@ reports a size for elements in rendering subtrees the browser has skipped, and `
 concatenates across block boundaries &mdash; the practice feedback reads
 `the answer is DNon-permitted...` in extracted text but renders on two lines, because
 `.pr-fb .v` is `display: block`. Screenshots settled both.
+
+## 32. Practice distractors rebalanced
+
+The one outstanding item from the full check. Picking the longest option scored **41.7%**
+against 25% for guessing, because the correct answer was written fully and the distractors
+were written briefly.
+
+### The mistake I made first
+
+The obvious fix &mdash; lengthen distractors until the correct answer is no longer longest
+&mdash; created the opposite tell. After the first pass, pick-the-longest was down to 21.4%
+but **pick-the-shortest had risen to 37.5%**: the correct answers had been pushed to the other
+extreme. Length has to carry *no* information, not the reverse information.
+
+The right measure is where the correct answer sits in the length ordering. Ideally each rank
+holds 25%. It was 26.5 / 29.0 / **9.0** / 35.5 &mdash; correct answers clustered at both
+extremes and almost never second-shortest.
+
+### What was actually wrong with the questions
+
+The widest gaps were not sloppy distractors, they were a pattern: **the correct answer was a
+bare term and the distractors carried an explanatory clause**.
+
+> Who approves a Level 2 SIMOPS deviation?
+> **The Operations Manager** (22 characters)
+> *The Site PIC, who also approves Level 1 deviations through the SIMOPS deviation form* (84)
+
+Ten questions like this were rewritten so all four options are parallel in form &mdash; just
+the role, just the system, just the document. That is better question writing regardless of
+the metric; the explanatory tail was itself the giveaway.
+
+The rest were adjusted individually: a clause added to one distractor, or a trailing clause
+removed, chosen so the option still reads as a plausible wrong answer.
+
+### Result
+
+| Strategy | Before | After |
+|---|---|---|
+| Pick the longest option | **41.7%** | **17%** |
+| Pick the shortest option | &mdash; | **20%** |
+| Always click slot A (control) | &mdash; | **25%** |
+
+Measured by playing all 155 questions through the live app three times, once per strategy.
+Slot A landing on exactly 25% is the control: it confirms the Fisher&ndash;Yates shuffle is
+unbiased, so the other two numbers mean what they claim.
+
+Every section is now at or below chance on both strategies, which matters because Practice
+lets you filter to a single topic. Operating Procedures was 62.5%, Management of Change 37.5%,
+Emergency Response 53.6%.
+
+### What did not change
+
+57 items had distractors edited. **Every correct answer, every question stem and every
+explanation is byte-identical** &mdash; verified by diffing the bank against the previous
+commit. The rebalance could not have altered a verified answer, and did not.
+
+Bank integrity re-checked: 155 items, none malformed, no duplicate questions, no duplicate or
+empty options, no option left with trailing punctuation from an edit, all 155 answered
+correctly for 100% with nothing unlocatable. Coverage 54 of 54, five modes, no console errors,
+no overflow at 360, 414, 768 or 1280 px.
+
+Both directions now sit slightly under 25%, which means correct answers are marginally more
+often mid-length. That is a far weaker and less actionable tell than the one it replaces, and
+neither simple heuristic now beats guessing.
