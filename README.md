@@ -28,7 +28,8 @@ everywhere at once — there is no second copy to drift out of step.
 Search works in Guide and Test modes, so a question can be found mid-interview without
 scrolling. On a phone or tablet the contents list collapses into a **Contents** drawer.
 
-It covers 101 questions across the ten Process Safety categories: Risk Management,
+It covers 101 questions across the ten Process Safety categories, one section at a time
+with Previous/Next: Risk Management,
 Training, Operating Procedures, Critical Equipment, Alarm Management, Work Management,
 Management of Change, Incident Investigation, Environmental, and Emergency Response.
 

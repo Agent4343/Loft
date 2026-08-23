@@ -2106,3 +2106,86 @@ not a descendant.
 Verified: 101 questions, 107 answers, 101 note panels, 13 TOC items with no dead links, five
 modes, no console errors, no overflow at 360, 414, 768 or 1280 px, 157 practice items all
 correct, coverage 57/57, and mode persistence still working.
+
+## 29. One section at a time, and the repair it needed first
+
+Asked whether reading one section at a time with a Next button would be better. Yes &mdash;
+but it could not be built on the document as it stood.
+
+### The blocker
+
+**80 of 101 questions were not inside their category section.** The category `</section>`
+tags closed early, so `risk-management` held 8 questions and `work-management` held 2, while
+80 sat loose in `process-safety`. On screen it read correctly, because the headings appear in
+the right order; it was the DOM that was wrong. Hiding sections would therefore have hidden
+almost nothing, or everything.
+
+This is the same damage recorded back in section 13, where `closest('section')` attributed 79
+of 100 questions to the wrong category. That was worked around at the time by using document
+order. Paging cannot be worked around the same way.
+
+### Two attempts
+
+**First attempt: move the `</section>` tags in the file.** Strip every close inside the
+region, re-insert one before each subsequent open. Balanced 12 opens against 12 closes and
+the rendered text came out byte-identical &mdash; but the DOM was *worse*: one top-level
+section and 101 orphans. The `</section></div>` patterns meant that removing a close left a
+stray `</div>` which re-parented everything. Reverted.
+
+**Second attempt, which worked: let the browser fix the nesting first.** Extract the authored
+`<main>` on its own into a script-free page, load it so the parser repairs the div nesting,
+re-nest the sections in that corrected DOM, serialise, and splice back. Every node following
+a category heading in document order is assigned to that heading's section, then the eleven
+category sections are lifted out to be siblings.
+
+Result: 12 top-level sections, **0 orphans**, and a sane distribution &mdash; risk management
+20, work management 17, operating procedures 11, and so on to 101.
+
+Verified against a baseline that captured more than text, because this file is `<strong>`
+soup and a text comparison would not notice a bolding change: rendered text, question and
+answer and list-item counts, question order, headings, and **every computed-bold leaf run**.
+Text byte-identical at 126,261 characters. Three regions pixel-compared before and after
+&mdash; identical but for scroll offset, which is the fix working: a TOC jump now lands on the
+section heading instead of mid-content.
+
+The bold-run count did drop, 1025 to 603, and that was worth chasing rather than waving
+through. It is a measurement artefact: `getComputedStyle` does not return cascaded values for
+elements in rendering subtrees the browser has skipped. The functional counts &mdash; 101 note
+panels, 101 study panels, 101 reveal buttons &mdash; were unchanged, and the pixels agreed.
+
+### The pager
+
+Eleven pages, one per category. The 2.0 intro is a category list rather than a page of
+questions, so it rides with page one instead of being a page an assessor clicks past. Bars top
+and bottom carry Previous, the section name, its position and question count, and a **Show all
+sections** toggle. The current page is remembered across reloads.
+
+Three things deliberately override paging, because each would otherwise cost more than the
+paging gains:
+
+- **Search.** A match two sections away is no use if it cannot be seen, so a search term turns
+  paging off and restores it when cleared.
+- **Print.** All sections and the front matter are forced visible; the pagers are hidden.
+- **Show all**, for anyone who prefers the long scroll.
+
+Paging applies to Guide and Test. Cards, Practice and Home overlay the document and are
+unaffected.
+
+### Two defects found in review
+
+- **The pager first landed on the 2.0 intro** &mdash; a page with zero questions. An assessor
+  opening the file would have arrived at nothing to assess. It now opens on 2.1 Risk
+  Management.
+- **A specificity regression I introduced myself.** Exempting the intro with
+  `:not(#process-safety)` put two IDs in that selector, so it outranked the search override and
+  search stopped revealing other sections &mdash; 2 sections visible instead of 12. Rather than
+  escalate the cascade fight, searching now simply turns the `paged` class off. Simpler, and
+  nothing to out-specify.
+
+Checked specifically because paging could have broken it: an assessor can record an outcome
+and a note on one page, jump to another section, record a second, and both survive a reload
+&mdash; 2 of 101 recorded, both notes intact.
+
+101 questions, 107 answers, 101 note panels, 13 TOC items with no dead links, five modes, no
+console errors, no overflow at 360, 414, 768 or 1280 px, 157 practice items all correct,
+coverage 57/57.
