@@ -2069,3 +2069,40 @@ flip card. Space added.
 101 questions, 107 answers, 101 note panels, no dead TOC links, five modes, no console errors,
 no overflow at 360, 414, 768 or 1280 px, 157 practice items all correct and locatable,
 coverage 57/57.
+
+## 28. Front matter collapsed
+
+Sections 1.0 to 1.6 of the Assessor Guide &mdash; the introduction, purpose, the supervisor's
+and candidate's roles, the verification process and the assessment team &mdash; opened the
+Guide with roughly a screen and a half of prose before the first question. Since Home was
+added, the requirements out of &sect;1.3&ndash;1.6 are already summarised there with their
+section citations, so this was the same material read twice.
+
+Collapsed, not deleted. The seven sections now sit inside one `<details>` headed **About this
+assessment**, closed on load, with a sub-line naming the source and pointing at Home. Guide
+now opens on 2.0 Process Safety Knowledge Requirements.
+
+The seven table of contents entries collapse to one, taking the TOC from 19 items to 13 and
+putting the ten process safety categories on screen without scrolling.
+
+`activate()` now opens a collapsed `<details>` ancestor before scrolling to a target, so the
+TOC entry works and any future deep link into that material still lands somewhere visible
+rather than scrolling to a closed box.
+
+Nothing was lost: the guide text is 20 characters longer, not shorter (the summary line), all
+101 questions and 107 answers are untouched, and &sect;1.6's content is still in the document.
+Search is unaffected because the search index is built from `.question` elements and this
+material is prose &mdash; it was never indexed.
+
+### A test that lied
+
+The first check reported the collapse had failed &mdash; `assessment-team` still measured 913
+pixels tall with the disclosure closed. It had not failed. Chrome renders closed `<details>`
+content with `content-visibility: hidden`, and `getBoundingClientRect()` reports a size from
+the skipped subtree regardless. The disclosure itself measured 101 pixels (the summary alone)
+and `checkVisibility()` returned `false`. Use `checkVisibility()`, or measure the container,
+not a descendant.
+
+Verified: 101 questions, 107 answers, 101 note panels, 13 TOC items with no dead links, five
+modes, no console errors, no overflow at 360, 414, 768 or 1280 px, 157 practice items all
+correct, coverage 57/57, and mode persistence still working.

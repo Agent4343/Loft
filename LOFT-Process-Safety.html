@@ -107,6 +107,34 @@
       box-shadow: none;
     }
 
+    .front-matter {
+      border: 1px solid #d7dee8;
+      border-radius: 8px;
+      background: #f8fafc;
+      margin: 0 0 22px;
+      padding: 0;
+    }
+    .front-matter > summary {
+      cursor: pointer;
+      padding: 12px 16px;
+      font-size: 0.98em;
+      list-style: none;
+      border-radius: 8px;
+    }
+    .front-matter > summary::-webkit-details-marker { display: none; }
+    .front-matter > summary::before {
+      content: "\25B8";
+      display: inline-block;
+      margin-right: 10px;
+      transition: transform .15s ease;
+      color: #64748b;
+    }
+    .front-matter[open] > summary::before { transform: rotate(90deg); }
+    .front-matter[open] > summary { border-bottom: 1px solid #d7dee8; border-radius: 8px 8px 0 0; }
+    .front-matter > summary:hover { background: #eef2f7; }
+    .front-matter > section { padding: 0 16px; }
+    .fm-hint { display: block; margin: 4px 0 0 24px; color: #64748b; font-size: 0.88em; font-weight: 400; }
+    .toc-sub { color: #7c8ba1; font-size: 0.85em; }
     .supp-badge {
       display: inline-block;
       background: #f1ebff;
@@ -464,13 +492,7 @@
 <nav id="toc" style="">
   <h2>Table of Contents</h2>
   <ul>
-    <li data-section="version">Version 1.3: July 2025</li>
-    <li data-section="introduction">1.0 Introduction and Preparation</li>
-    <li data-section="purpose">1.2 Purpose of Leadership Assessor Guide</li>
-    <li data-section="supervisor-role">1.3 Supervisor’s Role</li>
-    <li data-section="candidate-role">1.4 Candidate’s Role</li>
-    <li data-section="verification-assessment-process">1.5 Verification and Assessment Process</li>
-    <li data-section="assessment-team">1.6 Assessment Team</li>
+    <li data-section="frontMatter">About this assessment <span class="toc-sub">1.0&ndash;1.6</span></li>
     <li data-section="process-safety">2.0 Process Safety Knowledge Requirements</li>
     <li data-section="risk-management">2.1 Risk Management</li>
     <li data-section="training">2.2 Training</li>
@@ -486,6 +508,9 @@
   </ul>
 </nav>
 <main id="mainContent" class="collapsed">
+<details id="frontMatter" class="front-matter">
+  <summary><strong>About this assessment</strong> &mdash; purpose, the roles, the 90-day target, and how the assessment team is put together <span class="fm-hint">Assessor Guide Rev 3.0 &sect;1.0&ndash;1.6. The requirements are summarised on the Home page.</span></summary>
+
   <section id="version">
     <h2>Version 1.3: July 2025</h2>
   </section>
@@ -543,6 +568,8 @@
     </ol>
     <p>This Leadership Assessor Guide applies to all LOFT Process Safety Positions in Upstream Oil and Gas.</p>
   </section>
+</details>
+
 
   <section id="process-safety">
     <h2><strong>2.0 Process Safety Knowledge Requirements</strong></h2><strong>
@@ -2208,6 +2235,9 @@ Explain your role in maintaining and operating emergency response equipment for 
         sections.forEach(function (section) {
           section.classList.toggle('section-current', section === target);
         });
+        var d = target.closest ? target.closest('details') : null;
+        if (d && !d.open) { d.open = true; }
+        if (target.tagName === 'DETAILS' && !target.open) { target.open = true; }
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         return true;
       }
