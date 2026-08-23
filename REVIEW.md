@@ -2019,3 +2019,53 @@ and the note that candidates answer one of the two environmental scenarios).
 
 99 questions, 105 answers, 99 note panels, no dead TOC links, five modes, no console errors,
 no overflow at 360, 414, 768 or 1280 px. 148 practice items, all correct and locatable.
+
+## 27. ICC and ZED restored as supplementary
+
+Section 26 removed the PBE-12345 block and recorded what that cost: the file lost the only
+place it taught the Isolation Control Certificate lifecycle and the zero energy demonstration
+procedure. `Isolation Control Certificate` survived in the guide only as a glossary entry.
+Owner decision: bring it back, badged supplementary.
+
+### Rewritten from the manual, not restored from the local text
+
+The removed material was locally authored and had two things wrong, so it was rebuilt from
+WMS Manual Rev 4.0.4 rather than pasted back:
+
+| Local text said | WMS Rev 4.0.4 says |
+|---|---|
+| "An Operations Functional lock is placed on the ICP and key is secured and maintained by Supervisor" | The AO's Operations Functional lock secures the isolation keys **inside** the box. Each PH puts their own lock on the box and **retains that key in their own custody** while working, handing it to their relief or returning it to their supervisor on leaving. &sect;7.5.1.15 Table 17 |
+| "Workers can apply their isolation Functional Lock to ICP after zero energy demonstration has been performed" | Locks go on to take control of the isolations; verification is step 12 and the AO's demonstration of zero energy to the PH is step 13, after which the PH accepts the permit. &sect;7.5.1.5 Table 16 |
+
+Every statement in the restored blocks carries its section reference. The pump walkthrough is
+kept as a worked example, since it is the part that made the original useful, but it is now
+labelled as an example rather than presented as the answer to a question about a specific tag
+number that no source document contains.
+
+### How it is marked
+
+Two blocks in 2.6 Work Management, each with a purple rule down the left, a
+**Supplementary** badge on the question, and a closing note saying neither taskbook asks it,
+why it is here, and that it is sourced from WMS Rev 4.0.4. Nine practice items carry a
+matching `supplementary` badge, explained in the Practice legend alongside the existing
+`asset` badge.
+
+The badge is the whole point. An unmarked local question is what produced the wrong
+Appendix A answer in section 25 &mdash; content with no visible provenance gets treated as
+source material by whoever reads it next, including me.
+
+### Result
+
+Guide questions 99 to **101** &mdash; 99 from the taskbooks, 2 supplementary. Practice 148 to
+**157**. Taskbook alignment is untouched: **UPBP-410 34/34**, **UPBP-400 77/81**, because the
+comparison strips the badge before matching and the supplementary blocks are not claimed as
+taskbook questions.
+
+One defect caught in review: the badge sat directly against the question text with no
+separating whitespace, so `innerText` read `SUPPLEMENTARYDescribe the steps...`. Visually fine
+because of the badge margin, but it would have broken search matching and read wrong on a
+flip card. Space added.
+
+101 questions, 107 answers, 101 note panels, no dead TOC links, five modes, no console errors,
+no overflow at 360, 414, 768 or 1280 px, 157 practice items all correct and locatable,
+coverage 57/57.
