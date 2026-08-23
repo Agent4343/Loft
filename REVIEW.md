@@ -1926,3 +1926,96 @@ claim about why the document exists.
 1280 px. Bank 158 to **159**, all answered correctly for 100% with nothing unlocatable.
 Work Management and MOC now sit at **25.5%** for the longest-option strategy against 25% for
 guessing; the whole bank is at 33.1%.
+
+## 26. Following the taskbooks
+
+Decision from the owner: **UPBP-400 Rev 3.4 and UPBP-410 Rev 3.2 are the authority for what
+questions exist and how they are worded.** A question not in either comes out.
+
+The working principle that falls out of that, and which the file now follows:
+
+> **Question text follows the taskbook** &mdash; that is the document the candidate works
+> through. **Answers follow the Assessor Guide Rev 3.0** &mdash; that is what the assessor
+> grades against.
+
+### Method
+
+Both taskbooks were extracted to full question text and compared word by word against every
+`.question` in the file, in both directions. Two earlier checks had been too weak to catch
+any of this: a 65-character prefix probe (which only proves the opening matches) and a
+`difflib.get_close_matches` pass that silently mis-scored &mdash; on strings over 200
+characters it treats common letters as junk, which reported UPBP-410 Q11 as missing when it
+was present and identical. Re-run with `autojunk=False` and word-level opcodes.
+
+### Truncated questions restored
+
+Six questions had lost text. The most consequential:
+
+- **UPBP-400 Q47**, the IMT scenario, was missing its whole **Background info** paragraph
+  &mdash; neighbours complaining of noise and flares, local media attention, and the
+  community's dependence on the gas in winter. The very next question asks the candidate to
+  apply PEAR and name Reputation issues. The material they needed was the paragraph that had
+  been dropped.
+- **Q61 / 410-Q14** &mdash; "Review the asset COPs if they exist and verify how risk is
+  mitigated for each" had been moved into the answer, leaving "What is meant by the term
+  Critical Operating Parameter?" answered by an instruction rather than a definition. The
+  stem is restored and the answer now defines a COP.
+- **Q64 / 410-Q17** &mdash; the four alarm metrics belong in the stem.
+- **Q29** &mdash; the taskbook names PIC, AA, AO and PH in the stem.
+- **Q13** &mdash; "on the day".
+- **Q39** &mdash; "some of the".
+
+Wording aligned to the taskbook in five more: HC spelled out as High Consequence; the alarm
+scenario's "per hr" and "instead of their normal range"; "2 key elements"; "3 low
+consequence"; and the three procedures questions, where Rev 3.4 has dropped the "Integrity
+Critical" qualifier that the older CAS-route material used. Hebron/Hibernia has completed
+CVPE, so the plain wording is the applicable one; the superseded CAS answers stay labelled
+inside the answers.
+
+### Removed: the PBE-12345 scenario, seven questions
+
+`Repair, Inspect and Test Crude Oil Transfer Pump Tag PBE-12345` and its six follow-ups
+&mdash; permit type, Life Saving Actions, permit steps and roles, work pack documents, the
+ICC sequence, and Isolation Verification / ZED. None of the seven is in UPBP-400, UPBP-410 or
+the Assessor Guide. It was written locally and carried no marking to say so.
+
+Eleven practice items that drew on it went too. Bank 159 to 148.
+
+**What this cost, stated plainly.** That block was the only place the file taught the
+Isolation Control Certificate lifecycle, the zero energy demonstration procedure, permit state
+transitions, and the contents of a permit pack. `Isolation Control Certificate` now appears in
+the guide only as a glossary entry. The 57-topic coverage check still passes, which says more
+about the weakness of those probes than about the material. This is a real gap, and it is a
+gap because the taskbooks do not ask those questions &mdash; not because the content was
+wrong. If it should come back it should come back badged as supplementary, which was the
+alternative offered and declined.
+
+### Removed: a duplicated safeguard block
+
+The third "Examples of preventative critical safeguards" block sat under 410 Q3 (wellbore and
+marine scenarios) and was a stray paste of the Q1 answer &mdash; its preventative list
+byte-identical to the earlier one, its mitigative list differing by a single missing bracket
+after `HAEQ`. Q3 was already fully answered above it. This is review sheet item 37.
+
+### Added: the four Flag/Class questions
+
+UPBP-400 Rev 3.4 contains them and the file did not. They are written for **floating** assets;
+Hebron and Hibernia are fixed gravity base structures. Rather than continue to omit them, all
+four are in with their Assessor Guide answers and a standing note that they do not apply here
+and why. Following the taskbook means carrying its questions even where the answer is "not
+applicable to this asset, and here is the reason".
+
+### Result
+
+| | Identical to taskbook |
+|---|---|
+| UPBP-410 Rev 3.2 | **34 / 34** |
+| UPBP-400 Rev 3.4 | **77 / 81** |
+
+The four that differ are deliberate: Q9 and Q13 differ only by a trailing list label the
+taskbook uses to introduce its answer rows; Q34 and Q45 carry the Assessor Guide's fuller
+phrasing, which the model answers depend on ("and isolating under a single valve isolation",
+and the note that candidates answer one of the two environmental scenarios).
+
+99 questions, 105 answers, 99 note panels, no dead TOC links, five modes, no console errors,
+no overflow at 360, 414, 768 or 1280 px. 148 practice items, all correct and locatable.
