@@ -1992,7 +1992,7 @@ Scenario Question: Consider a release of 10kg gas/ 2 bbl hydrocarbon liquid to l
 
   </section><section id="emergency-response">
     <h2> 3.0 Emergency Response</h2>
-        <a href="https://us1.aconex.com/rsrc/20250718.1124/en_US_DOC/document/view/index.html?ControlledDocument_ID=1353331688417439519&amp;ControlledDocument_projectID=1207985859&amp;VIEW_CD_RETURN_URL=%2FSearchControlledDoc%3FSESSION_SAVE_DOCUMENTNO%3D%26SESSION_SAVE_TITLE%3D%2B%26SESSION_SAVE_REVISION%3D%2B%26SESSION_SAVE_STATUS%3D0%26SESSION_SAVE_TYPE%3D0%26SESSION_SAVE_DISCIPLINE%3Dnull%26SESSION_CREATION_DATE%3Dnull%26SESSION_REVISION_DATE%3Dnull%26SESSION_SAVE_REVIEW_DATE%3Dnull%26SESSION_SAVE_REVIEWED_DATE%3Dnull%26SESSION_SAVE_AUTHOR%3Dnull%26SESSION_SAVE_FILETYPE%3Dnull%26SESSION_REFERENCE%3Dnull%26SESSION_SAVE_FOLDER_PATH%3D%26SESSION_SAVE_ALL_REVS%3Dnull%26SESSION_SAVE_SORT_DIR%3DASC%26SESSION_SAVE_SORT_FIELD%3Ddocno%26SESSION_SHARED_TO%3D-1%26SESSION_LINKED_TO_PUBLIC%3D0#/file" _blank"="" rel="noopener noreferrer" style="color: #DAA520; font-weight: bold;"><strong>PREPARING FOR EMERGENCIES LINK
+        <a target="_blank" rel="noopener noreferrer" href="https://us1.aconex.com/rsrc/20250718.1124/en_US_DOC/document/view/index.html?ControlledDocument_ID=1353331688417439519&amp;ControlledDocument_projectID=1207985859&amp;VIEW_CD_RETURN_URL=%2FSearchControlledDoc%3FSESSION_SAVE_DOCUMENTNO%3D%26SESSION_SAVE_TITLE%3D%2B%26SESSION_SAVE_REVISION%3D%2B%26SESSION_SAVE_STATUS%3D0%26SESSION_SAVE_TYPE%3D0%26SESSION_SAVE_DISCIPLINE%3Dnull%26SESSION_CREATION_DATE%3Dnull%26SESSION_REVISION_DATE%3Dnull%26SESSION_SAVE_REVIEW_DATE%3Dnull%26SESSION_SAVE_REVIEWED_DATE%3Dnull%26SESSION_SAVE_AUTHOR%3Dnull%26SESSION_SAVE_FILETYPE%3Dnull%26SESSION_REFERENCE%3Dnull%26SESSION_SAVE_FOLDER_PATH%3D%26SESSION_SAVE_ALL_REVS%3Dnull%26SESSION_SAVE_SORT_DIR%3DASC%26SESSION_SAVE_SORT_FIELD%3Ddocno%26SESSION_SHARED_TO%3D-1%26SESSION_LINKED_TO_PUBLIC%3D0#/file" _blank"="" rel="noopener noreferrer" style="color: #DAA520; font-weight: bold;"><strong>PREPARING FOR EMERGENCIES LINK
 	 </strong></a><strong>
     <p></p>
 
@@ -4740,7 +4740,13 @@ Explain your role in maintaining and operating emergency response equipment for 
     }
     veil.querySelector('#adminOk').addEventListener('click', submit);
     veil.querySelector('#adminCancel').addEventListener('click', shut);
-    pw.addEventListener('keydown', function (e) { if (e.key === 'Enter') { submit(); } });
+    /* preventDefault matters: submit() closes the dialog and restores focus to
+       #adminBtn, and without it the keyup from this same Enter lands on that button
+       and activates it - toggling the lock straight back off. The dialog would close
+       and nothing would happen, which reads exactly like a wrong password. */
+    pw.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); submit(); }
+    });
     veil.addEventListener('keydown', function (e) { if (e.key === 'Escape') { shut(); } });
     veil.addEventListener('mousedown', function (e) { if (e.target === veil) { shut(); } });
   }

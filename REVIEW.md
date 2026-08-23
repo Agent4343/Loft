@@ -2246,3 +2246,98 @@ terminology.
 98 questions, 104 answers, 98 note panels, 13 TOC items with no dead links, five modes, no
 console errors, no overflow at 360, 414, 768 or 1280 px, 155 practice items all correct,
 coverage 54/54.
+
+## 31. Full check
+
+Asked for a complete check. What follows is what was verified and what it found.
+
+### Two real defects, both fixed
+
+**Pressing Enter on the assessor password closed the dialog without unlocking.** Typing
+`admin` and hitting Enter &mdash; the natural thing to do &mdash; dismissed the box and left
+the record locked, which reads exactly like a wrong password. Clicking **Unlock** worked, so
+it had gone unnoticed: every earlier test either clicked the button or set the session flag
+directly.
+
+The mechanism, from watching the class transitions:
+
+```
+page-first mode-guide paged assessor-on     <- unlocked
+page-first mode-guide paged                 <- immediately re-locked
+focused element after: adminBtn
+```
+
+Enter fires `submit()`, which unlocks and then calls `shut()`; `shut()` restores focus to
+`#adminBtn`; and the **keyup** from that same Enter press lands on the newly focused button,
+synthesising a click that toggles the lock straight back off. Fixed with `preventDefault()`
+on the Enter keydown. Verified: Enter and the button both unlock, a wrong password is still
+rejected with the dialog left open, Escape still cancels.
+
+**One controlled-document link opened in the same tab** &mdash; *Preparing for Emergencies*
+in 3.0 &mdash; so clicking it navigated away from the study aid instead of opening alongside
+it. The other 18 all had `target="_blank"`. Fixed; 19 of 19 now consistent, all with
+`rel="noopener noreferrer"`.
+
+### Source fidelity
+
+| Check | Result |
+|---|---|
+| UPBP-410 Rev 3.2 questions present and word-identical | **34 / 34** |
+| UPBP-400 Rev 3.4 questions present and word-identical | **77 / 81** |
+| Questions in the file not traceable to a source | 6, all accounted for |
+| Global answers vs Assessor Guide Rev 3.0, median similarity | **0.95** |
+
+The four UPBP-400 differences are deliberate and previously recorded. The six untraceable
+questions are the two badged **Supplementary** blocks and four pieces of answer content that
+carry a `.question` class &mdash; the CVPE implementation note, the four COP conditions, and
+two safeguard list headings. All four have answers and work as prompt-and-list cards, so they
+are odd markup rather than broken content, but it means the honest count of assessable
+questions is **94**, not 98.
+
+Every answer scoring below 0.80 against the guide was read individually. None is missing
+content. The low scores come from the guide carrying both a CAS and a CVPE version of the
+same question (the matcher pairs with the wrong one), from guide-side parsing absorbing the
+next section's text, and from the deliberate asset-specific and WMS additions. One 0.00 is a
+defect in the guide itself, already logged in `SOURCE-DOCUMENT-QUERIES.md`: a stray empty
+`Question:` line that swallows the temporary defeat scenario's answer.
+
+### CVPE consistency
+
+Every question audited for route labelling. No CAS-only questions remain. Two questions carry
+CVPE labels, six carry "Superseded (CAS route)" notes explaining what the old answer was, and
+the rest need no label. Two answers mention CAS terms without a label; both are asset-local
+&mdash; one names *Integrity Critical Procedures* as a training topic, the other is the
+asset's own *Crude Shipping and Offloading System Integrity Critical Procedure*. Neither is
+global terminology, and the first belongs to the 38-item asset review.
+
+### Everything else checked
+
+Structure: 98 questions, 104 answers, 98 note panels, 13 TOC items with no dead links, 45
+glossary terms, five modes. No duplicate questions and no answer pair more than 90% identical.
+Practice bank: 155 items, none malformed, no duplicate questions, no duplicate or empty
+options, all answered correctly for 100% with nothing unlocatable. Coverage 54 of 54.
+
+Functional, all passing: opens on Home; all eleven pages reachable by Next with Next disabled
+on the last; search reveals every section and paging restores when cleared; glossary opens;
+Test hides answers and Reveal works; cards flip; practice scores and explains; assessor
+locked by default with no panels visible; wrong password rejected; unlock visible; export
+carries the candidate and the note; **import restores the record after wiping local storage**;
+print shows all twelve sections, hides the pagers and the TOC, and keeps the candidate name.
+No console errors anywhere. No horizontal overflow at 360, 414, 768 or 1280 px in any mode.
+
+### Outstanding, not fixed
+
+The practice distractor lengths. Picking the longest option scores **34.3%** against 25% for
+guessing, concentrated in six sections &mdash; Operating Procedures 62.5%, Emergency Response
+53.6%, Management of Change 45.8%, Critical Equipment 42.9%, Incident Investigation 40%,
+Training 33.3%. **30 items** have the correct answer as the unique longest option. Every
+answer is correct; this is a gameability problem, not an accuracy one. Work Management and
+Risk Management were rebalanced earlier and sit at 24.7% and 19.4%.
+
+### Two tests that lied, now corrected
+
+Worth recording, because both nearly produced a false bug report. `getBoundingClientRect()`
+reports a size for elements in rendering subtrees the browser has skipped, and `textContent`
+concatenates across block boundaries &mdash; the practice feedback reads
+`the answer is DNon-permitted...` in extracted text but renders on two lines, because
+`.pr-fb .v` is `display: block`. Screenshots settled both.
