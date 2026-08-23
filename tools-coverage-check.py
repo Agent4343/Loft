@@ -27,15 +27,15 @@ T = [
  ('2.2 Training tied to safeguard',    ['h2s response','process safety and you']),
  ('2.2 Validate/track competency',     ['webcat','personal placement checklist','ppc']),
  ('2.2 PSKV',                          ['pskv','operator knowledge verification']),
- ('2.3 IC procedure definition',       ['integrity critical procedure']),
+ # Three CAS-route probes were dropped here - the IC procedure definition, the
+ # globally recommended IC examples, and the Interim Directive scenario. Those
+ # questions were removed once Hebron/Hibernia completed CVPE; none is assessable.
  ('2.3 Revalidation timeframe',        ['36 months','revalidat']),
- ('2.3 Global IC examples',            ['pigging','escape capsule']),
  ('2.3 Deviation approvals',           ['deviation','work must stop']),
  ('2.3 Review/approval level',         ['technically verified','site validated','endorsed by']),
  ('2.3 Following procedures',          ['deviation requests','periodic observation']),
  ('2.3 Tools/triggers',                ['task analysis','difficulty, importance, frequency']),
  ('2.3 Procedures out of date',        ['out of date by six months','expedite review']),
- ('2.3 IC error at night',             ['interim directive']),
  ('2.4 FIMS criticality A-D',          ['criticality a','tmee330']),
  ('2.4 Sustained casing pressure',     ['sustained production casing','scssv','casing pressure']),
  ('2.4 Long Term Temporary Defeat',    ['long term temporary defeat','after 1 shift']),

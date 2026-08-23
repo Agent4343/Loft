@@ -2189,3 +2189,60 @@ and a note on one page, jump to another section, record a second, and both survi
 101 questions, 107 answers, 101 note panels, 13 TOC items with no dead links, five modes, no
 console errors, no overflow at 360, 414, 768 or 1280 px, 157 practice items all correct,
 coverage 57/57.
+
+## 30. Operating Procedures, cut to the CVPE route
+
+Question from the owner: Hebron and Hibernia are doing CVPE &mdash; are the 2.3 questions the
+right ones?
+
+Mostly, but not entirely. UPBP-400 Rev 3.4 &mdash; the CVPE-era taskbook &mdash; asks exactly
+**six** global Operating Procedures questions (Q14 to Q19), plus two asset-specific ones. The
+file carried **nine**. The three extra all belong to the superseded CAS route and appear in no
+taskbook:
+
+- Define &lsquo;Integrity Critical Procedure&rsquo;, and the expectations of individuals executing it
+- List examples of globally recommended IC procedures
+- The middle-of-the-night scenario resolved with an Interim Directive and Site Manager approval
+
+They were already labelled *"CAS route only &mdash; retained for reference and not assessed"*,
+which was honest, but they are three questions of dead weight in a CVPE study session and a
+candidate who learns the IC answers would be answering a superseded standard. Removed, on the
+same rule as section 26: not in 400 or 410, so it goes. The text is preserved in
+`cas-removed.html` in the working notes if a site that has not completed CVPE ever needs it.
+
+### A defect the question surfaced
+
+**"Describe how you know personnel are following Procedures"** had been given the taskbook's
+CVPE stem, but its answer was still the CAS text:
+
+| | |
+|---|---|
+| File said | "...deviation requests are being submitted **for IC procedures**" &hellip; "where **the IC is** part of a permit pack" |
+| Assessor Guide Rev 3.0, CVPE route | "...deviation requests are being submitted **for procedures**" &hellip; "where **procedures are** part of a permit pack" |
+
+A CVPE-worded question with a CAS-worded answer, and unlike its neighbours it carried no route
+label at all &mdash; so nothing signalled the mismatch. Corrected to the CVPE text and labelled
+like the rest.
+
+### Practice bank
+
+Two items removed with their source questions (what an Integrity Critical Procedure is; which
+procedures are globally recommended IC). One corrected: "How do you know personnel are
+following **Integrity Critical** Procedures" is now the CVPE question, with the IC language out
+of its explanation. Two more had `src` strings still quoting the pre-taskbook stems; repointed.
+Bank 157 to **155**.
+
+### Coverage check
+
+Three probes in `tools-coverage-check.py` tested for the removed CAS content and would have
+failed forever. Removed, with a comment recording why rather than leaving a silent gap: the IC
+procedure definition, the globally recommended IC examples, and the Interim Directive scenario.
+54 topics, 54 present.
+
+One "Integrity Critical" mention survives in 2.3 and should: *Crude Shipping and Offloading
+System Integrity Critical Procedure* is the asset's own name for that procedure, not CAS
+terminology.
+
+98 questions, 104 answers, 98 note panels, 13 TOC items with no dead links, five modes, no
+console errors, no overflow at 360, 414, 768 or 1280 px, 155 practice items all correct,
+coverage 54/54.
