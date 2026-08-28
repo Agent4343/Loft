@@ -2828,6 +2828,44 @@ Explain your role in maintaining and operating emergency response equipment for 
 
   /* ---------- test mode ---------- */
   body.mode-test .answer[data-hidden="1"] { display: none; }
+  /* Assessment panel - who sits on the team, per asset. */
+  .pc { margin: 0 0 1.4rem; }
+  .pc h3 { margin: 0 0 .2rem; font-size: 1.05rem; color: var(--navy); }
+  .pc .note { margin: 0 0 1rem; font-size: .88rem; color: var(--ink-soft); }
+  .pc-top { display: flex; justify-content: center; }
+  .pc-box {
+    background: #fff; border: 1px solid var(--line); border-radius: 8px;
+    padding: .6rem .9rem; text-align: center; min-width: 13rem;
+  }
+  .pc-box .role { font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); font-weight: 700; }
+  .pc-box .who { font-weight: 650; color: var(--navy); font-size: .98rem; line-height: 1.3; }
+  .pc-box .does { font-size: .82rem; color: var(--ink-soft); margin-top: .15rem; }
+  .pc-admin { border-color: #8b6fd4; border-left-width: 4px; }
+  .pc-stem { width: 2px; height: 20px; background: #9fb0c4; margin: 0 auto; }
+  /* A drawn connector cannot stay aligned to a responsive grid, so the relationship
+     is stated instead: the administrator box sits above both panels and says so. */
+  .pc-serves {
+    text-align: center; font-size: .82rem; color: var(--ink-soft);
+    margin: .35rem 0 .9rem; font-weight: 600;
+  }
+  .pc-assets { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: 1rem; }
+  .pc-asset { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: #fff; }
+  .pc-hd {
+    display: block; width: 100%; margin: 0;
+    background: var(--navy); color: #fff; padding: .5rem .9rem;
+    font-weight: 700; letter-spacing: .04em; font-size: .9rem;
+  }
+  .pc-asset ul { list-style: none; margin: 0; padding: 0; }
+  .pc-asset li { padding: .6rem .9rem; border-top: 1px solid var(--line); }
+  .pc-asset li:first-child { border-top: none; }
+  .pc-asset li .role { font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); font-weight: 700; }
+  .pc-asset li .who { font-weight: 650; color: var(--navy); }
+  .pc-asset li .does { font-size: .82rem; color: var(--ink-soft); }
+  .pc-foot { margin: .9rem 0 0; font-size: .86rem; color: var(--ink-soft); }
+  .pc-foot b { color: var(--navy); }
+  @media (max-width: 640px) { .pc-box { min-width: 0; width: 100%; } }
+  @media print { .pc-asset { break-inside: avoid; } }
+
   /* One section at a time. Guide and Test only; search and print override it. */
   body.paged #mainContent > section:not(.page-current):not(#process-safety) { display: none; }
   body.searching .pager { display: none; }
@@ -5628,6 +5666,51 @@ var PRACTICE=[{"sec":"2.1 Risk Management","q":"What is the intent of the Risk A
   ];
 
   function render() {
+  /* The assessment panel. One team per asset, both drawing on the same Training
+     Administrator for scheduling and paperwork. Roles are the asset's own; the
+     Assessor Guide requirement they satisfy is noted underneath. */
+  var PANEL_ROLES = [
+    ['Lead', 'Operations Manager', 'Leads the assessment and makes the final call on whether competency is demonstrated'],
+    ['SME', 'Operations Advisor', 'Technical assessor for the asset and its process safety scenarios'],
+    ['SME / Assessment Administrator', 'Operations Advisor', 'Second technical assessor, and runs the assessment on the day']
+  ];
+
+  function panelChart() {
+    var h = '<div class="pc"><h3>LOFT assessment panel</h3>' +
+      '<p class="note">Who sits on the team, and who organises it. Same structure at both assets.</p>';
+
+    h += '<div class="pc-top"><div class="pc-box pc-admin">' +
+      '<div class="role">Training Administrator</div>' +
+      '<div class="who">Canada East</div>' +
+      '<div class="does">Schedules the assessment and organises all the paperwork</div>' +
+      '</div></div>';
+
+    h += '<div class="pc-stem"></div>' +
+      '<p class="pc-serves">serves both panels below</p>';
+
+    h += '<div class="pc-assets">';
+    ['Hebron', 'Hibernia'].forEach(function (asset) {
+      h += '<div class="pc-asset"><div class="pc-hd">' + asset + '</div><ul>';
+      PANEL_ROLES.forEach(function (r) {
+        h += '<li><div class="role">' + r[0] + '</div>' +
+             '<div class="who">' + r[1] + '</div>' +
+             '<div class="does">' + r[2] + '</div></li>';
+      });
+      h += '</ul></div>';
+    });
+    h += '</div>';
+
+    h += '<p class="pc-foot"><b>Against the manual:</b> section 1.6 wants an assessment team of at least three ' +
+      'and no more than five &mdash; an Assessment Lead, an Assessment Facilitator and one or more Technical ' +
+      'Assessors. The three roles above are that team. The Training Administrator handles timing and paperwork ' +
+      'and is not one of the three.</p>' +
+      '<p class="pc-foot"><b>Watch the Lead:</b> the Assessment Lead has to sit a line above the candidate. ' +
+      'The Operations Manager leads for a <b>second-line</b> supervisor. Assessing a <b>third-line</b> ' +
+      'supervisor, the Lead must be the Site Manager or equivalent.</p>';
+
+    return h + '</div>';
+  }
+
     var h = '<div class="hm-hero"><h2>LOFT Process Safety</h2>' +
       '<p>Everything for the Process Safety competency assessment at Hebron and Hibernia &mdash; the questions and ' +
       'model answers, drilling tools, and the assessment record. Pick where you are starting.</p></div>';
@@ -5667,6 +5750,8 @@ var PRACTICE=[{"sec":"2.1 Risk Management","q":"What is the intent of the Risk A
       '<p class="note">From the Assessor Guide, sections 1.3 to 1.6. Full text is in the Guide.</p><dl>';
     REQS.forEach(function (r) { h += '<dt>' + r[0] + '</dt><dd>' + r[1] + '</dd>'; });
     h += '</dl></div>';
+
+    h += panelChart();
 
     h += '<div class="hm-scope"><h3>Scope at this asset &mdash; worth knowing before you study</h3><ul>' +
       '<li><b>CVPE route applies.</b> Hebron/Hibernia has completed CVPE, so the Training and Competency UBP ' +
