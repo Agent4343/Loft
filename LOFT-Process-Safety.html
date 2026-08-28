@@ -2861,6 +2861,22 @@ Explain your role in maintaining and operating emergency response equipment for 
   .pc-asset li .role { font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); font-weight: 700; }
   .pc-asset li .who { font-weight: 650; color: var(--navy); }
   .pc-asset li .does { font-size: .82rem; color: var(--ink-soft); }
+  .pc-name {
+    font: inherit; font-size: .9rem; width: 100%; margin: .25rem 0 .15rem;
+    box-sizing: border-box;
+    padding: .32rem .5rem; border: 1px solid var(--line); border-radius: 5px;
+    background: #fbfcfe; color: var(--navy); font-weight: 600;
+  }
+  .pc-name::placeholder { color: #9aa8b8; font-weight: 400; font-style: italic; }
+  .pc-name:focus-visible { outline: 2px solid var(--navy); outline-offset: 1px; }
+  .pc-use {
+    display: block; width: 100%; font: inherit; font-size: .84rem; font-weight: 650;
+    padding: .45rem .6rem; margin: 0; cursor: pointer;
+    background: #eef2f7; color: var(--navy); border: none; border-top: 1px solid var(--line);
+  }
+  .pc-use:hover { background: #e2e9f2; }
+  .pc-said { display: block; padding: .45rem .9rem; font-size: .82rem; color: #0f8e5a; font-weight: 650; }
+  @media print { .pc-use { display: none; } .pc-name { border: none; padding-left: 0; background: none; } }
   .pc-foot { margin: .9rem 0 0; font-size: .86rem; color: var(--ink-soft); }
   .pc-foot b { color: var(--navy); }
   @media (max-width: 640px) { .pc-box { min-width: 0; width: 100%; } }
@@ -5675,13 +5691,22 @@ var PRACTICE=[{"sec":"2.1 Risk Management","q":"What is the intent of the Risk A
     ['SME / Assessment Administrator', 'Operations Advisor', 'Second technical assessor, and runs the assessment on the day']
   ];
 
+  var PANEL_KEY = 'loft-panel-v1';
+  var panelNames = {};
+  try { panelNames = JSON.parse(localStorage.getItem(PANEL_KEY) || '{}') || {}; } catch (e) { panelNames = {}; }
+  function panelSave() {
+    try { localStorage.setItem(PANEL_KEY, JSON.stringify(panelNames)); } catch (e) { /* private mode */ }
+  }
+
   function panelChart() {
     var h = '<div class="pc"><h3>LOFT assessment panel</h3>' +
-      '<p class="note">Who sits on the team, and who organises it. Same structure at both assets.</p>';
+      '<p class="note">Who sits on the team, and who organises it. Type the names in &mdash; they are kept in ' +
+      'this browser and can be dropped straight into the assessment record.</p>';
 
     h += '<div class="pc-top"><div class="pc-box pc-admin">' +
       '<div class="role">Training Administrator</div>' +
       '<div class="who">Canada East</div>' +
+      '<input class="pc-name" id="pn_admin" placeholder="name" value="' + esc(panelNames.admin || '') + '">' +
       '<div class="does">Schedules the assessment and organises all the paperwork</div>' +
       '</div></div>';
 
@@ -5690,13 +5715,17 @@ var PRACTICE=[{"sec":"2.1 Risk Management","q":"What is the intent of the Risk A
 
     h += '<div class="pc-assets">';
     ['Hebron', 'Hibernia'].forEach(function (asset) {
+      var a = asset.toLowerCase();
       h += '<div class="pc-asset"><div class="pc-hd">' + asset + '</div><ul>';
-      PANEL_ROLES.forEach(function (r) {
+      PANEL_ROLES.forEach(function (r, n) {
+        var id = a + '_' + n;
         h += '<li><div class="role">' + r[0] + '</div>' +
              '<div class="who">' + r[1] + '</div>' +
+             '<input class="pc-name" id="pn_' + id + '" placeholder="name" value="' + esc(panelNames[id] || '') + '">' +
              '<div class="does">' + r[2] + '</div></li>';
       });
-      h += '</ul></div>';
+      h += '</ul><button type="button" class="pc-use" data-panel="' + a + '">' +
+           'Use this panel for the assessment record</button></div>';
     });
     h += '</div>';
 
@@ -5710,6 +5739,46 @@ var PRACTICE=[{"sec":"2.1 Risk Management","q":"What is the intent of the Risk A
 
     return h + '</div>';
   }
+
+  /* Fill the assessment record from a panel. The session inputs save on 'input',
+     so dispatch that rather than reaching into the assessor module's state. */
+  function usePanel(asset) {
+    var map = [['lead', asset + '_0'], ['facilitator', asset + '_2'], ['technical', asset + '_1']];
+    /* The session inputs exist while locked, they are just hidden - so test the
+       unlock state, not the element. */
+    if (!document.body.classList.contains('assessor-on')) {
+      var ab = document.getElementById('adminBtn');
+      if (ab) { ab.click(); }
+      return false;
+    }
+    map.forEach(function (m) {
+      var el = document.getElementById('sess_' + m[0]);
+      if (el) {
+        el.value = panelNames[m[1]] || '';
+        el.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+    });
+    return true;
+  }
+
+  function wirePanel() {
+    [].forEach.call(document.querySelectorAll('#homeSheet .pc-name'), function (i) {
+      i.addEventListener('input', function () {
+        panelNames[i.id.replace(/^pn_/, '')] = i.value;
+        panelSave();
+      });
+    });
+    [].forEach.call(document.querySelectorAll('#homeSheet .pc-use'), function (b) {
+      b.addEventListener('click', function () {
+        if (usePanel(b.dataset.panel)) {
+          var was = b.textContent;
+          b.textContent = 'Added to the assessment record';
+          setTimeout(function () { b.textContent = was; }, 2200);
+        }
+      });
+    });
+  }
+
 
     var h = '<div class="hm-hero"><h2>LOFT Process Safety</h2>' +
       '<p>Everything for the Process Safety competency assessment at Hebron and Hibernia &mdash; the questions and ' +
@@ -5768,6 +5837,7 @@ var PRACTICE=[{"sec":"2.1 Risk Management","q":"What is the intent of the Risk A
       'this browser; use <b>Save file</b> for anything that has to be kept.</p>';
 
     document.getElementById('homeSheet').innerHTML = h;
+    wirePanel();
     [].forEach.call(document.querySelectorAll('#homeSheet [data-go]'), function (b) {
       b.addEventListener('click', function () {
         var t = b.dataset.go;
