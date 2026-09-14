@@ -2832,15 +2832,23 @@ Explain your role in maintaining and operating emergency response equipment for 
   .pc { margin: 0 0 1.4rem; }
   .pc h3 { margin: 0 0 .2rem; font-size: 1.05rem; color: var(--navy); }
   .pc .note { margin: 0 0 1rem; font-size: .88rem; color: var(--ink-soft); }
-  .pc-top { display: flex; justify-content: center; }
+  .pc-top { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; align-items: stretch; }
   .pc-box {
     background: #fff; border: 1px solid var(--line); border-radius: 8px;
     padding: .6rem .9rem; text-align: center; min-width: 13rem;
   }
+  .pc-top .pc-box { flex: 1 1 18rem; max-width: 26rem; }
   .pc-box .role { font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); font-weight: 700; }
   .pc-box .who { font-weight: 650; color: var(--navy); font-size: .98rem; line-height: 1.3; }
   .pc-box .does { font-size: .82rem; color: var(--ink-soft); margin-top: .15rem; }
   .pc-admin { border-color: #8b6fd4; border-left-width: 4px; }
+  .pc-shared { border-color: #0f8e5a; border-left-width: 4px; }
+  .pc-decide {
+    margin: 1rem 0 0; padding: .7rem .9rem; border: 1px dashed #9fb0c4; border-radius: 8px; background: #f7fafc;
+  }
+  .pc-decide .role { font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); font-weight: 700; }
+  .pc-decide p { margin: .2rem 0 0; font-size: .86rem; color: var(--ink-soft); }
+  .pc-decide b { color: var(--navy); }
   .pc-stem { width: 2px; height: 20px; background: #9fb0c4; margin: 0 auto; }
   /* A drawn connector cannot stay aligned to a responsive grid, so the relationship
      is stated instead: the administrator box sits above both panels and says so. */
@@ -3439,20 +3447,60 @@ Explain your role in maintaining and operating emergency response equipment for 
   }
 
 
+  /* ---------- asset answer review request ---------- */
+  .rv-roster { width: 100%; border-collapse: collapse; font-size: .88rem; margin: .3rem 0 0; }
+  .rv-roster th {
+    text-align: left; font-size: .66rem; letter-spacing: .07em; text-transform: uppercase;
+    color: var(--ink-faint); font-weight: 700; padding: 0 .5rem .3rem 0;
+  }
+  .rv-roster td { padding: .25rem .5rem .25rem 0; border-bottom: 1px solid var(--rule); vertical-align: middle; }
+  .rv-roster tr:last-child td { border-bottom: none; }
+  .rv-roster .cat { font-weight: 650; color: var(--navy); }
+  .rv-roster .nums { font-variant-numeric: tabular-nums; color: var(--ink-soft); white-space: nowrap; }
+  .rv-roster input {
+    font: inherit; font-size: .86rem; padding: .25rem .4rem; width: 100%; min-width: 0;
+    border: 1px solid var(--rule); border-radius: 5px; background: #fff; color: var(--ink); box-sizing: border-box;
+  }
+  .rv-prev {
+    border: 1px solid var(--rule); border-radius: 8px; padding: 1.1rem 1.2rem; background: #fff;
+    font-size: .95rem; line-height: 1.55;
+  }
+  .rv-prev p { margin: 0 0 .75rem; }
+  .rv-prev h4 { margin: 1.1rem 0 .4rem; font-size: .95rem; color: var(--navy); }
+  .rv-prev ol { margin: 0 0 .8rem; padding-left: 1.2rem; }
+  .rv-prev li { margin: 0 0 .3rem; }
+  .rv-tw { overflow-x: auto; margin: 0 0 .85rem; }
+  .rv-prev table { border-collapse: collapse; width: 100%; font-size: .88rem; }
+  .rv-prev th, .rv-prev td { text-align: left; padding: .4rem .55rem; border: 1px solid var(--rule); vertical-align: top; }
+  .rv-prev th { background: var(--navy); color: #fff; font-size: .68rem; letter-spacing: .07em; text-transform: uppercase; }
+  .rv-prev td.who { font-weight: 650; white-space: nowrap; }
+  .rv-prev td.nums, .rv-prev td.cnt { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .rv-prev td.cnt { text-align: right; }
+  .rv-flag {
+    border-left: 3px solid var(--warn, #b45309); background: #fff8ec;
+    padding: .55rem .75rem; margin: 0 0 .85rem; font-size: .92rem;
+  }
+  @media (max-width: 560px) {
+    .rv-roster thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .rv-roster tr { display: grid; grid-template-columns: 1fr auto; gap: .1rem .5rem; padding: .45rem 0; border-bottom: 1px solid var(--rule); }
+    .rv-roster td { border: none; padding: 0; }
+    .rv-roster td:nth-child(3) { grid-column: 1 / -1; margin-top: .2rem; }
+  }
+
   /* ---------- email template builder ---------- */
-  #emailLayer {
+  #emailLayer, #reviewLayer {
     position: fixed; inset: 44px 0 0 0; z-index: 1150; display: none;
     background: rgba(15,23,32,.55); overflow-y: auto; padding: 24px 16px 60px;
   }
-  #emailLayer.open { display: block; }
-  body.assessor-on #emailLayer { inset: 78px 0 0 0; }
-  #emailSheet {
+  #emailLayer.open, #reviewLayer.open { display: block; }
+  body.assessor-on #emailLayer, body.assessor-on #reviewLayer { inset: 78px 0 0 0; }
+  #emailSheet, #reviewSheet {
     background: #fff; max-width: 54rem; margin: 0 auto; padding: 26px 28px;
     border-radius: 10px; box-shadow: 0 10px 40px rgba(0,0,0,.18);
   }
-  #emailSheet h2 { font-size: 1.3rem; margin: 0 0 .3rem; color: var(--navy); border: 0; padding: 0; }
-  #emailSheet h2::after { display: none; }
-  #emailSheet .sub { color: var(--ink-soft); font-size: .9rem; margin: 0 0 1.1rem; }
+  #emailSheet h2, #reviewSheet h2 { font-size: 1.3rem; margin: 0 0 .3rem; color: var(--navy); border: 0; padding: 0; }
+  #emailSheet h2::after, #reviewSheet h2::after { display: none; }
+  #emailSheet .sub, #reviewSheet .sub { color: var(--ink-soft); font-size: .9rem; margin: 0 0 1.1rem; }
   .em-note {
     border-left: 4px solid var(--warn, #b45309); background: #fff8ec;
     padding: .75rem .9rem; border-radius: 0 8px 8px 0; font-size: .92rem; margin: 0 0 1.2rem;
@@ -3484,18 +3532,22 @@ Explain your role in maintaining and operating emergency response equipment for 
   .em-sub span { font-weight: 400; color: var(--ink-soft); }
   .em-ok { color: var(--ok, #0f8e5a); font-weight: 600; font-size: .88rem; }
   @media (max-width: 700px) {
-    #emailLayer { inset: 84px 0 0 0; padding: 14px 10px 50px; }
-    body.assessor-on #emailLayer { inset: 118px 0 0 0; }
-    #emailSheet { padding: 16px 14px; }
+    #emailLayer, #reviewLayer { inset: 84px 0 0 0; padding: 14px 10px 50px; }
+    body.assessor-on #emailLayer, body.assessor-on #reviewLayer { inset: 118px 0 0 0; }
+    #emailSheet, #reviewSheet { padding: 16px 14px; }
     .em-tools .tool-btn, .em-tools button { flex: 1 1 auto; }
   }
   @media print {
-    #emailLayer { position: static; inset: auto; background: #fff; padding: 0; overflow: visible; }
-    #emailSheet { box-shadow: none; max-width: none; padding: 0; }
+    #emailLayer, #reviewLayer { position: static; inset: auto; background: #fff; padding: 0; overflow: visible; }
+    #emailSheet, #reviewSheet { box-shadow: none; max-width: none; padding: 0; }
     .em-tools { display: none !important; }
     body.email-open #toc, body.email-open header, body.email-open main,
     body.email-open #glossarySidebar, body.email-open #modeBar,
-    body.email-open #cardLayer, body.email-open #practiceLayer { display: none !important; }
+    body.email-open #cardLayer, body.email-open #practiceLayer,
+    body.review-open #toc, body.review-open header, body.review-open main,
+    body.review-open #glossarySidebar, body.review-open #modeBar,
+    body.review-open #cardLayer, body.review-open #practiceLayer { display: none !important; }
+    body.review-open #emailLayer, body.email-open #reviewLayer { display: none !important; }
   }
 
 
@@ -5622,6 +5674,334 @@ var PRACTICE=[{"sec":"2.1 Risk Management","q":"What is the intent of the Risk A
   else { init(); }
 })();
 </script>
+<script id="loft-review-js">
+/* Asset answer review request.
+   ---------------------------------------------------------------------------
+   Thirty-eight answers in this file are asset-local. UPBP-410 Rev 3.2 is a
+   question template - it sets the questions and leaves the answers to the
+   Business Unit - so no controlled document in the pack states the right answer
+   for Hebron or Hibernia. Everything else here can be traced to a source; these
+   cannot, and they were carried forward from existing material of unknown age.
+
+   This builds the email that puts each of them in front of the person who
+   already assesses that category, so nobody is handed all thirty-eight. The
+   item numbers are the numbering in ASSET-SPECIFIC-REVIEW-SHEET.html, which is
+   what the reviewer actually fills in.
+   --------------------------------------------------------------------------- */
+(function () {
+  'use strict';
+
+  var KEY = 'loft-asset-review-v1';
+
+  /* Category -> the items in it, and who asks that category today. Two
+     categories differ by asset; the rest are the same person on both. The
+     counts add to 38; a change here must keep that true. */
+  var CATEGORIES = [
+    { cat: '2.1 Risk Management',                 items: '1–6, 35–37', n: 9, Hebron: 'David Adams',      Hibernia: 'David Adams' },
+    { cat: '2.2 Training',                        items: '7–9',             n: 3, Hebron: 'HP',               Hibernia: 'Duncan Fitzpatrick' },
+    { cat: '2.3 Operating Procedures',            items: '10–11',           n: 2, Hebron: 'Ashley Matheson',  Hibernia: 'Ashley Matheson' },
+    { cat: '2.4 Critical Equipment',              items: '12–13',           n: 2, Hebron: 'HP',               Hibernia: 'Duncan Fitzpatrick' },
+    { cat: '2.5 Alarm Management',                items: '14–17',           n: 4, Hebron: 'Ashley Matheson',  Hibernia: 'Ashley Matheson' },
+    { cat: '2.6 Work Management',                 items: '18, 19, 38',           n: 3, Hebron: 'Ashley Matheson',  Hibernia: 'Ashley Matheson' },
+    { cat: '2.7 Management of Change',            items: '20',                   n: 1, Hebron: 'Ashley Matheson',  Hibernia: 'Ashley Matheson' },
+    { cat: '2.8 Incident Investigation',          items: '21–24',           n: 4, Hebron: 'Ashley Skinner',   Hibernia: 'David Hancock' },
+    { cat: '2.9 Environmental',                   items: '25–29',           n: 5, Hebron: 'Lindsay Hollands', Hibernia: 'Lindsay Hollands' },
+    { cat: '3.0 Emergency Response',              items: '30–33',           n: 4, Hebron: 'Mitchell Wisemen', Hibernia: 'Mitchell Wisemen' },
+    { cat: 'Asset specific: basic process flows', items: '34',                   n: 1, Hebron: 'Ashley Matheson',  Hibernia: 'Ashley Matheson' }
+  ];
+  var TOTAL = CATEGORIES.reduce(function (t, c) { return t + c.n; }, 0);
+
+  var WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight',
+               'nine', 'ten', 'eleven', 'twelve'];
+  function word(n) { return WORDS[n] || String(n); }
+
+  var DEFAULTS = {
+    asset: 'Hebron', due: '', files: 'Both attached to this email',
+    sender: '', panelnote: true, names: {}
+  };
+  var state;
+
+  function load() {
+    try { state = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) { state = null; }
+    if (!state || typeof state !== 'object') { state = {}; }
+    Object.keys(DEFAULTS).forEach(function (k) {
+      if (state[k] === undefined) { state[k] = DEFAULTS[k]; }
+    });
+    if (!state.names || typeof state.names !== 'object') { state.names = {}; }
+  }
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* private mode */ }
+  }
+
+  function el(id) { return document.getElementById(id); }
+  function esc(v) {
+    return String(v == null ? '' : v).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+
+  function nameFor(i) {
+    var custom = state.names[state.asset + '|' + i];
+    return (custom === undefined || custom === '') ? CATEGORIES[i][state.asset] : custom;
+  }
+
+  /* One row per person, not per category: several categories can land on the
+     same assessor and they should see a single line, not three. */
+  function byPerson() {
+    var order = [], map = {};
+    CATEGORIES.forEach(function (c, i) {
+      var who = nameFor(i) || '[not named]';
+      if (!map[who]) { map[who] = { who: who, cats: [], items: [], n: 0 }; order.push(who); }
+      map[who].cats.push(c.cat);
+      map[who].items.push(c.items);
+      map[who].n += c.n;
+    });
+    return order.map(function (w) { return map[w]; });
+  }
+
+  function longDate(v) {
+    if (!v) { return ''; }
+    var p = String(v).split('-');
+    if (p.length !== 3) { return ''; }
+    var d = new Date(+p[0], +p[1] - 1, +p[2]);
+    if (isNaN(d.getTime())) { return ''; }
+    return d.toLocaleDateString('en-CA', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  }
+
+  function subject() {
+    return 'LOFT Process Safety — please check the ' + state.asset + ' asset answers in your categories';
+  }
+
+  function emailHtml() {
+    var people = byPerson();
+    var counts = people.map(function (x) { return x.n; });
+    var lo = Math.min.apply(null, counts), hi = Math.max.apply(null, counts);
+    var spread = lo === hi
+      ? word(lo) + ' item' + (lo === 1 ? '' : 's') + ' each'
+      : 'between ' + word(lo) + ' and ' + word(hi) + ' items each';
+
+    var rows = people.map(function (x) {
+      return '<tr><td class="who">' + esc(x.who) + '</td><td>' + esc(x.cats.join('; ')) +
+        '</td><td class="nums">' + esc(x.items.join(', ')) + '</td><td class="cnt">' + x.n + '</td></tr>';
+    }).join('');
+
+    var due = longDate(state.due);
+    var files = (state.files || '').trim() || DEFAULTS.files;
+    var sender = (state.sender || '').trim();
+
+    var panel = state.panelnote
+      ? '<p>There is also an attachment about the assessment panel. Canada East is moving from the ' +
+        'category-by-category roster to two three-person panels, one for each asset. That is out for ' +
+        'approval separately and is not what this email is about &mdash; the answers are the same ' +
+        'answers whoever ends up asking the questions.</p>'
+      : '';
+
+    return '' +
+      '<p>The Hebron and Hibernia LOFT Process Safety study aid has been rebuilt and checked against the ' +
+      'controlled documents. ' + word(TOTAL).replace(/^./, function (c) { return c.toUpperCase(); }) +
+      ' answers could not be checked that way, and I need the people who assess them to say whether they ' +
+      'are still right.</p>' +
+
+      '<p><b>Why these ' + TOTAL + '.</b> Every other answer in the study aid can be traced to a document ' +
+      'in the pack. These cannot. UPBP-410 Rev 3.2 is a question template &mdash; it sets the questions and ' +
+      'leaves the answers to the Business Unit, so no source in the pack states the right answer for ' +
+      esc(state.asset) + '. The answers in the study aid were carried forward from the existing material. ' +
+      'They may be correct and current. They may be years out of date. Nobody can tell from the file, ' +
+      'which is why I am asking you.</p>' +
+
+      '<p><b>What I am asking.</b> Not all ' + TOTAL + ' &mdash; only the items in the categories you ' +
+      'already assess, which is ' + spread + ':</p>' +
+
+      '<div class="rv-tw"><table><tr><th>Assessor</th><th>Categories</th><th>Items</th><th>No.</th></tr>' +
+      rows + '</table></div>' +
+
+      '<h4>How to do it</h4><ol>' +
+      '<li>Open <b>Asset-Specific-Review-Sheet.html</b> in your browser. ' + esc(files) + '.</li>' +
+      '<li>Fill in your name, position and asset at the top, then scroll to your item numbers.</li>' +
+      '<li>For each one, read the answer as it currently stands and mark it <b>Correct as written</b>, ' +
+      '<b>Needs change</b>, <b>Not applicable to this asset</b>, or <b>Refer</b>.</li>' +
+      '<li>If it needs a change, write what it should say and where that comes from &mdash; the document, ' +
+      'the register, the system of record. That is the part I cannot do myself.</li>' +
+      '<li>Click <b>Save to file</b> and send the file back to me. Your work also saves in the browser as ' +
+      'you type, but the file is what I can collect.</li></ol>' +
+
+      '<p><b>Refer is a real answer.</b> If an item is outside what you know, mark it Refer and say who ' +
+      'would know. A confident wrong answer in a study aid is worse than an open question, because the ' +
+      'candidate learns it and the panel hears it back.</p>' +
+
+      '<div class="rv-flag"><b>One to look at either way &mdash; item 37.</b> It repeats the preventative ' +
+      'safeguard list under a question it does not appear to belong to. I think it is a stray paste and ' +
+      'should come out. Tell me if I am wrong, and it stays.</div>' +
+
+      '<p>The other attachment, <b>LOFT-Process-Safety.html</b>, is the study aid itself if you want to ' +
+      'see the answers in context.</p>' + panel +
+
+      (due ? '<p>I need these back by <b>' + esc(due) + '</b>.</p>'
+           : '<p>Please let me know when you can have these back.</p>') +
+
+      '<p>Thanks,<br>' + esc(sender) + '</p>';
+  }
+
+  function roster() {
+    return '<table class="rv-roster">' +
+      '<thead><tr><th>Category</th><th>Items</th><th>Assessor</th></tr></thead><tbody>' +
+      CATEGORIES.map(function (c, i) {
+        return '<tr><td class="cat">' + esc(c.cat) + '</td><td class="nums">' + esc(c.items) +
+          '</td><td><input type="text" id="rv_who' + i + '" data-rv="' + i + '" value="' + esc(nameFor(i)) +
+          '" aria-label="Assessor for ' + esc(c.cat) + '"></td></tr>';
+      }).join('') + '</tbody></table>';
+  }
+
+  function render() {
+    var sheet = el('reviewSheet');
+    if (!sheet) { return; }
+    sheet.innerHTML =
+      '<h2>Ask the current assessors to check the asset answers</h2>' +
+      '<p class="sub">' + TOTAL + ' answers in this study aid are asset-local and cannot be checked ' +
+      'against any document in the pack. This builds the email that puts each of them in front of the ' +
+      'person who already assesses that category.</p>' +
+
+      '<div class="em-grid">' +
+      '<div class="em-fld"><label for="rv_asset">Asset</label><select id="rv_asset">' +
+      '<option value="Hebron">Hebron</option><option value="Hibernia">Hibernia</option></select></div>' +
+      '<div class="em-fld"><label for="rv_due">Answers needed back by</label>' +
+      '<input type="date" id="rv_due" value="' + esc(state.due) + '"></div>' +
+      '<div class="em-fld"><label for="rv_files">How they are getting the files</label>' +
+      '<input type="text" id="rv_files" value="' + esc(state.files) + '"></div>' +
+      '<div class="em-fld"><label for="rv_sender">From</label>' +
+      '<input type="text" id="rv_sender" placeholder="name, position" value="' + esc(state.sender) + '"></div>' +
+      '</div>' +
+
+      '<div class="em-rule"><label for="rv_panelnote" style="display:flex;gap:.5rem;align-items:flex-start;cursor:pointer">' +
+      '<input type="checkbox" id="rv_panelnote"' + (state.panelnote ? ' checked' : '') + ' style="margin-top:.25rem">' +
+      '<span>Add a short note about the move to three-person panels, so nobody reads this as the change itself</span>' +
+      '</label></div>' +
+
+      '<h4 style="margin:1.2rem 0 .2rem;font-size:.95rem;color:var(--navy)">Who checks what</h4>' +
+      '<p class="sub" style="margin:0 0 .4rem">Editable. Saved per asset in this browser.</p>' +
+      '<div class="rv-tw" id="rv_roster">' + roster() + '</div>' +
+
+      '<div class="em-tools">' +
+      '<button type="button" id="rv_copy" class="primary">Copy email</button>' +
+      '<button type="button" id="rv_copytext">Copy as plain text</button>' +
+      '<button type="button" id="rv_print">Print</button>' +
+      '<span class="sp"></span><span class="em-ok" id="rv_flag"></span>' +
+      '<button type="button" id="rv_close">Close</button></div>' +
+
+      '<p class="em-sub">Subject: <span id="rv_subject"></span></p>' +
+      '<div class="rv-prev" id="rv_prev"></div>';
+
+    el('rv_asset').value = state.asset;
+    paint();
+    wire();
+  }
+
+  /* Only the parts that change on every keystroke, so the field being typed in
+     does not lose focus or its caret. */
+  function paint() {
+    el('rv_subject').textContent = subject();
+    el('rv_prev').innerHTML = emailHtml();
+  }
+
+  var flagTimer;
+  function flag(msg) {
+    var f = el('rv_flag');
+    if (!f) { return; }
+    f.textContent = msg;
+    clearTimeout(flagTimer);
+    flagTimer = setTimeout(function () { f.textContent = ''; }, 2400);
+  }
+
+  function copyRich() {
+    var prev = el('rv_prev');
+    var html = '<p><b>Subject:</b> ' + esc(subject()) + '</p>' + prev.innerHTML;
+    var text = subject() + '\n\n' + prev.innerText;
+    if (navigator.clipboard && window.ClipboardItem) {
+      navigator.clipboard.write([new ClipboardItem({
+        'text/html': new Blob([html], { type: 'text/html' }),
+        'text/plain': new Blob([text], { type: 'text/plain' })
+      })]).then(function () { flag('Copied. Paste into Outlook.'); }, function () { copyPlain(); });
+    } else { copyPlain(); }
+  }
+
+  function copyPlain() {
+    var text = subject() + '\n\n' + el('rv_prev').innerText;
+    function fallback() {
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.focus(); ta.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+      ta.remove();
+      flag(ok ? 'Copied as plain text.' : 'Copy blocked. Select the email and press Ctrl+C.');
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { flag('Copied as plain text.'); }, fallback);
+    } else { fallback(); }
+  }
+
+  function wire() {
+    el('rv_asset').addEventListener('change', function () {
+      state.asset = this.value; save();
+      el('rv_roster').innerHTML = roster();
+      paint();
+    });
+    el('rv_panelnote').addEventListener('change', function () {
+      state.panelnote = this.checked; save(); paint();
+    });
+    ['due', 'files', 'sender'].forEach(function (k) {
+      el('rv_' + k).addEventListener('input', function () { state[k] = this.value; save(); paint(); });
+    });
+    el('rv_roster').addEventListener('input', function (e) {
+      var i = e.target && e.target.dataset ? e.target.dataset.rv : null;
+      if (i === null || i === undefined) { return; }
+      state.names[state.asset + '|' + i] = e.target.value;
+      save(); paint();
+    });
+    el('rv_copy').addEventListener('click', copyRich);
+    el('rv_copytext').addEventListener('click', copyPlain);
+    el('rv_print').addEventListener('click', function () { window.print(); });
+    el('rv_close').addEventListener('click', close);
+  }
+
+  function open() {
+    /* The assessment record already knows who is running this one. */
+    var api = window.__loftAssessmentData ? window.__loftAssessmentData() : null;
+    if (api && api.session && api.session.lead && !state.sender) { state.sender = api.session.lead; save(); }
+    render();
+    el('reviewLayer').classList.add('open');
+    document.body.classList.add('review-open');
+    el('reviewLayer').scrollTop = 0;
+  }
+  function close() {
+    el('reviewLayer').classList.remove('open');
+    document.body.classList.remove('review-open');
+  }
+
+  function init() {
+    load();
+    var layer = document.createElement('div');
+    layer.id = 'reviewLayer';
+    layer.innerHTML = '<div id="reviewSheet"></div>';
+    document.body.appendChild(layer);
+
+    var bar = document.getElementById('assessSession');
+    if (bar) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.id = 'openReview'; b.textContent = 'Asset review';
+      b.title = 'Email the current assessors to check the ' + TOTAL + ' asset-local answers';
+      b.addEventListener('click', open);
+      var first = bar.querySelector('button');
+      bar.insertBefore(b, first || null);
+    }
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && document.body.classList.contains('review-open')) { close(); }
+    });
+  }
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); }
+  else { init(); }
+})();
+</script>
 <script id="loft-home-js">
 /* Home. Two jobs: point people at the right tool, and put the requirements
    somewhere they cannot be scrolled past. Everything in the requirements panel
@@ -5669,7 +6049,8 @@ var PRACTICE=[{"sec":"2.1 Risk Management","q":"What is the intent of the Risk A
       'in place while any gap is open. <span class="ref">Sections 1.3 and 1.5</span>'],
     ['Assessment team', 'At least <b>three</b>, no more than <b>five</b>. The Assessment Lead is set by the ' +
       'candidate&rsquo;s level &mdash; an Operations Manager or equivalent to assess an SLS, a Site Manager or ' +
-      'equivalent to assess a TLS. <span class="ref">Section 1.6</span>'],
+      'equivalent to assess a TLS. Canada East varies who leads and who signs; the panel below sets out how. ' +
+      '<span class="ref">Section 1.6</span>'],
     ['How it runs', 'Open-ended questions. The candidate elaborates, gives examples and speaks fluidly about the ' +
       'principles. <b>It is not a question-and-answer test</b>, and reciting a model answer does not demonstrate ' +
       'competency. <span class="ref">Section 1.5</span>'],
@@ -5682,13 +6063,19 @@ var PRACTICE=[{"sec":"2.1 Risk Management","q":"What is the intent of the Risk A
   ];
 
   function render() {
-  /* The assessment panel. One team per asset, both drawing on the same Training
-     Administrator for scheduling and paperwork. Roles are the asset's own; the
-     Assessor Guide requirement they satisfy is noted underneath. */
+  /* The assessment panel as approved for Canada East. Two panels of three, one
+     per asset. Two seats are the asset's own; the Assessment Facilitator is one
+     person across both, which is what keeps the two panels consistent. The
+     Training Department administers and holds no seat, and the line supervisor
+     who signs the decision does not sit on the panel either. The Assessor Guide
+     requirement each seat satisfies is noted underneath. */
   var PANEL_ROLES = [
-    ['Lead', 'Operations Manager', 'Leads the assessment and makes the final call on whether competency is demonstrated'],
-    ['SME', 'Senior Operations Advisor', 'Technical assessor for the asset and its process safety scenarios'],
-    ['SME / Assessment Administrator', 'Senior Operations Advisor', 'Second technical assessor, and runs the assessment on the day']
+    ['Assessment Lead', 'Senior Operations Advisor',
+     'Runs the assessment, asks six of the twelve sessions, and writes the report and the recommendation. ' +
+     'Backup: the other asset&rsquo;s Lead, then the Operations Manager'],
+    ['Technical Assessor', 'Risk Advisor',
+     'Process safety technical assessor for the asset, and asks four sessions. ' +
+     'Backup: the other asset&rsquo;s Risk Advisor']
   ];
 
   var PANEL_KEY = 'loft-panel-v1';
@@ -5703,15 +6090,25 @@ var PRACTICE=[{"sec":"2.1 Risk Management","q":"What is the intent of the Risk A
       '<p class="note">Who sits on the team, and who organises it. Type the names in &mdash; they are kept in ' +
       'this browser and can be dropped straight into the assessment record.</p>';
 
-    h += '<div class="pc-top"><div class="pc-box pc-admin">' +
-      '<div class="role">Training Administrator</div>' +
+    h += '<div class="pc-top">' +
+      '<div class="pc-box pc-shared">' +
+      '<div class="role">Assessment Facilitator &middot; third seat on both panels</div>' +
+      '<div class="who">SHE, Ops Support &amp; Regulatory</div>' +
+      '<input class="pc-name" id="pn_fac" placeholder="name" value="' + esc(panelNames.fac || '') + '">' +
+      '<div class="does">In the room for every assessment at both assets, asks Training and Emergency ' +
+      'Response, and carries what is learned from one panel to the other. ' +
+      'Backup: the SSHE Supervisor for the asset</div>' +
+      '</div>' +
+      '<div class="pc-box pc-admin">' +
+      '<div class="role">Training Department &middot; administers, no seat</div>' +
       '<div class="who">Canada East</div>' +
       '<input class="pc-name" id="pn_admin" placeholder="name" value="' + esc(panelNames.admin || '') + '">' +
-      '<div class="does">Schedules the assessment and organises all the paperwork</div>' +
+      '<div class="does">Schedules within 90 days of the candidate assuming the position, issues the ' +
+      'documents, holds the records and tracks completion</div>' +
       '</div></div>';
 
     h += '<div class="pc-stem"></div>' +
-      '<p class="pc-serves">serves both panels below</p>';
+      '<p class="pc-serves">both serve the two panels below</p>';
 
     h += '<div class="pc-assets">';
     ['Hebron', 'Hibernia'].forEach(function (asset) {
@@ -5729,13 +6126,23 @@ var PRACTICE=[{"sec":"2.1 Risk Management","q":"What is the intent of the Risk A
     });
     h += '</div>';
 
-    h += '<p class="pc-foot"><b>Against the manual:</b> section 1.6 wants an assessment team of at least three ' +
+    h += '<div class="pc-decide"><div class="role">Decides and signs &middot; not on the panel</div>' +
+      '<p>The <b>Operations Manager</b> signs the competency decision for a second-line candidate, ' +
+      'including the OIM. The <b>Site Manager</b> signs for a third-line candidate, including the ' +
+      'Operations Manager. Both decide from the report; Risk Approval Authority stays delegated until ' +
+      'that signature is on it.</p></div>';
+
+    h += '<p class="pc-foot"><b>Against the manual:</b> section 1.6 wants a nominated team of at least three ' +
       'and no more than five &mdash; an Assessment Lead, an Assessment Facilitator and one or more Technical ' +
-      'Assessors. The three roles above are that team. The Training Administrator handles timing and paperwork ' +
-      'and is not one of the three.</p>' +
-      '<p class="pc-foot"><b>Watch the Lead:</b> the Assessment Lead has to sit a line above the candidate. ' +
-      'The Operations Manager leads for a <b>second-line</b> supervisor. Assessing a <b>third-line</b> ' +
-      'supervisor, the Lead must be the Site Manager or equivalent.</p>';
+      'Assessors. The three seats above are that team, with a named backup for each so it never drops below ' +
+      'three. The Training Department handles timing and paperwork and is not one of the three.</p>' +
+      '<p class="pc-foot"><b>The one local variation:</b> section 1.6 puts the Assessment Lead with a line ' +
+      'supervisor one level above the candidate and gives that person the final decision. Canada East ' +
+      'separates the two &mdash; the <b>Senior Operations Advisor leads and recommends</b>, and the ' +
+      '<b>line supervisor decides by signing</b>. That is what holds the same three assessors on every ' +
+      'assessment for an asset, which is the whole point of the panel. Section 1.6 is written as ' +
+      '&ldquo;should&rdquo;, and the Site Manager&rsquo;s approval of the two panels is where the ' +
+      'variation is recorded.</p>';
 
     return h + '</div>';
   }
@@ -5743,7 +6150,7 @@ var PRACTICE=[{"sec":"2.1 Risk Management","q":"What is the intent of the Risk A
   /* Fill the assessment record from a panel. The session inputs save on 'input',
      so dispatch that rather than reaching into the assessor module's state. */
   function usePanel(asset) {
-    var map = [['lead', asset + '_0'], ['facilitator', asset + '_2'], ['technical', asset + '_1']];
+    var map = [['lead', asset + '_0'], ['technical', asset + '_1'], ['facilitator', 'fac']];
     /* The session inputs exist while locked, they are just hidden - so test the
        unlock state, not the element. */
     if (!document.body.classList.contains('assessor-on')) {
@@ -5811,7 +6218,8 @@ var PRACTICE=[{"sec":"2.1 Risk Management","q":"What is the intent of the Risk A
       '<li><b>Save file</b> to keep it. The browser copy is working state, not a record.</li>' +
       '</ol>' +
       '<p><b>Email</b> in the assessment bar drafts the note to the candidate &mdash; expectations and target date, ' +
-      'or the interview booking.</p>' +
+      'or the interview booking. <b>Asset review</b> next to it drafts the other email: the one asking the ' +
+      'current assessors to check the 38 asset-local answers, split by category so nobody is sent all 38.</p>' +
       '<div class="hm-go"><button type="button" class="go" data-go="assessor">Unlock assessor access</button>' +
       '<button type="button" data-go="guide">Open Guide</button></div></div></div>';
 
